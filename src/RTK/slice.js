@@ -24,10 +24,10 @@ export const movieSlice = createSlice({
       })
       .addCase(fetchMovieData.fulfilled, (state, action) => {
         state.loading = false;
-        state.popular = action.payload.popularData;
-        state.topRated = action.payload.topRatedData;
-        state.upcoming = action.payload.upcomingData;
-        state.trending = action.payload.trendingData;
+        state.popular = action.payload.popular;
+        state.topRated = action.payload.topRated;
+        state.upcoming = action.payload.upcoming;
+        state.trending = action.payload.trending;
       });
   },
 });
