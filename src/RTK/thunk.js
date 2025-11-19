@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ApiKey, BaseUrl } from "../api/tmdb";
 
 export const fetchMovieData = createAsyncThunk(
-  "movie/fetchMovieData",
+  "movies/fetchMovieData",
   async () => {
     const popularUrl = `${BaseUrl}/movie/popular?api_key=${ApiKey}&language=ko-KR&page=1`;
     const topRatedUrl = `${BaseUrl}/movie/top_rated?api_key=${ApiKey}&language=ko-KR&page=1`;
