@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchMovieData } from "./thunk";
 
-export const movieSlice = createSlice({
+const movieSlice = createSlice({
   name: "movies",
   initialState: {
     popular: [],
@@ -31,3 +31,5 @@ export const movieSlice = createSlice({
       });
   },
 });
+
+export default movieSlice.reducer;
