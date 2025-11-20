@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const favoriteSlice = createSlice({
-  name: "favorites",
+  name: "favorite",
   initialState: [],
   reducers: {
     toggleFavorite(state, action) {
