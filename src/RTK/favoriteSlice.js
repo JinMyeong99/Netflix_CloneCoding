@@ -5,9 +5,9 @@ const favoriteSlice = createSlice({
   initialState: [],
   reducers: {
     toggleFavorite(state, action) {
-      const item = action.payload;
-      const index = state.findIndex((find) => find.id === item.id);
-      index !== -1 ? state.splice(index, 1) : state.push(item);
+      const movie = action.payload;
+      const index = state.findIndex((favMovie) => favMovie.id === movie.id);
+      index !== -1 ? state.splice(index, 1) : state.push(movie);
     },
   },
 });
