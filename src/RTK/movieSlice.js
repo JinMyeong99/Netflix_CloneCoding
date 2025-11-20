@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchMovieData } from "./thunk";
+import { fetchHomeData } from "./thunk";
 
 const movieSlice = createSlice({
   name: "movies",
@@ -14,15 +14,15 @@ const movieSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchMovieData.pending, (state) => {
+      .addCase(fetchHomeData.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchMovieData.rejected, (state, action) => {
+      .addCase(fetchHomeData.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       })
-      .addCase(fetchMovieData.fulfilled, (state, action) => {
+      .addCase(fetchHomeData.fulfilled, (state, action) => {
         state.loading = false;
         state.popular = action.payload.popular;
         state.topRated = action.payload.topRated;
