@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchPopularMoviesPage } from "./popularThunk";
 
-const popularMoviesSlice = createSlice({
+export const popularMoviesSlice = createSlice({
   name: "popularMovies",
   initialState: {
     list: [],
@@ -40,6 +40,3 @@ const popularMoviesSlice = createSlice({
       });
   },
 });
-
-export const { resetPopularMovies } = popularMoviesSlice.actions;
-export default popularMoviesSlice.reducer;

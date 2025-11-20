@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchHomeData } from "./thunk";
 
-const homeSlice = createSlice({
+export const homeSlice = createSlice({
   name: "home",
   initialState: {
     popular: [],
@@ -31,5 +31,3 @@ const homeSlice = createSlice({
       });
   },
 });
-
-export default homeSlice.reducer;

@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchPopularTv } from "./tvThunk";
 
-const tvSlice = createSlice({
+export const tvSlice = createSlice({
   name: "tv",
   initialState: {
     popular: [],
@@ -25,5 +25,3 @@ const tvSlice = createSlice({
       });
   },
 });
-
-export default tvSlice.reducer;
