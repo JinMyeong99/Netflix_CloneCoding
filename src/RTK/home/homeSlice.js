@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { fetchHomeData } from "./thunk";
 
 const homeSlice = createSlice({
-  name: "movies",
+  name: "home",
   initialState: {
     popular: [],
     topRated: [],
