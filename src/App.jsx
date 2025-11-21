@@ -11,7 +11,7 @@ import Login from "./pages/Login";
 
 function App() {
   return (
-    <div className="px-14">
+    <div className="px-14 bg-black">
       <Navbar />
       <main>
         <Routes>
