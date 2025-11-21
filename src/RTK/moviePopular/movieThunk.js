@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ApiKey, BaseUrl } from "../../api/tmdb";
 
 export const fetchMoviePage = createAsyncThunk(
-  "popularmovies/fetchMoviePage",
+  "movie/fetchMoviePage",
   async (_, { getState, rejectWithValue }) => {
     const { movie } = getState();
     const { page, morePage } = movie;
