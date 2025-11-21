@@ -1,3 +1,3 @@
 export default function Series() {
-  return;
+  return <></>;
 }

@@ -1,3 +1,3 @@
 export default function Movie() {
-  return;
+  return <></>;
 }

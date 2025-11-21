@@ -1,3 +1,3 @@
 export default function Trending() {
-  return;
+  return <></>;
 }
