@@ -8,7 +8,7 @@ export const homeSlice = createSlice({
     topRated: [],
     upcoming: [],
     trending: [],
-    loading: true,
+    loading: false,
     error: null,
   },
   reducers: {},
@@ -20,7 +20,7 @@ export const homeSlice = createSlice({
       })
       .addCase(fetchHomeData.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.error = action.payload || action.error.message;
       })
       .addCase(fetchHomeData.fulfilled, (state, action) => {
         state.loading = false;
