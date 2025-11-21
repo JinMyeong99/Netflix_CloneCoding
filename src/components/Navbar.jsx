@@ -3,9 +3,9 @@ import Netflix_logo from "../assets/Netflix_logo.png";
 
 export default function Navbar() {
   return (
-    <header className="navBar">
-      <img className="logo" src={Netflix_logo} />
-      <nav className="navLinks">
+    <header>
+      <img className="h-[26px]" src={Netflix_logo} />
+      <nav>
         <Link to="/">홈</Link>
         <Link to="/series">시리즈</Link>
         <Link to="/movie">영화</Link>
