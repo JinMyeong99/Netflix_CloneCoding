@@ -1,14 +1,10 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import Netflix_logo from "../assets/Netflix_logo.png";
 
 export default function Navbar() {
-  const navigate = useNavigate();
   return (
     <header className="navBar">
-      <img
-        className="logo"
-        src="../assets/Netflix_logo.png"
-        onClick={() => navigate("/")}
-      />
+      <img className="logo" src={Netflix_logo} />
       <nav className="navLinks">
         <Link to="/">홈</Link>
         <Link to="/series">시리즈</Link>
