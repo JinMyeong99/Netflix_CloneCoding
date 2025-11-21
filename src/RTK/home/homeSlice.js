@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchHomeData } from "./thunk";
+import { fetchHomeData } from "./homeThunk";
 
 export const homeSlice = createSlice({
   name: "home",
