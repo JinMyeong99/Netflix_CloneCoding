@@ -34,7 +34,7 @@ export default function Movie() {
     <div className="text-white">
       <h2>인기 영화 전체</h2>
       {error && <div>{error}</div>}
-      <div>
+      <div className="flex flex-wrap justify-between">
         {list.map((movie) => (
           <MovieCard key={movie.id} movie={movie} />
         ))}
