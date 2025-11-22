@@ -21,7 +21,7 @@ export default function Home() {
   return (
     <div className="text-white">
       <h2>인기 영화</h2>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap justify-between">
         {popular.map((movie) => (
           <MovieCard key={movie.id} movie={movie} />
         ))}
