@@ -26,13 +26,10 @@ export default function useInfiniteScroll({ loading, hasMore, onLoadMore }) {
 
     observer.observe(element);
 
-    return (
-      () => {
-        if (element) observer.unobserve(element);
-        observer.disconnect();
-      },
-      [loading, hasMore, onLoadMore]
-    );
-  });
+    return () => {
+      if (element) observer.unobserve(element);
+      observer.disconnect();
+    };
+  }, [loading, hasMore, onLoadMore]);
   return loaderRef;
 }
