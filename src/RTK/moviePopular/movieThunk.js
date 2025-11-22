@@ -5,8 +5,7 @@ export const fetchMoviePage = createAsyncThunk(
   "movie/fetchMoviePage",
   async (_, { getState, rejectWithValue }) => {
     try {
-      const { movieState } = getState().movie;
-      const { page, hasMore, loading } = movieState;
+      const { page, hasMore, loading } = getState().movie;
 
       if (!hasMore) {
         return rejectWithValue("가져올 페이지가 없습니다");

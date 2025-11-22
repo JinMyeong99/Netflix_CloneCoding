@@ -31,7 +31,7 @@ export default function Movie() {
   });
 
   return (
-    <div>
+    <div className="text-white">
       <h2>인기 영화 전체</h2>
       {error && <div>{error}</div>}
       <div>
