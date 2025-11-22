@@ -23,8 +23,8 @@ export const fetchMoviePage = createAsyncThunk(
 
       return {
         page: nextPage,
-        results: moreMovie.results,
-        totalPages: moreMovie.total_pages,
+        results: moreMovie.results || [],
+        totalPages: moreMovie.total_pages || nextPage,
       };
     } catch (error) {
       return rejectWithValue(error.message);
