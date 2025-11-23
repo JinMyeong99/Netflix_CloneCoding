@@ -27,6 +27,11 @@ export const seriesSlice = createSlice({
       })
       .addCase(fetchSeriesPage.rejected, (state, action) => {
         state.loading = false;
+        if (action.payload === "더 이상 가져올 페이지가 없습니다") return;
+        state.error = action.payload || action.error.message;
+      })
+      .addCase(fetchSeriesPage.fulfilled, (state, action) => {
+        state.loading = false;
         const { page, results, totalPages } = action.payload;
 
         state.page = page;
@@ -35,11 +40,6 @@ export const seriesSlice = createSlice({
         if (page >= totalPages || results.length === 0) {
           state.hasMore = false;
         }
-      })
-      .addCase(fetchSeriesPage.fulfilled, (state, action) => {
-        state.loading = false;
-        if (action.payload === "더 이상 가져올 페이지가 없습니다") return;
-        state.error = action.payload || action.error.message;
       });
   },
 });

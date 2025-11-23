@@ -5,13 +5,10 @@ export const fetchSeriesPage = createAsyncThunk(
   "series/fetchSeriesPage",
   async (_, { getState, rejectWithValue }) => {
     try {
-      const { page, hasMore, loading } = getState().series;
+      const { page, hasMore } = getState().series;
 
       if (!hasMore) {
         return rejectWithValue("더 이상 가져올 페이지가 없습니다");
-      }
-      if (loading) {
-        return rejectWithValue("로딩 중...");
       }
 
       const nextPage = page + 1;

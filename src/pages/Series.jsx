@@ -1,3 +1,46 @@
+import { useCallback, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { seriesSlice } from "../RTK/series/seriesSlice";
+import { fetchSeriesPage } from "../RTK/series/seriesThunk";
+import useInfiniteScroll from "../hooks/useInfiniteScroll";
+import MovieCard from "../components/Moviecard";
+
 export default function Series() {
-  return <></>;
+  const dispatch = useDispatch();
+  const { list, loading, hasMore, page, error } = useSelector(
+    (state) => state.series
+  );
+
+  useEffect(() => {
+    if (page === 0 && list.length === 0) {
+      dispatch(seriesSlice.actions.resetSeries());
+      dispatch(fetchSeriesPage());
+    }
+  }, [dispatch, page, list.length]);
+
+  const loadMore = useCallback(() => {
+    if (!loading && hasMore) {
+      dispatch(fetchSeriesPage());
+    }
+  }, [dispatch, loading, hasMore]);
+
+  const loaderRef = useInfiniteScroll({
+    loading,
+    hasMore,
+    onLoadMore: loadMore,
+  });
+  return (
+    <div className="text-white">
+      <h2>인기 시리즈</h2>
+      {error && <div>{error}</div>}
+      <div className="flex flex-wrap justify-between">
+        {list.map((series) => (
+          <MovieCard key={series.id} movie={series} />
+        ))}
+      </div>
+      {loading && <div>불러오는 중...</div>}
+      {hasMore && <div ref={loaderRef} style={{ height: 1 }} />}
+      {!hasMore && list.length > 0 && <div>더 이상 시리즈가 없습니다.</div>}
+    </div>
+  );
 }
