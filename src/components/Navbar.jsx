@@ -26,7 +26,10 @@ export default function Navbar() {
           </Link>
         </nav>
       </div>
-      <div className="flex">검색/로그인</div>
+      <div className="flex">
+        <div>검색</div>
+        <div>로그인</div>
+      </div>
     </header>
   );
 }
