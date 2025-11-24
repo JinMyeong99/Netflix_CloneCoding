@@ -13,8 +13,8 @@ export const fetchMoviePage = createAsyncThunk(
 
       const nextPage = page + 1;
 
-      const pageUrl = `${BaseUrl}/movie/popular?api_key=${ApiKey}&language=ko-KR&page=${nextPage}`;
-      const res = await fetch(pageUrl);
+      const movieUrl = `${BaseUrl}/movie/popular?api_key=${ApiKey}&language=ko-KR&page=${nextPage}`;
+      const res = await fetch(movieUrl);
       const movieData = await res.json();
 
       return {
