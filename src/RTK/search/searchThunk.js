@@ -5,7 +5,7 @@ export const fetchSearchPage = createAsyncThunk(
   "search/fetchSearchPage",
   async (_, { getState, rejectWithValue }) => {
     try {
-      const { query, page, hasMore, loading } = getState().search;
+      const { query, page, hasMore} = getState().search;
 
       const searchValue = query.trim();
       if (!searchValue) {
@@ -13,9 +13,6 @@ export const fetchSearchPage = createAsyncThunk(
       }
       if (!hasMore) {
         return rejectWithValue("더 이상 검색 결과가 존재하지 않습니다.");
-      }
-      if (loading) {
-        return rejectWithValue("이미 로딩 중...");
       }
 
       const nextPage = page + 1;

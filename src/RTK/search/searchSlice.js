@@ -39,7 +39,6 @@ export const searchSlice = createSlice({
       .addCase(fetchSearchPage.rejected, (state, action) => {
         state.loading = false;
         if (
-          action.payload === "이미 로딩 중" ||
           action.payload === "더 이상 검색 결과가 존재하지 않습니다." ||
           action.payload === "검색어 없음"
         ) {

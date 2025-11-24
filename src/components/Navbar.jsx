@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Netflix_logo from "../assets/Netflix_logo.png";
+import SearchBar from "./Searchbar";
 
 export default function Navbar() {
   return (
@@ -27,7 +28,7 @@ export default function Navbar() {
         </nav>
       </div>
       <div className="flex">
-        <div>검색</div>
+        <SearchBar />
         <div>로그인</div>
       </div>
     </header>
