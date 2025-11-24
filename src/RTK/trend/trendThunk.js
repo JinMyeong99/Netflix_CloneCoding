@@ -14,7 +14,19 @@ export const fetchTrendPage = createAsyncThunk(
       const nextPage = page + 1;
 
       const trendUrl = `${BaseUrl}/trending/all/week?api_key=${ApiKey}&language=ko-KR&page=${nextPage}`;
-      const 
+      const res = await fetch(trendUrl);
+      if (!res.ok) throw new Error("트렌드 로딩 실패");
+      const trendData = await res.json();
+
+      const filteredData = (trendData.results || []).filter(
+        (data) => data.media_type === "movie" || data.media_type === "tv"
+      );
+
+      return {
+        page: nextPage,
+        results: filteredData,
+        totalPages: trendData.total_Pages || nextPage,
+      };
     } catch (error) {
       return rejectWithValue(error.message);
     }
