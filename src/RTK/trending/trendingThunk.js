@@ -1,11 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ApiKey, BaseUrl } from "../../api/tmdb";
 
-export const fetchTrendPage = createAsyncThunk(
-  "trend/fetchTrendPage",
+export const fetchTrendingPage = createAsyncThunk(
+  "trending/fetchTrendingPage",
   async (_, { getState, rejectWithValue }) => {
     try {
-      const { page, hasMore } = getState().trend;
+      const { page, hasMore } = getState().trending;
 
       if (!hasMore) {
         return rejectWithValue("더 이상 페이지가 없습니다.");

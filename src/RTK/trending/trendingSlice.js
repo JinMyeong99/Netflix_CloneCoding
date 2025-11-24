@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchTrendPage } from "./trendThunk";
+import { fetchTrendingPage } from "./trendingThunk";
 
-export const trendSlice = createSlice({
-  name: "trend",
+export const trendingSlice = createSlice({
+  name: "trending",
   initialState: {
     list: [],
     page: 0,
@@ -11,7 +11,7 @@ export const trendSlice = createSlice({
     error: null,
   },
   reducers: {
-    resetTrend(state) {
+    resetTrending(state) {
       state.list = [];
       state.page = 0;
       state.hasMore = true;
@@ -21,17 +21,17 @@ export const trendSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchTrendPage.pending, (state) => {
+      .addCase(fetchTrendingPage.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchTrendPage.rejected, (state, action) => {
+      .addCase(fetchTrendingPage.rejected, (state, action) => {
         state.loading = false;
         if (action.payload === "더 이상 페이지가 없습니다.") return;
 
         state.error = action.payload || action.error.message;
       })
-      .addCase(fetchTrendPage.fulfilled, (state, action) => {
+      .addCase(fetchTrendingPage.fulfilled, (state, action) => {
         state.loading = false;
         const { page, results, totalPages } = action.payload;
 
