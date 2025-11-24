@@ -15,12 +15,12 @@ export const fetchMoviePage = createAsyncThunk(
 
       const pageUrl = `${BaseUrl}/movie/popular?api_key=${ApiKey}&language=ko-KR&page=${nextPage}`;
       const res = await fetch(pageUrl);
-      const moreMovie = await res.json();
+      const movieData = await res.json();
 
       return {
         page: nextPage,
-        results: moreMovie.results || [],
-        totalPages: moreMovie.total_pages || nextPage,
+        results: movieData.results || [],
+        totalPages: movieData.total_pages || nextPage,
       };
     } catch (error) {
       return rejectWithValue(error.message);
