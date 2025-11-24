@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { MovieSlice } from "../RTK/moviePopular/movieSlice";
-import { fetchMoviePage } from "../RTK/moviePopular/movieThunk";
+import { MovieSlice } from "../RTK/movie/movieSlice";
+import { fetchMoviePage } from "../RTK/movie/movieThunk";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import MovieCard from "../components/Moviecard";
 

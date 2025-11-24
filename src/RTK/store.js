@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { homeSlice } from "./home/homeSlice";
-import { MovieSlice } from "./moviePopular/movieSlice";
+import { MovieSlice } from "./movie/movieSlice";
 import { seriesSlice } from "./series/seriesSlice";
 
 export const store = configureStore({
