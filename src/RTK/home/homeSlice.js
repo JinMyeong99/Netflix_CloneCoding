@@ -11,7 +11,16 @@ export const homeSlice = createSlice({
     loading: false,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    resetHome(state) {
+      state.popular = [];
+      state.topRated = [];
+      state.upcoming = [];
+      state.trending = [];
+      state.loading = false;
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchHomeData.pending, (state) => {
