@@ -18,9 +18,14 @@ export const fetchHomeData = createAsyncThunk(
           fetch(trendingUrl),
         ]);
 
-        if(!popularRes.ok || !topRatedRes.ok || !upcomingRes.ok || !trendingRes.ok){
-          throw new Error("홈 데이터 로딩 실패")
-        }
+      if (
+        !popularRes.ok ||
+        !topRatedRes.ok ||
+        !upcomingRes.ok ||
+        !trendingRes.ok
+      ) {
+        throw new Error("홈 데이터 로딩 실패");
+      }
 
       const [popularData, topRatedData, upcomingData, trendingData] =
         await Promise.all([

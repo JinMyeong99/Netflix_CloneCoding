@@ -8,9 +8,9 @@ export default function SectionRow({ title, items }) {
   return (
     <section>
       <h2>{title}</h2>
-      <div className="flex gap-2 overflow-x-auto py-2 scrollbar-thin scrollbar-thumb-neutral-700">
+      <div className="flex gap-2 overflow-x-auto py-2 ">
         {items.map((movie) => (
-          <div key={movie.id}>
+          <div key={movie.id} className="shrink-0 w-47">
             <MovieCard movie={movie} />
           </div>
         ))}

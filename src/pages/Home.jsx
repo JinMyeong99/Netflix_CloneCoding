@@ -27,8 +27,8 @@ export default function Home() {
   }
 
   return (
-    <div className="text-white pt-16 bg-black min-h-screen">
-      <div>
+    <div className="text-white pt-16 min-h-screen">
+      <div className="space-y-8 px-2 pb-10">
         <SectionRow title="인기 영화" items={popular} />
         <SectionRow title="높은 평점 영화" items={topRated} />
         <SectionRow title="개봉 예정 영화" items={upcoming} />
