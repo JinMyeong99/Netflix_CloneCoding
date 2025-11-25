@@ -78,15 +78,12 @@ export default function SearchBar() {
         className="
       p-2
       rounded-full
-      transition
-      duration-200
-      hover:bg-white/20
       cursor-pointer
       flex items-center justify-center
     "
       >
         <svg
-          className="w-5 h-5 text-white"
+          className="w-6 h-6 text-white"
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
