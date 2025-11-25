@@ -29,7 +29,7 @@ export default function Search() {
       {!loading && results.length === 0 && query.trim() && !error && (
         <div>검색 결과가 없습니다.</div>
       )}
-      <div>
+      <div className="flex flex-wrap justify-between">
         {results.map((item) => (
           <MovieCard key={`${item.media_type}-${item.id}`} movie={item} />
         ))}

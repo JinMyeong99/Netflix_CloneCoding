@@ -27,7 +27,7 @@ export default function Navbar() {
           </Link>
         </nav>
       </div>
-      <div className="flex">
+      <div className="flex items-center">
         <SearchBar />
         <div>로그인</div>
       </div>
