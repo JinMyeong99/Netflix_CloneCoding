@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchHomeData } from "../RTK/home/homeThunk";
-import MovieCard from "../components/Moviecard";
+import SectionRow from "../components/SectionRow";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -28,11 +28,11 @@ export default function Home() {
 
   return (
     <div className="text-white">
-      <h2>인기 영화</h2>
-      <div className="flex flex-wrap justify-between">
-        {popular.map((movie) => (
-          <MovieCard key={movie.id} movie={movie} />
-        ))}
+      <div>
+        <SectionRow title="인기 영화" items={popular} />
+        <SectionRow title="높은 평점 영화" items={topRated} />
+        <SectionRow title="개봉 예정 영화" items={upComing} />
+        <SectionRow title="이번 주 트렌드" items={trending} />
       </div>
     </div>
   );
