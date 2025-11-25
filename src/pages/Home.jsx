@@ -5,13 +5,21 @@ import MovieCard from "../components/Moviecard";
 
 export default function Home() {
   const dispatch = useDispatch();
-  const { popular, loading, error } = useSelector((state) => state.home);
+  const { popular, topRated, upComing, trending, loading, error } = useSelector(
+    (state) => state.home
+  );
 
   useEffect(() => {
     dispatch(fetchHomeData());
   }, [dispatch]);
 
-  if (loading && popular.length === 0) {
+  if (
+    loading &&
+    !popular.length &&
+    !topRated.length &&
+    !upComing.length &&
+    !trending.length
+  ) {
     return <div>홈 데이터 로딩 중...</div>;
   }
   if (error) {
