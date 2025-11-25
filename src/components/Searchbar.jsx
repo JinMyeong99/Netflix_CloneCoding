@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { searchSlice } from "../RTK/search/searchSlice";
 import { fetchSearchPage } from "../RTK/search/searchThunk";
-import { SearchIcon } from "./SearchIcon";
 
 export default function SearchBar() {
   const navigate = useNavigate();
@@ -54,13 +53,13 @@ export default function SearchBar() {
       dispatch(searchSlice.actions.resetSearch());
       dispatch(searchSlice.actions.setQuery(searchValue));
       dispatch(fetchSearchPage());
-    }, 300);
+    }, 400);
     return () => clearTimeout(id);
   }, [value, open, location.pathname, navigate, dispatch]);
 
   return (
     <div ref={barRef}>
-      <SearchIcon onClick={handleButtonClick} />
+      <button onClick={handleButtonClick}>🔍</button>
       {open && (
         <input
           type="text"
