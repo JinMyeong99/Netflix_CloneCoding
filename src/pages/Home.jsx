@@ -5,7 +5,7 @@ import SectionRow from "../components/SectionRow";
 
 export default function Home() {
   const dispatch = useDispatch();
-  const { popular, topRated, upComing, trending, loading, error } = useSelector(
+  const { popular, topRated, upcoming, trending, loading, error } = useSelector(
     (state) => state.home
   );
 
@@ -17,7 +17,7 @@ export default function Home() {
     loading &&
     !popular.length &&
     !topRated.length &&
-    !upComing.length &&
+    !upcoming.length &&
     !trending.length
   ) {
     return <div>홈 데이터 로딩 중...</div>;
@@ -27,11 +27,11 @@ export default function Home() {
   }
 
   return (
-    <div className="text-white">
+    <div className="text-white pt-16 bg-black min-h-screen">
       <div>
         <SectionRow title="인기 영화" items={popular} />
         <SectionRow title="높은 평점 영화" items={topRated} />
-        <SectionRow title="개봉 예정 영화" items={upComing} />
+        <SectionRow title="개봉 예정 영화" items={upcoming} />
         <SectionRow title="이번 주 트렌드" items={trending} />
       </div>
     </div>
