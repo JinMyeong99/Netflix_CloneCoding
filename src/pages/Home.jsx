@@ -20,15 +20,23 @@ export default function Home() {
     !upcoming.length &&
     !trending.length
   ) {
-    return <div>홈 데이터 로딩 중...</div>;
+    return (
+      <div className="text-white pt-16 min-h-screen flex items-center justify-center">
+        홈 데이터 로딩 중...
+      </div>
+    );
   }
   if (error) {
-    return <div>에러: {error}</div>;
+    return (
+      <div className="text-white pt-16 min-h-screen flex items-center justify-center">
+        에러: {error}
+      </div>
+    );
   }
 
   return (
     <div className="text-white pt-16 min-h-screen">
-      <div className="space-y-8 px-2 pb-10">
+      <div className="space-y-8 pb-10">
         <SectionRow title="인기 영화" items={popular} />
         <SectionRow title="높은 평점 영화" items={topRated} />
         <SectionRow title="개봉 예정 영화" items={upcoming} />
