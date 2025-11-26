@@ -13,7 +13,7 @@ function App() {
   return (
     <div className="bg-black min-h-screen text-white">
       <Navbar />
-      <main>
+      <main className="pt-16">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/series" element={<Series />} />
