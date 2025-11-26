@@ -14,20 +14,29 @@ export default function SearchBar() {
   const [originPath, setOriginPath] = useState(null);
 
   const barRef = useRef(null);
+  const inputRef = useRef(null);
 
   const handleButtonClick = () => {
-    setOpen((prev) => {
-      const nextOpen = !prev;
-
-      if (nextOpen && !location.pathname.startsWith("/search")) {
+    if (!open) {
+      if (!location.pathname.startsWith("/search")) {
         setOriginPath(location.pathname);
       }
-      return nextOpen;
-    });
+      setOpen(true);
+    } else {
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    }
   };
   const handleChange = (e) => {
     setValue(e.target.value);
   };
+
+  useEffect(() => {
+    if (open && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [open]);
 
   useEffect(() => {
     if (!open) return;
@@ -72,38 +81,52 @@ export default function SearchBar() {
   }, [value, open, location.pathname, originPath, navigate, dispatch]);
 
   return (
-    <div ref={barRef} className="relative flex items-center gap-2">
-      <button
-        onClick={handleButtonClick}
-        className="
-      p-2
-      rounded-full
-      cursor-pointer
-      flex items-center justify-center
-    "
+    <div ref={barRef} className="flex items-center">
+      <div
+        className={`
+          relative flex items-center h-9 overflow-hidden
+          transition-[width,opacity] duration-300 ease-out
+          ${open ? "w-56" : "w-8"}
+        `}
       >
-        <svg
-          className="w-6 h-6 text-white"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          viewBox="0 0 24 24"
+        <button
+          onClick={handleButtonClick}
+          className="absolute left-1 flex items-center justify-center w-6 h-6 cursor-pointer"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z"
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z"
+            />
+          </svg>
+        </button>
+        {open && (
+          <input
+            ref={inputRef}
+            type="text"
+            value={value}
+            onChange={handleChange}
+            placeholder="제목"
+            className="
+              w-full bg-black/70
+              py-1.5 pl-9 pr-2
+              text-sm
+              placeholder-gray-400
+              outline-none
+              focus:bg-black
+              border border-white/50
+              focus:border-white
+            "
           />
-        </svg>
-      </button>
-      {open && (
-        <input
-          type="text"
-          value={value}
-          onChange={handleChange}
-          placeholder="제목"
-        />
-      )}
+        )}
+      </div>
     </div>
   );
 }
