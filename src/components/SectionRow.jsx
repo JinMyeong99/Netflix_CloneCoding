@@ -3,51 +3,136 @@ import MovieCard from "./MovieCard";
 
 export default function SectionRow({ title, items }) {
   const scrollRef = useRef(null);
-  if (!items || items.length === 0) {
-    return null;
-  }
+  if (!items || items.length === 0) return null;
 
   const scrollLeft = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({
-        left: -600,
+        left: -1390,
         behavior: "smooth",
       });
     }
   };
-  const scrollRigth = () => {
+
+  const scrollRight = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({
-        left: 600,
+        left: 1390,
         behavior: "smooth",
       });
     }
   };
 
   return (
-    <section className="relative group space-y-2">
-      <h2>{title}</h2>
-      <button
-        onClick={scrollLeft}
-        className="absolute left-0 top-1/2 -translate-y-31.5 h-67.5 w-10 bg-black/40 text-white hidden group-hover:flex items-center justify-center z-10 transition"
-      >
-        <span className="text-4xl">❮</span>
-      </button>
-      <button
-        onClick={scrollRigth}
-        className="absolute right-0 top-1/2 -translate-y-31.5 h-67.5 w-10 bg-black/40 text-white hidden group-hover:flex items-center justify-center z-10 transition"
-      >
-        <span className="text-4xl">❯</span>
-      </button>
+    <section className="relative py-4">
+      <h2 className="text-xl font-semibold">{title}</h2>
       <div
-        ref={scrollRef}
-        className="flex gap-2 overflow-x-scroll scrollbar-none scroll-smooth px-2"
+        className="
+          relative
+          left-1/2 -translate-x-1/2
+          w-screen
+          mt-2
+          group
+        "
       >
-        {items.map((movie) => (
-          <div key={movie.id} className="shrink-0 w-47">
-            <MovieCard movie={movie} />
-          </div>
-        ))}
+        <div
+          className="
+            pointer-events-none
+            absolute left-0 top-0 h-full w-15
+          bg-black/40
+            z-10
+          "
+        />
+        <div
+          className="
+            pointer-events-none
+            absolute right-0 top-0 h-full w-15
+            bg-black/40
+            z-10
+          "
+        />
+        <button
+          type="button"
+          onClick={scrollLeft}
+          className="
+          group/button
+            flex
+            absolute left-0 top-1/2 -translate-y-1/2
+            z-20
+            h-full w-15
+            items-center justify-center
+            opacity-0 group-hover:opacity-100
+            hover:bg-black/50
+            transition-opacity duration-200
+            cursor-pointer
+          "
+        >
+          <svg
+            viewBox="0 0 48 48"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="4"
+            className="w-14 h-14
+            transition-transform
+            duration-200
+            group-hover/button:scale-125"
+          >
+            <path d="M30 10 L18 24 L30 38" />
+          </svg>
+        </button>
+
+        <button
+          type="button"
+          onClick={scrollRight}
+          className="
+            group/button
+            flex
+            absolute right-0 top-1/2 -translate-y-1/2
+            z-20
+            h-full w-15
+            items-center justify-center
+            opacity-0 group-hover:opacity-100
+            hover:bg-black/50
+            transition-opacity duration-200
+            cursor-pointer
+          "
+        >
+          <svg
+            viewBox="0 0 48 48"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="4"
+            className="w-14 h-14
+            transition-transform
+            duration-200
+            group-hover/button:scale-125"
+          >
+            <path d="M18 10 L30 24 L18 38" />
+          </svg>
+        </button>
+
+        <div
+          ref={scrollRef}
+          className="
+            mt-2
+            flex gap-2
+            overflow-x-scroll scrollbar-none scroll-smooth
+            px-[4%]              /* 🔥 첫 카드 시작 위치 = nav/제목과 맞춤 */
+          "
+        >
+          {items.map((movie) => (
+            <div
+              key={movie.id}
+              className="
+                shrink-0
+                w-56
+                transition-transform duration-200 ease-out
+              "
+            >
+              <MovieCard movie={movie} />
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
