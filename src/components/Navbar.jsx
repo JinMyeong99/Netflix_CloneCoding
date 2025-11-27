@@ -68,12 +68,18 @@ export default function Navbar() {
             </button>
           )}
           {isLogin && (
-            <div>
+            <div className="relative group">
               <button type="button">
-                <div>
-                  
-                </div>
+                <div>{user?.name ? user.name[0].toUpperCase() : "U"}</div>
+                <span>{user?.name || "User"}</span>
               </button>
+              <div className="absolute right-0">
+                <button type="button">프로필 관리</button>
+                <button type="button">계정</button>
+                <button type="button" onClick={handleLogoutClick}>
+                  로그아웃
+                </button>
+              </div>
             </div>
           )}
         </div>
