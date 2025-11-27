@@ -32,8 +32,13 @@ export const MovieSlice = createSlice({
       .addCase(fetchMoviePage.fulfilled, (state, action) => {
         state.loading = false;
         const { page, results, totalPages } = action.payload;
+
+        const movieId = new Set(state.list.map((movie) => movie.id));
+        const filtedMovie = results.filter((movie) => !movieId.has(movie.id));
+
+        state.list = [...state.list, ...filtedMovie];
+
         state.page = page;
-        state.list.push(...results);
         if (page >= totalPages || results.length === 0) {
           state.hasMore = false;
         }

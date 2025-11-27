@@ -35,9 +35,13 @@ export const trendingSlice = createSlice({
         state.loading = false;
         const { page, results, totalPages } = action.payload;
 
-        state.page = page;
-        state.list.push(...results);
+        const trendingId = new Set(state.list.map((trend) => trend.id));
+        const filtedTrendings = results.filter(
+          (trend) => !trendingId.has(trend.id)
+        );
+        state.list = [...state.list, ...filtedTrendings];
 
+        state.page = page;
         if (page >= totalPages || results.length === 0) {
           state.hasMore = false;
         }

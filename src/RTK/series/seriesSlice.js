@@ -34,9 +34,13 @@ export const seriesSlice = createSlice({
         state.loading = false;
         const { page, results, totalPages } = action.payload;
 
-        state.page = page;
-        state.list.push(...results);
+        const seriesId = new Set(state.list.map((series) => series.id));
+        const filtedSeries = results.filter(
+          (series) => !seriesId.has(series.id)
+        );
+        state.list = [...state.list, ...filtedSeries];
 
+        state.page = page;
         if (page >= totalPages || results.length === 0) {
           state.hasMore = false;
         }
