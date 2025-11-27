@@ -16,12 +16,7 @@ export default function Signup() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (
-      !name.trim() ||
-      !email.trim() ||
-      !password.trim() ||
-      !passwordCheck.trim()
-    ) {
+    if (!email.trim() || !password.trim() || !passwordCheck.trim()) {
       setError("모든 항목을 입력해 주세요.");
       return;
     }
@@ -34,7 +29,9 @@ export default function Signup() {
       return;
     }
 
-    dispatch(loginSlice.actions.register({ name, email }));
+    const userName = name.trim() ? name.trim() : "user";
+
+    dispatch(loginSlice.actions.register({ name: userName, email }));
 
     navigate("/");
   };
