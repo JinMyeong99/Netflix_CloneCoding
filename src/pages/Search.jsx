@@ -23,7 +23,7 @@ export default function Search() {
   });
 
   return (
-    <div className="mx-auto max-w-[90%]">
+    <div className="mx-auto max-w-[90%] pb-25">
       <h2 className="text-2xl font-bold my-4">
         검색 결과: {query && <span>"{query}"</span>}
       </h2>
@@ -31,7 +31,7 @@ export default function Search() {
       {!loading && results.length === 0 && query.trim() && !error && (
         <div>검색 결과가 없습니다.</div>
       )}
-      <div className="flex flex-wrap justify-between gap-y-30">
+      <div className="flex flex-wrap gap-x-[7.5px] gap-y-30">
         {results.map((item) => (
           <MovieCard key={`${item.media_type}-${item.id}`} movie={item} />
         ))}

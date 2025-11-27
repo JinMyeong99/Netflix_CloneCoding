@@ -30,7 +30,7 @@ export default function Series() {
     onLoadMore: loadMore,
   });
   return (
-    <div className="mx-auto max-w-[90%]">
+    <div className="mx-auto max-w-[90%] pb-25">
       <h2 className="text-4xl font-bold my-4">인기 시리즈</h2>
       {error && <div>{error}</div>}
       <div className="flex flex-wrap justify-between gap-y-30">

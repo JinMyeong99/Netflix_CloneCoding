@@ -29,7 +29,7 @@ export default function Navbar() {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 
       ${isScrolled ? "bg-neutral-900" : "bg-transparent"}`}
     >
-      <div className="mx-auto max-w-[90%] flex h-16 items-center justify-between">
+      <div className="mx-auto max-w-[90%] flex h-18 items-center justify-between">
         <div className="flex items-center gap-8">
           <Link to="/">
             <img src={Netflix_logo} className="h-7" alt="Netflix logo" />
@@ -58,7 +58,7 @@ export default function Navbar() {
               className="hover:text-gray-300 transition duration-300"
               to="/trending"
             >
-              트렌드
+              NEW! 요즘 대세 콘텐츠
             </Link>
             <Link
               className="hover:text-gray-300 transition duration-300"
