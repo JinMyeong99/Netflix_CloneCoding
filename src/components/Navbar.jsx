@@ -60,11 +60,21 @@ export default function Navbar() {
         <div className="flex items-center gap-4">
           <SearchBar />
           {!isLogin ? (
-            <button onClick={handleLoginClick}>로그인</button>
+            <button
+              onClick={handleLoginClick}
+              className="hover:text-gray-300 cursor-pointer"
+            >
+              로그인
+            </button>
           ) : (
             <div>
               <span>{user?.email}</span>
-              <button onClick={handleLogoutClick}>로그아웃</button>
+              <button
+                onClick={handleLogoutClick}
+                className="hover:text-gray-300 cursor-pointer"
+              >
+                로그아웃
+              </button>
             </div>
           )}
         </div>
