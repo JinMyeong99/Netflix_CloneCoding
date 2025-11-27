@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { seriesSlice } from "../RTK/series/seriesSlice";
 import { fetchSeriesPage } from "../RTK/series/seriesThunk";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
-import MovieCard from "../components/Moviecard";
+import MovieCard from "../components/MovieCard";
 
 export default function Series() {
   const dispatch = useDispatch();
@@ -30,10 +30,10 @@ export default function Series() {
     onLoadMore: loadMore,
   });
   return (
-    <div className="text-white">
-      <h2>인기 시리즈</h2>
+    <div className="mx-auto max-w-[90%]">
+      <h2 className="text-4xl font-bold my-4">인기 시리즈</h2>
       {error && <div>{error}</div>}
-      <div className="flex flex-wrap justify-between">
+      <div className="flex flex-wrap justify-between gap-y-30">
         {list.map((series) => (
           <MovieCard key={series.id} movie={series} />
         ))}

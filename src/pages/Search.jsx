@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSearchPage } from "../RTK/search/searchThunk";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
-import MovieCard from "../components/Moviecard";
+import MovieCard from "../components/MovieCard";
 
 export default function Search() {
   const dispatch = useDispatch();
@@ -23,13 +23,15 @@ export default function Search() {
   });
 
   return (
-    <div className="text-white">
-      <h2>검색 결과: {query && <span>"{query}"</span>}</h2>
+    <div className="mx-auto max-w-[90%]">
+      <h2 className="text-2xl font-bold my-4">
+        검색 결과: {query && <span>"{query}"</span>}
+      </h2>
       {error && <div>{error}</div>}
       {!loading && results.length === 0 && query.trim() && !error && (
         <div>검색 결과가 없습니다.</div>
       )}
-      <div className="flex flex-wrap justify-between">
+      <div className="flex flex-wrap justify-between gap-y-30">
         {results.map((item) => (
           <MovieCard key={`${item.media_type}-${item.id}`} movie={item} />
         ))}

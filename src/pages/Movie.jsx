@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { MovieSlice } from "../RTK/movie/movieSlice";
 import { fetchMoviePage } from "../RTK/movie/movieThunk";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
-import MovieCard from "../components/Moviecard";
+import MovieCard from "../components/MovieCard";
 
 export default function Movie() {
   const dispatch = useDispatch();
@@ -31,10 +31,10 @@ export default function Movie() {
   });
 
   return (
-    <div className="text-white">
-      <h2>인기 영화 전체</h2>
+    <div className=" mx-auto max-w-[90%]">
+      <h2 className="text-4xl font-bold my-4">인기 영화 목록</h2>
       {error && <div>{error}</div>}
-      <div className="flex flex-wrap justify-between">
+      <div className="flex flex-wrap justify-between gap-y-30">
         {list.map((movie) => (
           <MovieCard key={movie.id} movie={movie} />
         ))}

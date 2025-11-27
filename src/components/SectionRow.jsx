@@ -8,7 +8,7 @@ export default function SectionRow({ title, items }) {
   const scrollLeft = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({
-        left: -1390,
+        left: -1355,
         behavior: "smooth",
       });
     }
@@ -17,7 +17,7 @@ export default function SectionRow({ title, items }) {
   const scrollRight = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({
-        left: 1390,
+        left: 1355,
         behavior: "smooth",
       });
     }
@@ -25,7 +25,7 @@ export default function SectionRow({ title, items }) {
 
   return (
     <section className="relative py-4">
-      <h2 className="text-xl font-semibold">{title}</h2>
+      <h2 className="text-3xl font-semibold mb-3">{title}</h2>
       <div
         className="
           relative
@@ -38,16 +38,16 @@ export default function SectionRow({ title, items }) {
         <div
           className="
             pointer-events-none
-            absolute left-0 top-0 h-full w-15
-          bg-black/40
+            absolute left-0 top-0 h-full w-20
+          bg-neutral-900/40
             z-10
           "
         />
         <div
           className="
             pointer-events-none
-            absolute right-0 top-0 h-full w-15
-            bg-black/40
+            absolute right-0 top-0 h-full w-20
+            bg-neutral-900/40
             z-10
           "
         />
@@ -59,7 +59,7 @@ export default function SectionRow({ title, items }) {
             flex
             absolute left-0 top-1/2 -translate-y-1/2
             z-20
-            h-full w-15
+            h-full w-20
             items-center justify-center
             opacity-0 group-hover:opacity-100
             hover:bg-black/50
@@ -89,7 +89,7 @@ export default function SectionRow({ title, items }) {
             flex
             absolute right-0 top-1/2 -translate-y-1/2
             z-20
-            h-full w-15
+            h-full w-20
             items-center justify-center
             opacity-0 group-hover:opacity-100
             hover:bg-black/50
@@ -117,7 +117,7 @@ export default function SectionRow({ title, items }) {
             mt-2
             flex gap-2
             overflow-x-scroll scrollbar-none scroll-smooth
-            px-[4%]
+            px-[5.5%]
           "
         >
           {items.map((movie) => (
@@ -125,7 +125,6 @@ export default function SectionRow({ title, items }) {
               key={movie.id}
               className="
                 shrink-0
-                w-56
                 transition-transform duration-200 ease-out
               "
             >

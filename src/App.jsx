@@ -16,7 +16,7 @@ function App() {
     location.pathname === "/login" || location.pathname === "/signup";
 
   return (
-    <div className="bg-black min-h-screen text-white">
+    <div className="bg-neutral-900 min-h-screen text-white">
       {!hideNavbar && <Navbar />}
       <main className={hideNavbar ? "" : "pt-16"}>
         <Routes>

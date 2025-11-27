@@ -8,7 +8,13 @@ export default function MovieCard({ movie }) {
 
   return (
     <article>
-      <div>{poster ? <img src={poster} /> : <div>NO IMAGE</div>}</div>
+      <div>
+        {poster ? (
+          <img src={poster} className="w-[218px] h-[327px]" />
+        ) : (
+          <div>NO IMAGE</div>
+        )}
+      </div>
       {/* <div>
         <div>{title}</div>
         {year && <div>{year}</div>}

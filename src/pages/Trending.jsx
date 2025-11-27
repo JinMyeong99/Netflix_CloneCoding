@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { trendingSlice } from "../RTK/trending/trendingSlice";
 import { fetchTrendingPage } from "../RTK/trending/trendingThunk";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
-import MovieCard from "../components/Moviecard";
+import MovieCard from "../components/MovieCard";
 
 export default function Trending() {
   const dispatch = useDispatch();
@@ -30,11 +30,11 @@ export default function Trending() {
     onLoadMore: loadMore,
   });
   return (
-    <div className="text-white">
-      <h2>트렌드</h2>
+    <div className="mx-auto max-w-[90%]">
+      <h2 className="text-4xl font-bold my-4">이번 주 트렌드 목록</h2>
       {error && <div>{error}</div>}
 
-      <div className="flex flex-wrap justify-between">
+      <div className="flex flex-wrap justify-between gap-y-30">
         {list.map((item) => (
           <MovieCard key={`${item.media_type}-${item.id}`} movie={item} />
         ))}
