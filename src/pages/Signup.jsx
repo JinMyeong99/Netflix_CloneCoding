@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { loginSlice } from "../RTK/loginSlice";
-import Netflix_logo from "../assets/Netflix_logo.png"; // 🔥 로고 추가
+import Netflix_logo from "../assets/Netflix_logo.png";
 import Netflix_background from "../assets/Netflix_background.jpg";
 
 export default function Signup() {
@@ -31,7 +31,6 @@ export default function Signup() {
       return;
     }
 
-    // 🔥 이름이 없으면 "user"로 기본값
     const userName = name.trim() ? name.trim() : "user";
 
     dispatch(
@@ -48,21 +47,21 @@ export default function Signup() {
     <div className="relative min-h-screen">
       <div className="absolute inset-0">
         <img src={Netflix_background} className="h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-linear-to-b from-black/10 via-black/70 to-black" />
+        <div className="absolute inset-0 bg-linear-to-b from-black/10 via-black/40 to-black/90" />
       </div>
 
       <header className="relative z-10 flex items-center h-16 px-8">
         <Link to="/">
-          <img src={Netflix_logo} alt="Netflix" className="h-8" />
+          <img src={Netflix_logo} alt="Netflix" className="h-7" />
         </Link>
       </header>
 
       <main className="relative z-10 flex justify-center">
-        <div className="w-full max-w-sm bg-black/80 px-8 py-10 rounded">
+        <div className="w-full max-w-sm bg-black/80 px-12 py-16 rounded mt-10">
           <h1 className="text-3xl font-bold mb-6">회원가입</h1>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="flex flex-col space-y-1">
+            <div>
               <input
                 type="text"
                 value={name}
@@ -77,11 +76,11 @@ export default function Signup() {
                   outline-none
                   focus:bg-neutral-700
                 "
-                placeholder="이름 (비워도 됨)"
+                placeholder="이름"
               />
             </div>
 
-            <div className="flex flex-col space-y-1">
+            <div>
               <input
                 type="email"
                 value={email}
@@ -100,7 +99,7 @@ export default function Signup() {
               />
             </div>
 
-            <div className="flex flex-col space-y-1">
+            <div>
               <input
                 type="password"
                 value={password}
@@ -119,7 +118,7 @@ export default function Signup() {
               />
             </div>
 
-            <div className="flex flex-col space-y-1">
+            <div>
               <input
                 type="password"
                 value={passwordCheck}

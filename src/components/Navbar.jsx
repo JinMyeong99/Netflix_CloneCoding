@@ -73,7 +73,10 @@ export default function Navbar() {
           <SearchBar />
 
           {!email ? (
-            <Link to="/login" className=" hover:text-gray-300">
+            <Link
+              to="/login"
+              className="px-4 py-2 text-sm bg-red-600 hover:bg-red-700 rounded"
+            >
               로그인
             </Link>
           ) : (

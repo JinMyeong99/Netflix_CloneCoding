@@ -29,21 +29,21 @@ export default function Login() {
     <div className="relative min-h-screen">
       <div className="absolute inset-0">
         <img src={Netflix_background} className="h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-linear-to-b from-black/10 via-black/70 to-black" />
+        <div className="absolute inset-0 bg-linear-to-b from-black/10 via-black/40 to-black/90" />
       </div>
 
       <header className="relative z-10 flex items-center h-16 px-8">
         <Link to="/">
-          <img src={Netflix_logo} alt="Netflix" className="h-8" />
+          <img src={Netflix_logo} alt="Netflix_logo" className="h-7 " />
         </Link>
       </header>
 
       <main className="relative z-10 flex justify-center">
-        <div className="w-full max-w-sm bg-black/80 px-8 py-10 rounded">
+        <div className="w-full max-w-sm bg-black/80 px-12 py-16 rounded mt-16">
           <h1 className="text-3xl font-bold mb-6">로그인</h1>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="flex flex-col space-y-1">
+            <div>
               <input
                 type="email"
                 value={email}
@@ -62,7 +62,7 @@ export default function Login() {
               />
             </div>
 
-            <div className="flex flex-col space-y-1">
+            <div>
               <input
                 type="password"
                 value={password}
@@ -101,7 +101,7 @@ export default function Login() {
             <p>
               Netflix 회원이 아니신가요?{" "}
               <Link to="/signup" className="text-white hover:underline">
-                지금 가입하기
+                지금 가입하세요.
               </Link>
             </p>
           </div>
