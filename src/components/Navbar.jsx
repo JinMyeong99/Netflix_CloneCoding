@@ -8,13 +8,12 @@ import { loginSlice } from "../RTK/loginSlice";
 
 export default function Navbar() {
   const dispatch = useDispatch();
-
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  const user = useSelector((state) => state.login.email);
+  const email = useSelector((state) => state.login.email);
   const handleLogout = () => {
     dispatch(loginSlice.actions.logout());
   };
+
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,58 +30,68 @@ export default function Navbar() {
       ${isScrolled ? "bg-black" : "bg-transparent"}`}
     >
       <div className="mx-auto max-w-[90%] flex h-16 items-center justify-between">
-        {/* 왼쪽: 로고 + 메뉴 */}
         <div className="flex items-center gap-8">
           <Link to="/">
-            <img src={Netflix_logo} className="h-6" alt="Netflix logo" />
+            <img src={Netflix_logo} className="h-7" alt="Netflix logo" />
           </Link>
 
-          <nav className="flex gap-5 text-sm">
-            <Link className="hover:text-gray-300" to="/">
+          <nav className="flex gap-5">
+            <Link
+              className="hover:text-gray-300 transition duration-300"
+              to="/"
+            >
               홈
             </Link>
-            <Link className="hover:text-gray-300" to="/series">
+            <Link
+              className="hover:text-gray-300 transition duration-300"
+              to="/series"
+            >
               시리즈
             </Link>
-            <Link className="hover:text-gray-300" to="/movie">
+            <Link
+              className="hover:text-gray-300 transition duration-300"
+              to="/movie"
+            >
               영화
             </Link>
-            <Link className="hover:text-gray-300" to="/trending">
+            <Link
+              className="hover:text-gray-300 transition duration-300"
+              to="/trending"
+            >
               트렌드
             </Link>
-            <Link className="hover:text-gray-300" to="/favorite">
+            <Link
+              className="hover:text-gray-300 transition duration-300"
+              to="/favorite"
+            >
               내가 찜한 리스트
             </Link>
           </nav>
         </div>
 
-        {/* 오른쪽: 검색 + 로그인 or 프로필 */}
         <div className="flex items-center gap-5">
           <SearchBar />
 
-          {/* 로그인 상태에 따라 버튼/프로필 변경 */}
-          {!user ? (
-            <Link to="/login" className="text-sm hover:text-gray-300">
+          {!email ? (
+            <Link to="/login" className=" hover:text-gray-300">
               로그인
             </Link>
           ) : (
             <div className="relative group">
-              {/* 프로필 원형 */}
               <div
                 className="
-                  w-8 h-8 rounded-full 
-                  bg-red-600 flex items-center justify-center
+                  w-8 h-8 rounded-sm
+                  bg-blue-500 flex items-center justify-center
                   cursor-pointer
                 "
               >
-                {user?.name ? user.name[0].toUpperCase() : "U"}
+                {email?.name ? email.name[0].toUpperCase() : "U"}
               </div>
 
-              {/* hover 시 드롭다운 */}
               <div
                 className="
                   absolute right-0 mt-2 w-32
-                  bg-black text-sm text-white
+                  bg-black text-white
                   py-2 rounded
                   opacity-0 invisible
                   group-hover:opacity-100 group-hover:visible

@@ -85,7 +85,7 @@ export default function SearchBar() {
       <div
         className={`
           relative flex items-center h-9 overflow-hidden
-          transition-[width,opacity] duration-300 ease-out
+          transition-width duration-300 ease-out
           ${open ? "w-56" : "w-8"}
         `}
       >
@@ -115,14 +115,13 @@ export default function SearchBar() {
             onChange={handleChange}
             placeholder="제목"
             className="
-              w-full bg-black/70
+              w-full
               py-1.5 pl-9 pr-2
               text-sm
               placeholder-gray-400
               outline-none
-              focus:bg-black
-              border border-white/50
-              focus:border-white
+              border
+            border-white
             "
           />
         )}
