@@ -32,14 +32,12 @@ export default function Login() {
         <div className="absolute inset-0 bg-linear-to-b from-black/10 via-black/70 to-black" />
       </div>
 
-      {/* 상단 로고 */}
       <header className="relative z-10 flex items-center h-16 px-8">
         <Link to="/">
           <img src={Netflix_logo} alt="Netflix" className="h-8" />
         </Link>
       </header>
 
-      {/* 중앙 로그인 박스 */}
       <main className="relative z-10 flex justify-center">
         <div className="w-full max-w-sm bg-black/80 px-8 py-10 rounded">
           <h1 className="text-3xl font-bold mb-6">로그인</h1>
