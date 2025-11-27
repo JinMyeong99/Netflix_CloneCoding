@@ -4,6 +4,7 @@ import { MovieSlice } from "./movie/movieSlice";
 import { seriesSlice } from "./series/seriesSlice";
 import { trendingSlice } from "./trending/trendingSlice";
 import { searchSlice } from "./search/searchSlice";
+import { loginSlice } from "./loginSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
     series: seriesSlice.reducer,
     trending: trendingSlice.reducer,
     search: searchSlice.reducer,
+    login: loginSlice.reducer,
   },
 });
