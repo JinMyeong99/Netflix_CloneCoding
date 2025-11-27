@@ -1,10 +1,16 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Netflix_logo from "../assets/Netflix_logo.png";
 import SearchBar from "./Searchbar";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { loginSlice } from "../RTK/loginSlice";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { isLogin, user } = useSelector((state) => state.login);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -14,6 +20,15 @@ export default function Navbar() {
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleLoginClick = () => {
+    navigate("/login");
+  };
+
+  const handleLogoutClick = () => {
+    dispatch(loginSlice.actions.logout());
+    navigate("/");
+  };
 
   return (
     <header
@@ -44,7 +59,14 @@ export default function Navbar() {
         </div>
         <div className="flex items-center gap-4">
           <SearchBar />
-          <div>로그인</div>
+          {!isLogin ? (
+            <button onClick={handleLoginClick}>로그인</button>
+          ) : (
+            <div>
+              <span>{user?.email}</span>
+              <button onClick={handleLogoutClick}>로그아웃</button>
+            </div>
+          )}
         </div>
       </div>
     </header>
