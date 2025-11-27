@@ -117,7 +117,7 @@ export default function SectionRow({ title, items }) {
             mt-2
             flex gap-2
             overflow-x-scroll scrollbar-none scroll-smooth
-            px-[4%]              /* 🔥 첫 카드 시작 위치 = nav/제목과 맞춤 */
+            px-[4%]
           "
         >
           {items.map((movie) => (

@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
@@ -8,12 +8,17 @@ import Trending from "./pages/Trending";
 import Favorite from "./pages/Favorite";
 import Search from "./pages/Search";
 import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 
 function App() {
+  const location = useLocation();
+  const hideNavbar =
+    location.pathname === "/login" || location.pathname === "/signup";
+
   return (
     <div className="bg-black min-h-screen text-white">
-      <Navbar />
-      <main className="pt-16">
+      {!hideNavbar && <Navbar />}
+      <main className={hideNavbar ? "" : "pt-16"}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/series" element={<Series />} />
@@ -22,6 +27,7 @@ function App() {
           <Route path="/favorite" element={<Favorite />} />
           <Route path="/search" element={<Search />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
         </Routes>
       </main>
     </div>
