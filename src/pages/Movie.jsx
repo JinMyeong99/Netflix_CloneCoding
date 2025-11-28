@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { MovieSlice } from "../RTK/movie/movieSlice";
 import { fetchMoviePage } from "../RTK/movie/movieThunk";
@@ -10,6 +10,9 @@ export default function Movie() {
   const { list, loading, hasMore, page, error } = useSelector(
     (state) => state.movie
   );
+
+  const { movieGenres } = useSelector((state) => state.genre);
+  const [selectedGenreId, setSelectedGenreId] = useState("");
 
   useEffect(() => {
     if (page === 0 && list.length === 0) {
@@ -30,12 +33,32 @@ export default function Movie() {
     onLoadMore: loadMore,
   });
 
+  const filteredMovies = useMemo(() => {
+    if (!selectedGenreId) return list;
+    const genreId = Number(selectedGenreId);
+
+    return list.filter((movie) => movie.genre_ids.includes(genreId));
+  }, [list, selectedGenreId]);
+
   return (
     <div className=" mx-auto max-w-[90%] pb-25">
       <h2 className="text-4xl font-bold my-4">인기 영화 목록</h2>
+      <div>
+        <select
+          value={selectedGenreId}
+          onChange={(e) => setSelectedGenreId(e.target.value)}
+        >
+          <option value="">장르 전체</option>
+          {movieGenres.map((genre) => (
+            <option key={genre.id} value={genre.id}>
+              {genre.name}
+            </option>
+          ))}
+        </select>
+      </div>
       {error && <div>{error}</div>}
       <div className="flex flex-wrap justify-between gap-y-30">
-        {list.map((movie) => (
+        {filteredMovies.map((movie) => (
           <MovieCard key={movie.id} movie={movie} />
         ))}
       </div>
