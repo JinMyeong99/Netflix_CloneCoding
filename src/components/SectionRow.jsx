@@ -25,7 +25,7 @@ export default function SectionRow({ title, items }) {
 
   return (
     <section className="relative py-4">
-      <h2 className="text-3xl font-semibold mb-3">{title}</h2>
+      <h2 className="text-2xl mb-3">{title}</h2>
       <div
         className="
           relative

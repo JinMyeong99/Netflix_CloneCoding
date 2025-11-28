@@ -32,36 +32,36 @@ export default function Navbar() {
       <div className="mx-auto max-w-[90%] flex h-18 items-center justify-between">
         <div className="flex items-center gap-8">
           <Link to="/">
-            <img src={Netflix_logo} className="h-7" alt="Netflix logo" />
+            <img src={Netflix_logo} className="h-6" alt="Netflix logo" />
           </Link>
 
-          <nav className="flex gap-5">
+          <nav className="flex gap-5 items-center">
             <Link
-              className="hover:text-gray-300 transition duration-300"
+              className="text-sm text-gray-100 hover:text-gray-300 transition duration-300"
               to="/"
             >
               홈
             </Link>
             <Link
-              className="hover:text-gray-300 transition duration-300"
+              className="text-sm text-gray-100 hover:text-gray-300 transition duration-300"
               to="/series"
             >
               시리즈
             </Link>
             <Link
-              className="hover:text-gray-300 transition duration-300"
+              className="text-sm text-gray-100 hover:text-gray-300 transition duration-300"
               to="/movie"
             >
               영화
             </Link>
             <Link
-              className="hover:text-gray-300 transition duration-300"
+              className="text-sm text-gray-100 hover:text-gray-300 transition duration-300"
               to="/trending"
             >
               NEW! 요즘 대세 콘텐츠
             </Link>
             <Link
-              className="hover:text-gray-300 transition duration-300"
+              className="text-sm text-gray-100 hover:text-gray-300 transition duration-300"
               to="/favorite"
             >
               내가 찜한 리스트
@@ -75,7 +75,7 @@ export default function Navbar() {
           {!email ? (
             <Link
               to="/login"
-              className="px-4 py-2 text-sm bg-red-600 hover:bg-red-700 rounded"
+              className="px-3 py-1.5 text-sm bg-red-600 hover:bg-red-700 rounded"
             >
               로그인
             </Link>

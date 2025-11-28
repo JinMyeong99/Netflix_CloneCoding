@@ -30,7 +30,7 @@ export default function Home() {
     <div className="text-white min-h-screen">
       <div className="pt-16 pb-10 space-y-8 px-[5%]">
         <SectionRow title="지금 가장 인기 있는 영화는?" items={popular} />
-        <SectionRow title="높은 평점의 영화" items={topRated} />
+        <SectionRow title="최고 평점 영화" items={topRated} />
         <SectionRow title="개봉 예정 작품" items={upcoming} />
         <SectionRow title="이번 주 트렌드는?" items={trending} />
       </div>

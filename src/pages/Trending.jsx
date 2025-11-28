@@ -17,11 +17,11 @@ export default function Trending() {
   }, [dispatch, page, list.length]);
 
   return (
-    <div className="mx-auto max-w-[90%] pb-25">
-      <h2 className="text-4xl font-bold my-4">이번 주 트렌드 목록</h2>
+    <div className="mx-auto max-w-[90%] pb-15">
+      <h2 className="text-2xl my-4">이번 주 트렌드</h2>
       {error && <div>{error}</div>}
 
-      <div className="flex flex-wrap justify-between gap-y-30">
+      <div className="flex flex-wrap justify-between gap-y-20">
         {list.map((item) => (
           <MovieCard key={`${item.media_type}-${item.id}`} movie={item} />
         ))}
