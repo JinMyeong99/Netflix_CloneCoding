@@ -72,12 +72,13 @@ export default function Movie() {
     <div className="mx-auto max-w-[90%] pb-[100px]">
       <div className="flex items-center gap-6 my-5">
         <h2 className="text-4xl ">인기 영화</h2>
-        <div ref={dropdownRef} className="relative">
+        <div className="relative">
           <button
             type="button"
+            ref={dropdownRef}
             onClick={() => setDropdownOpen((prev) => !prev)}
             className="
-              bg-black/70 text-white
+              bg-black/70
               border border-gray-500
               hover:border-white hover:bg-neutral-800
               rounded
@@ -85,7 +86,7 @@ export default function Movie() {
               text-sm font-medium
               flex items-center gap-2
               cursor-pointer
-              transition
+              transition duration-100
             "
           >
             <span>{selectedGenreName}</span>
@@ -97,36 +98,31 @@ export default function Movie() {
               <path d="M5.5 7.5L10 12L14.5 7.5H5.5Z" />
             </svg>
           </button>
-
-          {dropdownOpen && (
-            <ul
-              className="
-                absolute left-0 mt-2 w-40
-                bg-black/90
-                border border-gray-700
-                rounded
-                text-sm text-white
-                shadow-lg
-                z-20
-              "
+          <ul
+            className={`absolute left-0 mt-2 w-30 bg-black/90 
+            border border-gray-700 rounded text-sm z-20 
+            transition-all duration-300
+            overflow-y-auto overflow-x-hidden
+            ${dropdownOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}
+            scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent
+            `}
+          >
+            <li
+              className="px-4 py-2 hover:bg-white/10 cursor-pointer"
+              onClick={() => handleSelectGenre("")}
             >
+              전체
+            </li>
+            {movieGenres.map((genre) => (
               <li
+                key={genre.id}
                 className="px-4 py-2 hover:bg-white/10 cursor-pointer"
-                onClick={() => handleSelectGenre("")}
+                onClick={() => handleSelectGenre(genre.id)}
               >
-                전체
+                {genre.name}
               </li>
-              {movieGenres.map((genre) => (
-                <li
-                  key={genre.id}
-                  className="px-4 py-2 hover:bg-white/10 cursor-pointer"
-                  onClick={() => handleSelectGenre(genre.id)}
-                >
-                  {genre.name}
-                </li>
-              ))}
-            </ul>
-          )}
+            ))}
+          </ul>
         </div>
       </div>
 
