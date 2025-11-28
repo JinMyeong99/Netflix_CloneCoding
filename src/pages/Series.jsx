@@ -116,7 +116,7 @@ export default function Series() {
                 className="px-4 py-2 hover:bg-white/10 cursor-pointer"
                 onClick={() => handleSelectGenre("")}
               >
-                장르 전체
+                전체
               </li>
               {seriesGenres.map((genre) => (
                 <li
