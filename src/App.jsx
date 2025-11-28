@@ -9,8 +9,20 @@ import Favorite from "./pages/Favorite";
 import Search from "./pages/Search";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { fetchGenre } from "./RTK/genre/genreThunk";
 
 function App() {
+  const dispatch = useDispatch();
+  const genreStatus = useSelector((state) => state.genre.status);
+
+  useEffect(() => {
+    if (genreStatus === "idle") {
+      dispatch(fetchGenre());
+    }
+  }, [genreStatus, dispatch]);
+
   const location = useLocation();
   const hideNavbar =
     location.pathname === "/login" || location.pathname === "/signup";
