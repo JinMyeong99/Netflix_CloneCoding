@@ -74,10 +74,9 @@ export default function Series() {
       <div className="flex items-center gap-6 my-5">
         <h2 className="text-4xl">인기 시리즈</h2>
 
-        <div className="relative">
+        <div ref={dropdownRef} className="relative">
           <button
             type="button"
-            ref={dropdownRef}
             onClick={() => setDropdownOpen((prev) => !prev)}
             className="
               bg-black/70 text-white

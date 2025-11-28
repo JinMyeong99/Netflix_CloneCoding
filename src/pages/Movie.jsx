@@ -72,10 +72,9 @@ export default function Movie() {
     <div className="mx-auto max-w-[90%] pb-[100px]">
       <div className="flex items-center gap-6 my-5">
         <h2 className="text-4xl ">인기 영화</h2>
-        <div className="relative">
+        <div ref={dropdownRef} className="relative">
           <button
             type="button"
-            ref={dropdownRef}
             onClick={() => setDropdownOpen((prev) => !prev)}
             className="
               bg-black/70
