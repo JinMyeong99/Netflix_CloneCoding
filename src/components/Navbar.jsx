@@ -3,7 +3,6 @@ import Netflix_logo from "../assets/Netflix_logo.png";
 import SearchBar from "./Searchbar";
 import { useEffect, useState } from "react";
 import Profile from "./Profile";
-import WatchingMode from "./WatchingMode";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
