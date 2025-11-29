@@ -6,8 +6,10 @@ export const homeSlice = createSlice({
   initialState: {
     popular: [],
     topRated: [],
-    upcoming: [],
-    trending: [],
+    actionAdventure: [],
+    comedyMovies: [],
+    sciFiFantasy: [],
+    comedySeries: [],
     loading: false,
     error: null,
   },
@@ -15,8 +17,10 @@ export const homeSlice = createSlice({
     resetHome(state) {
       state.popular = [];
       state.topRated = [];
-      state.upcoming = [];
-      state.trending = [];
+      state.actionAdventure = [];
+      state.comedyMovies = [];
+      state.sciFiFantasy = [];
+      state.comedySeries = [];
       state.loading = false;
       state.error = null;
     },
@@ -35,8 +39,10 @@ export const homeSlice = createSlice({
         state.loading = false;
         state.popular = action.payload.popular;
         state.topRated = action.payload.topRated;
-        state.upcoming = action.payload.upcoming;
-        state.trending = action.payload.trending;
+        state.actionAdventure = action.payload.actionAdventure;
+        state.comedyMovies = action.payload.comedyMovies;
+        state.sciFiFantasy = action.payload.sciFiFantasy;
+        state.comedySeries = action.payload.comedySeries;
       });
   },
 });
