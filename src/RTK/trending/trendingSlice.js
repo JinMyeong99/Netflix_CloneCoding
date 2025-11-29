@@ -1,50 +1,35 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchTrendingPage } from "./trendingThunk";
+import { fetchTrendingData } from "./trendingThunk";
 
 export const trendingSlice = createSlice({
   name: "trending",
   initialState: {
-    list: [],
-    page: 0,
-    hasMore: true,
+    today: [],
+    week: [],
+    rising: [],
+    hot: [],
+    nowPlaying: [],
     loading: false,
     error: null,
   },
-  reducers: {
-    resetTrending(state) {
-      state.list = [];
-      state.page = 0;
-      state.hasMore = true;
-      state.loading = false;
-      state.error = null;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchTrendingPage.pending, (state) => {
+      .addCase(fetchTrendingData.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchTrendingPage.rejected, (state, action) => {
+      .addCase(fetchTrendingData.rejected, (state, action) => {
         state.loading = false;
-        if (action.payload === "더 이상 페이지가 없습니다.") return;
-
         state.error = action.payload || action.error.message;
       })
-      .addCase(fetchTrendingPage.fulfilled, (state, action) => {
+      .addCase(fetchTrendingData.fulfilled, (state, action) => {
         state.loading = false;
-        const { page, results, totalPages } = action.payload;
-
-        const trendingId = new Set(state.list.map((trend) => trend.id));
-        const filtedTrendings = results.filter(
-          (trend) => !trendingId.has(trend.id)
-        );
-        state.list = [...state.list, ...filtedTrendings];
-
-        state.page = page;
-        if (page >= totalPages || results.length === 0) {
-          state.hasMore = false;
-        }
+        state.today = action.payload.today;
+        state.week = action.payload.week;
+        state.rising = action.payload.rising;
+        state.hot = action.payload.hot;
+        state.nowPlaying = action.payload.nowPlaying;
       });
   },
 });
