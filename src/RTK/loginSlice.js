@@ -20,7 +20,7 @@ export const loginSlice = createSlice({
       state.isLogin = true;
       state.watchingMode = "safe";
     },
-    setwatchingMode(state, action) {
+    setWatchingMode(state, action) {
       state.watchingMode = action.payload;
     },
     logout(state) {
