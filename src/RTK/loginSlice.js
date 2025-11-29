@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   email: null,
   isLogin: false,
-  watchMode: "safe",
+  watchingMode: "safe",
 };
 
 export const loginSlice = createSlice({
@@ -13,20 +13,20 @@ export const loginSlice = createSlice({
     register(state, action) {
       state.email = action.payload;
       state.isLogin = true;
-      state.watchMode = "safe";
+      state.watchingMode = "safe";
     },
     login(state, action) {
       state.email = action.payload;
       state.isLogin = true;
-      state.watchMode = "safe";
+      state.watchingMode = "safe";
     },
-    setWatchMode(state, action) {
-      state.watchMode = action.payload;
+    setwatchingMode(state, action) {
+      state.watchingMode = action.payload;
     },
     logout(state) {
       state.email = null;
       state.isLogin = false;
-      state.watchMode = "safe";
+      state.watchingMode = "safe";
     },
   },
 });
