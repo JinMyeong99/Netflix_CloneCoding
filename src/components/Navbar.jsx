@@ -64,7 +64,6 @@ export default function Navbar() {
 
         <div className="flex items-center gap-3">
           <SearchBar />
-          <WatchingMode />
           <Profile />
         </div>
       </div>
