@@ -5,33 +5,10 @@ export const fetchMoviePage = createAsyncThunk(
   "movie/fetchMoviePage",
   async (_, { getState, rejectWithValue }) => {
     try {
-      const state = getState();
-      const { page, hasMore } = state.movie;
+      const { page, hasMore } = getState().movie;
 
       if (!hasMore) {
         return rejectWithValue("더 이상 가져올 페이지가 없습니다");
-      }
-
-      let isLogin;
-      let watchingMode;
-      let adult;
-
-      if (state.login && state.login.isLogin) {
-        isLogin = state.login.isLogin;
-      } else {
-        isLogin = false;
-      }
-
-      if (state.login && state.login.watchingMode) {
-        watchingMode = state.login.watchingMode;
-      } else {
-        watchingMode = "safe";
-      }
-
-      if (isLogin && watchingMode === "adult") {
-        adult = true;
-      } else {
-        adult = false;
       }
 
       const nextPage = page + 1;
@@ -40,7 +17,7 @@ export const fetchMoviePage = createAsyncThunk(
         api_key: ApiKey,
         language: "ko-KR",
         page: String(nextPage),
-        include_adult: adult ? "true" : "false",
+        include_adult: "false",
         with_origin_country: "KR|US|JP|GB",
       });
 
