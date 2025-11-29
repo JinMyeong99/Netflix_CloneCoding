@@ -13,14 +13,25 @@ export const fetchSeriesPage = createAsyncThunk(
 
       const nextPage = page + 1;
 
-      const seriesUrl = `${BaseUrl}/tv/popular?api_key=${ApiKey}&language=ko-KR&page=${nextPage}`;
+      const params = new URLSearchParams({
+        api_key: ApiKey,
+        language: "ko-KR",
+        include_adult: "false",
+        page: String(nextPage),
+        with_origin_country: "KR|US|JP|GB",
+      }).toString();
+
+      const seriesUrl = `${BaseUrl}/discover/tv?${params}`;
+
       const res = await fetch(seriesUrl);
       if (!res.ok) throw new Error("시리즈 로딩 실패");
-      const seriesData = await res.json();
+
+      const data = await res.json();
+
       return {
         page: nextPage,
-        results: seriesData.results || [],
-        totalPages: seriesData.total_pages || nextPage,
+        results: data.results || [],
+        totalPages: data.total_pages || nextPage,
       };
     } catch (error) {
       return rejectWithValue(error.message);
