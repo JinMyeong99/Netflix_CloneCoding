@@ -21,16 +21,7 @@ export default function Home() {
     dispatch(fetchHomeData());
   }, [dispatch]);
 
-  const isInitialLoading =
-    loading &&
-    !popular.length &&
-    !topRated.length &&
-    !actionAdventure.length &&
-    !comedyMovies.length &&
-    !sciFiFantasy.length &&
-    !comedySeries.length;
-
-  if (isInitialLoading) {
+  if (loading) {
     return (
       <div className="pt-16 min-h-screen flex items-center justify-center text-white">
         홈 데이터 로딩 중...
@@ -49,29 +40,12 @@ export default function Home() {
   return (
     <div className="text-white min-h-screen">
       <div className="pt-16 pb-10 space-y-8 px-[5%]">
-        {popular.length > 0 && (
-          <SectionRow title="지금 가장 인기 있는 영화" items={popular} />
-        )}
-
-        {topRated.length > 0 && (
-          <SectionRow title="최고 평점 영화" items={topRated} />
-        )}
-
-        {actionAdventure.length > 0 && (
-          <SectionRow title="액션 / 모험 인기 영화" items={actionAdventure} />
-        )}
-
-        {comedyMovies.length > 0 && (
-          <SectionRow title="코미디 TOP 콘텐츠" items={comedyMovies} />
-        )}
-
-        {sciFiFantasy.length > 0 && (
-          <SectionRow title="SF / 판타지 추천" items={sciFiFantasy} />
-        )}
-
-        {comedySeries.length > 0 && (
-          <SectionRow title="코미디 시리즈" items={comedySeries} />
-        )}
+        <SectionRow title="지금 가장 인기 있는 영화" items={popular} />
+        <SectionRow title="최고 평점 영화" items={topRated} />
+        <SectionRow title="액션 / 모험 인기 영화" items={actionAdventure} />
+        <SectionRow title="코미디 TOP 콘텐츠" items={comedyMovies} />
+        <SectionRow title="SF / 판타지 추천" items={sciFiFantasy} />
+        <SectionRow title="코미디 시리즈" items={comedySeries} />
       </div>
     </div>
   );
