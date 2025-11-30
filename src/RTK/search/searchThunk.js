@@ -5,7 +5,7 @@ export const fetchSearchPage = createAsyncThunk(
   "search/fetchSearchPage",
   async (_, { getState, rejectWithValue }) => {
     try {
-      const { query, page, hasMore} = getState().search;
+      const { query, page, hasMore } = getState().search;
 
       const searchValue = query.trim();
       if (!searchValue) {
@@ -21,6 +21,7 @@ export const fetchSearchPage = createAsyncThunk(
 
       const res = await fetch(searchUrl);
       if (!res.ok) throw new Error("검색 결과 로딩 실패");
+
       const searchData = await res.json();
 
       const filteredData = (searchData.results || []).filter(
