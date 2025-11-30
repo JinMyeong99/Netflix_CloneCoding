@@ -12,9 +12,6 @@ export default function Movie() {
   const { list, loading, hasMore, page, error } = useSelector(
     (state) => state.movie
   );
-  const { movieGenres } = useSelector((state) => state.genre);
-
-  const [selectedGenreId, setSelectedGenreId] = useState("");
 
   useEffect(() => {
     if (page === 0 && list.length === 0) {
@@ -34,6 +31,10 @@ export default function Movie() {
     hasMore,
     onLoadMore: loadMore,
   });
+
+  const { movieGenres } = useSelector((state) => state.genre);
+
+  const [selectedGenreId, setSelectedGenreId] = useState("");
 
   const filteredMovies = useMemo(() => {
     if (!selectedGenreId) return list;

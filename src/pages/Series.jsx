@@ -12,10 +12,6 @@ export default function Series() {
     (state) => state.series
   );
 
-  const { seriesGenres } = useSelector((state) => state.genre);
-
-  const [selectedGenreId, setSelectedGenreId] = useState("");
-
   useEffect(() => {
     if (page === 0 && list.length === 0) {
       dispatch(seriesSlice.actions.resetSeries());
@@ -34,6 +30,10 @@ export default function Series() {
     hasMore,
     onLoadMore: loadMore,
   });
+
+  const { seriesGenres } = useSelector((state) => state.genre);
+
+  const [selectedGenreId, setSelectedGenreId] = useState("");
 
   const filteredSeries = useMemo(() => {
     if (!selectedGenreId) return list;

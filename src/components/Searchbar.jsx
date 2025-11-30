@@ -22,14 +22,7 @@ export default function SearchBar() {
         setOriginPath(location.pathname);
       }
       setOpen(true);
-    } else {
-      if (inputRef.current) {
-        inputRef.current.focus();
-      }
     }
-  };
-  const handleChange = (e) => {
-    setValue(e.target.value);
   };
 
   useEffect(() => {
@@ -37,6 +30,10 @@ export default function SearchBar() {
       inputRef.current.focus();
     }
   }, [open]);
+
+  const handleChange = (e) => {
+    setValue(e.target.value);
+  };
 
   useEffect(() => {
     if (!open) return;
