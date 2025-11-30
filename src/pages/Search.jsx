@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSearchPage } from "../RTK/search/searchThunk";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
-import MovieCard from "../components/MovieCard";
+import ContentCard from "../components/Contentcard";
 
 export default function Search() {
   const dispatch = useDispatch();
@@ -33,7 +33,7 @@ export default function Search() {
       )}
       <div className="flex flex-wrap gap-x-[7.5px] gap-y-30">
         {results.map((item) => (
-          <MovieCard key={`${item.media_type}-${item.id}`} movie={item} />
+          <ContentCard key={`${item.media_type}-${item.id}`} movie={item} />
         ))}
       </div>
       {loading && <div>검색 중...</div>}

@@ -1,6 +1,6 @@
 import { ImageUrl } from "../api/tmdb";
 
-export default function MovieCard({ movie }) {
+export default function ContentCard({ movie }) {
   const poster = ImageUrl(movie.poster_path || movie.backdrop_path, "w400");
 
   return (

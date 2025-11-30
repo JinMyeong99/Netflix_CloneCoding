@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import MovieCard from "./MovieCard";
+import ContentCard from "./Contentcard";
 
 export default function SectionRow({ title, items }) {
   const scrollRef = useRef(null);
@@ -128,7 +128,7 @@ export default function SectionRow({ title, items }) {
                 transition-transform duration-200 ease-out
               "
             >
-              <MovieCard movie={movie} />
+              <ContentCard movie={movie} />
             </div>
           ))}
         </div>
