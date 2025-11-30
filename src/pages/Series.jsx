@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { seriesSlice } from "../RTK/series/seriesSlice";
 import { fetchSeriesPage } from "../RTK/series/seriesThunk";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
-import ContentCard from "../components/ContentCard";
 import GenreSelector from "../components/GenreSelector";
+import ContentCard from "../components/Contentcard";
 
 export default function Series() {
   const dispatch = useDispatch();
@@ -60,7 +60,7 @@ export default function Series() {
 
       <div className="flex flex-wrap justify-between gap-y-20">
         {filteredSeries.map((series) => (
-          <ContentCard key={series.id} movie={series} />
+          <ContentCard key={series.id} content={series} />
         ))}
       </div>
 

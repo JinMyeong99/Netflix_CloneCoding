@@ -32,8 +32,11 @@ export default function Search() {
         <div>검색 결과가 없습니다.</div>
       )}
       <div className="flex flex-wrap gap-x-[7.5px] gap-y-30">
-        {results.map((item) => (
-          <ContentCard key={`${item.media_type}-${item.id}`} movie={item} />
+        {results.map((content) => (
+          <ContentCard
+            key={`${content.media_type}-${content.id}`}
+            content={content}
+          />
         ))}
       </div>
       {loading && <div>검색 중...</div>}

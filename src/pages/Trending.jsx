@@ -33,10 +33,10 @@ export default function Trending() {
   return (
     <div className="text-white min-h-screen">
       <div className="pt-16 pb-10 space-y-8 px-[5%]">
-        <SectionRow title="오늘의 트렌드 Top 콘텐츠" items={today} />
-        <SectionRow title="이번 주 트렌드 Top 콘텐츠" items={week} />
-        <SectionRow title="급상승 인기 콘텐츠" items={rising} />
-        <SectionRow title="지금 화제가 되는 콘텐츠" items={hot} />
+        <SectionRow title="오늘의 트렌드 Top 콘텐츠" content={today} />
+        <SectionRow title="이번 주 트렌드 Top 콘텐츠" content={week} />
+        <SectionRow title="급상승 인기 콘텐츠" content={rising} />
+        <SectionRow title="지금 화제가 되는 콘텐츠" content={hot} />
       </div>
     </div>
   );

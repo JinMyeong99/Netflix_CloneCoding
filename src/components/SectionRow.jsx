@@ -1,9 +1,9 @@
 import { useRef } from "react";
 import ContentCard from "./Contentcard";
 
-export default function SectionRow({ title, items }) {
+export default function SectionRow({ title, content }) {
   const scrollRef = useRef(null);
-  if (!items || items.length === 0) return null;
+  if (!content || content.length === 0) return null;
 
   const scrollLeft = () => {
     if (scrollRef.current) {
@@ -120,15 +120,15 @@ export default function SectionRow({ title, items }) {
             px-[5.5%]
           "
         >
-          {items.map((movie) => (
+          {content.map((content) => (
             <div
-              key={movie.id}
+              key={content.id}
               className="
                 shrink-0
                 transition-transform duration-200 ease-out
               "
             >
-              <ContentCard movie={movie} />
+              <ContentCard content={content} />
             </div>
           ))}
         </div>

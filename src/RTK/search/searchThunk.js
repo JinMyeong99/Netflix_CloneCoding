@@ -25,7 +25,8 @@ export const fetchSearchPage = createAsyncThunk(
       const searchData = await res.json();
 
       const filteredData = (searchData.results || []).filter(
-        (item) => item.media_type === "movie" || item.media_type === "tv"
+        (content) =>
+          content.media_type === "movie" || content.media_type === "tv"
       );
 
       return {

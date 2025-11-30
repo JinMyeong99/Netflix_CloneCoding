@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { MovieSlice } from "../RTK/movie/movieSlice";
 import { fetchMoviePage } from "../RTK/movie/movieThunk";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
-import ContentCard from "../components/ContentCard";
 import GenreSelector from "../components/GenreSelector";
+import ContentCard from "../components/Contentcard";
 
 export default function Movie() {
   const dispatch = useDispatch();
@@ -62,7 +62,7 @@ export default function Movie() {
 
       <div className="flex flex-wrap justify-between gap-y-20">
         {filteredMovies.map((movie) => (
-          <ContentCard key={movie.id} movie={movie} />
+          <ContentCard key={movie.id} content={movie} />
         ))}
       </div>
 
