@@ -4,7 +4,7 @@ import { MovieSlice } from "../RTK/movie/movieSlice";
 import { fetchMoviePage } from "../RTK/movie/movieThunk";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import GenreSelector from "../components/GenreSelector";
-import ContentCard from "../components/Contentcard";
+import ContentCard from "../components/ContentCard";
 
 export default function Movie() {
   const dispatch = useDispatch();

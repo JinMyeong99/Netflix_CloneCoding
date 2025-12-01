@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSearchPage } from "../RTK/search/searchThunk";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
-import ContentCard from "../components/Contentcard";
+import ContentCard from "../components/ContentCard";
 
 export default function Search() {
   const dispatch = useDispatch();

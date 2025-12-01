@@ -4,7 +4,7 @@ import { seriesSlice } from "../RTK/series/seriesSlice";
 import { fetchSeriesPage } from "../RTK/series/seriesThunk";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import GenreSelector from "../components/GenreSelector";
-import ContentCard from "../components/Contentcard";
+import ContentCard from "../components/ContentCard";
 
 export default function Series() {
   const dispatch = useDispatch();
