@@ -80,42 +80,48 @@ export default function ContentDetailModal({
         </div>
 
         <div className="p-5 flex flex-col gap-4">
-          <div className="flex flex-col gap-3">
-            <h2 className="text-2xl font-bold">{title}</h2>
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                className="flex items-center justify-center h-9 px-4 rounded-sm bg-white text-black font-semibold cursor-pointer"
-                onClick={handlePlay}
-              >
-                ▶ 재생
-              </button>
+          <div className="flex justify-between">
+            <div className="flex flex-col gap-5">
+              <h2 className="text-4xl font-bold">{title}</h2>
+              <div className="flex items-center gap-4">
+                <button
+                  type="button"
+                  className="flex items-center justify-center h-11 px-7 rounded-sm bg-white text-black font-semibold text-xl cursor-pointer"
+                  onClick={handlePlay}
+                >
+                  ▶ 재생
+                </button>
 
-              <button
-                type="button"
-                className="flex items-center justify-center h-9 w-9 rounded-full border border-neutral-500 text-2xl leading-none bg-neutral-800 cursor-pointer"
-                onClick={handleFavorite}
-              >
-                +
-              </button>
+                <button
+                  type="button"
+                  className="flex items-center justify-center h-11 w-11 rounded-full border border-neutral-500 text-2xl leading-none bg-neutral-800 cursor-pointer"
+                  onClick={handleFavorite}
+                >
+                  +
+                </button>
+              </div>
             </div>
-          </div>
 
-          <div className="flex items-center gap-3 text-sm">
-            {rating !== null && <span className="">평점: {rating}</span>}
-          </div>
-
-          <div className="flex flex-col md:flex-row gap-5">
-            <div className="flex-1 space-y-3">
-              {overview && (
-                <p className="leading-relaxed text-neutral-200">{overview}</p>
-              )}
-
+            <div className="justify-end space-y-1">
+              <div>
+                {rating !== null && (
+                  <span className="text-neutral-400">
+                    평점: <span className="text-white">{rating}</span>
+                  </span>
+                )}
+              </div>
               {genre.length > 0 && (
-                <p className=" text-neutral-300">
+                <p className=" text-white">
                   <span className="text-neutral-400">장르: </span>
                   {genre.join(" • ")}
                 </p>
+              )}
+            </div>
+          </div>
+          <div className="flex flex-col md:flex-row gap-5">
+            <div className="flex-1 space-y-3">
+              {overview && (
+                <p className="leading-relaxed text-[17px]">{overview}</p>
               )}
             </div>
 
