@@ -22,7 +22,7 @@ export default function ContentDetailModal({
 
   const genre =
     Array.isArray(content.genre) && content.genre.length > 0
-      ? content.genre.map((g) => g.name)
+      ? content.genre.map((genre) => genre.name)
       : Array.isArray(content.genre_names)
         ? content.genre_names
         : [];
