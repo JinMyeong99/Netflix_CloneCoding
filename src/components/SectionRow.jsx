@@ -1,8 +1,17 @@
-import { useRef } from "react";
-import ContentCard from "./Contentcard";
+import { useRef, useState } from "react";
+import ContentCard from "./ContentCard";
 
-export default function SectionRow({ title, content }) {
+export default function SectionRow({
+  title,
+  content,
+  openDetail,
+  toggleFavorite,
+}) {
   const scrollRef = useRef(null);
+  const [activeId, setActiveId] = useState(null);
+
+  const hoverTimerRef = useRef(null);
+
   if (!content || content.length === 0) return null;
 
   const scrollLeft = () => {
@@ -127,8 +136,29 @@ export default function SectionRow({ title, content }) {
                 shrink-0
                 transition-transform duration-200 ease-out
               "
+              onMouseEnter={() => {
+                if (hoverTimerRef.current) {
+                  clearTimeout(hoverTimerRef.current);
+                }
+                hoverTimerRef.current = setTimeout(() => {
+                  setActiveId(content.id);
+                }, 400);
+              }}
+              onMouseLeave={() => {
+                if (hoverTimerRef.current) {
+                  clearTimeout(hoverTimerRef.current);
+                }
+                if (activeId === content.id) {
+                  setActiveId(null);
+                }
+              }}
             >
-              <ContentCard content={content} />
+              <ContentCard
+                content={content}
+                isActive={activeId === content.id}
+                openDetail={() => openDetail && openDetail(content)}
+                toggleFavorite={toggleFavorite}
+              />
             </div>
           ))}
         </div>

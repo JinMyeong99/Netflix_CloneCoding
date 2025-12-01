@@ -42,9 +42,9 @@ export default function Home() {
       <div className="pt-16 pb-10 space-y-8 px-[5%]">
         <SectionRow title="지금 가장 인기 있는 영화" content={popular} />
         <SectionRow title="최고 평점 영화" content={topRated} />
-        <SectionRow title="액션 / 모험 인기 영화" content={actionAdventure} />
+        <SectionRow title="액션 ∙ 모험 인기 영화" content={actionAdventure} />
         <SectionRow title="코미디 TOP 콘텐츠" content={comedyMovies} />
-        <SectionRow title="SF / 판타지 추천" content={sciFiFantasy} />
+        <SectionRow title="SF ∙ 판타지 추천" content={sciFiFantasy} />
         <SectionRow title="코미디 시리즈" content={comedySeries} />
       </div>
     </div>
