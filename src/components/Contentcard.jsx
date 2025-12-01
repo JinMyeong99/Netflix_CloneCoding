@@ -36,7 +36,7 @@ export default function ContentCard({
           <img
             src={poster}
             alt={title}
-            className="w-[218px] h-[327px] object-cover"
+            className="w-[218px] h-[327px] object-cover object-center"
           />
         ) : (
           <div className="w-[218px] h-[327px] flex items-center justify-center bg-neutral-700 text-neutral-300">
@@ -56,13 +56,13 @@ export default function ContentCard({
             <img
               src={backdrop}
               alt={title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-center"
             />
           ) : poster ? (
             <img
               src={poster}
               alt={title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-center"
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-neutral-300">

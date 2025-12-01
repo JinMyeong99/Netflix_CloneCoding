@@ -15,7 +15,10 @@ export default function ContentDetailModal({
   const overview = content.overview || "";
   const maturityRating =
     content.maturityRating || content.certification || null;
-  const rating = Number(content.vote_average).toFixed(1) || null;
+  const rating =
+    typeof content.vote_average === "number"
+      ? content.vote_average.toFixed(1)
+      : null;
 
   const genre =
     Array.isArray(content.genre) && content.genre.length > 0
@@ -44,13 +47,13 @@ export default function ContentDetailModal({
             <img
               src={backdrop}
               alt={title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-center"
             />
           ) : poster ? (
             <img
               src={poster}
               alt={title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-center"
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-neutral-300">
@@ -116,7 +119,7 @@ export default function ContentDetailModal({
                 <img
                   src={poster}
                   alt={title}
-                  className="w-full h-auto rounded-md object-cover"
+                  className="w-full h-auto rounded-md object-cover "
                 />
               </div>
             )}
