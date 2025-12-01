@@ -142,7 +142,7 @@ export default function SectionRow({
                 }
                 hoverTimerRef.current = setTimeout(() => {
                   setActiveId(content.id);
-                }, 400);
+                }, 300);
               }}
               onMouseLeave={() => {
                 if (hoverTimerRef.current) {

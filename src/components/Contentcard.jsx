@@ -44,9 +44,9 @@ export default function ContentCard({
           </div>
         )}
       </div>
-      {/* hover */}
+
       <div
-        className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[360px]
+        className={`absolute left-1/2 -translate-x-1/2 top-5 w-[360px]
         rounded-xl overflow-hidden bg-neutral-900 shadow-xl shadow-black/70
         transition-all duration-200 origin-center
         ${isActive ? "opacity-100 scale-100 z-30 pointer-events-auto" : "opacity-0 scale-0 z-0 pointer-events-none"}`}
@@ -80,7 +80,7 @@ export default function ContentCard({
               <button
                 type="button"
                 className="flex items-center justify-center
-              h-8 w-8 rounded-full bg-white text-black"
+              h-8 w-8 rounded-full bg-white text-black cursor-pointer"
                 onClick={openDetail}
               >
                 ▶︎
@@ -89,7 +89,7 @@ export default function ContentCard({
                 type="button"
                 className="flex items-center justify-center
               h-8 w-8 rounded-full border bg-neutral-800 border-neutral-500
-              text-xl leading-none"
+              text-xl leading-none cursor-pointer"
                 onClick={handleFavorite}
               >
                 +
@@ -99,7 +99,8 @@ export default function ContentCard({
               <button
                 type="button"
                 className="flex items-center justify-center
-              h-8 w-8 rounded-full border bg-neutral-800 border-neutral-500"
+              h-8 w-8 rounded-full border bg-neutral-800 border-neutral-500 
+              cursor-pointer"
                 onClick={openDetail}
               >
                 ⌵
