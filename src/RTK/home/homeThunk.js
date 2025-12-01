@@ -5,48 +5,26 @@ export const fetchHomeData = createAsyncThunk(
   "home/fetchHomeData",
   async (_, { rejectWithValue }) => {
     try {
-      const params = new URLSearchParams({
-        api_key: ApiKey,
-        language: "ko-KR",
-      }).toString();
-
-      const genreMovieUrl = `${BaseUrl}/genre/movie/list?${params}`;
-      const genreTvUrl = `${BaseUrl}/genre/tv/list?${params}`;
-
-      const [genreMovieRes, genreTvRes] = await Promise.all([
-        fetch(genreMovieUrl),
-        fetch(genreTvUrl),
-      ]);
-
-      if (!genreMovieRes.ok || !genreTvRes.ok) {
-        throw new Error("장르 데이터 로딩 실패");
-      }
-
-      const [genreMovieData, genreTvData] = await Promise.all([
-        genreMovieRes.json(),
-        genreTvRes.json(),
-      ]);
-
-      const genreMap = {};
-      [...(genreMovieData.genres || []), ...(genreTvData.genres || [])].forEach(
-        (genre) => {
-          genreMap[genre.id] = genre.name;
-        }
-      );
-
-      const paramsContent = new URLSearchParams({
+      const paramsMovie = new URLSearchParams({
         api_key: ApiKey,
         language: "ko-KR",
         include_adult: "false",
         with_origin_country: "KR|US|JP|GB",
       }).toString();
 
-      const popularUrl = `${BaseUrl}/discover/movie?${paramsContent}&sort_by=popularity.desc`;
-      const topRatedUrl = `${BaseUrl}/discover/movie?${paramsContent}&sort_by=vote_average.desc&vote_count.gte=1000`;
-      const actionAdventureUrl = `${BaseUrl}/discover/movie?${paramsContent}&with_genres=28,12&sort_by=popularity.desc`;
-      const comedyMoviesUrl = `${BaseUrl}/discover/movie?${paramsContent}&with_genres=35&sort_by=popularity.desc`;
-      const sciFiFantasyUrl = `${BaseUrl}/discover/movie?${paramsContent}&with_genres=878,14&sort_by=popularity.desc`;
-      const comedySeriesUrl = `${BaseUrl}/discover/tv?${paramsContent}&with_genres=35&sort_by=popularity.desc`;
+      const paramsTv = new URLSearchParams({
+        api_key: ApiKey,
+        language: "ko-KR",
+        include_adult: "false",
+        with_origin_country: "KR|US|JP|GB",
+      }).toString();
+
+      const popularUrl = `${BaseUrl}/discover/movie?${paramsMovie}&sort_by=popularity.desc`;
+      const topRatedUrl = `${BaseUrl}/discover/movie?${paramsMovie}&sort_by=vote_average.desc&vote_count.gte=1000`;
+      const actionAdventureUrl = `${BaseUrl}/discover/movie?${paramsMovie}&with_genres=28,12&sort_by=popularity.desc`;
+      const comedyMoviesUrl = `${BaseUrl}/discover/movie?${paramsMovie}&with_genres=35&sort_by=popularity.desc`;
+      const sciFiFantasyUrl = `${BaseUrl}/discover/movie?${paramsMovie}&with_genres=878,14&sort_by=popularity.desc`;
+      const comedySeriesUrl = `${BaseUrl}/discover/tv?${paramsTv}&with_genres=35&sort_by=popularity.desc`;
 
       const [
         popularRes,
@@ -91,20 +69,71 @@ export const fetchHomeData = createAsyncThunk(
         comedySeriesRes.json(),
       ]);
 
-      const attachGenreNames = (contentDatas) =>
-        contentDatas.map((data) => ({
-          ...data,
-          genre_names:
-            data.genre_ids?.map((genreId) => genreMap[genreId]) || [],
-        }));
+      const paramsVideo = new URLSearchParams({
+        api_key: ApiKey,
+        language: "ko-KR",
+        append_to_response: "videos",
+      }).toString();
+
+      const contentTrailer = async (contents, mediaType) => {
+        return Promise.all(
+          contents.map(async (content) => {
+            try {
+              const videoUrl = `${BaseUrl}/${mediaType}/${content.id}?${paramsVideo}`;
+              const videoRes = await fetch(videoUrl);
+              if (!videoRes.ok) {
+                throw new Error("동영상 로딩 실패");
+              }
+              const videoData = await videoRes.json();
+
+              const trailer =
+                videoData.videos?.results?.find(
+                  (vedio) =>
+                    vedio.site === "YouTube" &&
+                    (vedio.type === "Trailer" || vedio.type === "Teaser")
+                ) || null;
+
+              const trailerUrl = trailer
+                ? `https://www.youtube.com/watch?v=${trailer.key}`
+                : null;
+
+              return {
+                ...content,
+                trailerUrl,
+              };
+            } catch {
+              return {
+                ...content,
+                trailerUrl: null,
+              };
+            }
+          })
+        );
+      };
+
+      const [
+        popular,
+        topRated,
+        actionAdventure,
+        comedyMovies,
+        sciFiFantasy,
+        comedySeries,
+      ] = await Promise.all([
+        contentTrailer(popularData.results, "movie"),
+        contentTrailer(topRatedData.results, "movie"),
+        contentTrailer(actionAdventureData.results, "movie"),
+        contentTrailer(comedyMoviesData.results, "movie"),
+        contentTrailer(sciFiFantasyData.results, "movie"),
+        contentTrailer(comedySeriesData.results, "tv"),
+      ]);
 
       return {
-        popular: attachGenreNames(popularData.results || []),
-        topRated: attachGenreNames(topRatedData.results || []),
-        actionAdventure: attachGenreNames(actionAdventureData.results || []),
-        comedyMovies: attachGenreNames(comedyMoviesData.results || []),
-        sciFiFantasy: attachGenreNames(sciFiFantasyData.results || []),
-        comedySeries: attachGenreNames(comedySeriesData.results || []),
+        popular,
+        topRated,
+        actionAdventure,
+        comedyMovies,
+        sciFiFantasy,
+        comedySeries,
       };
     } catch (error) {
       return rejectWithValue(error.message || "홈 데이터 로딩 실패");
