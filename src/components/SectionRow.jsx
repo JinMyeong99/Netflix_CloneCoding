@@ -6,6 +6,7 @@ export default function SectionRow({
   content,
   openDetail,
   toggleFavorite,
+  onPlayTrailer,
 }) {
   const scrollRef = useRef(null);
   const [activeId, setActiveId] = useState(null);
@@ -158,6 +159,7 @@ export default function SectionRow({
                 isActive={activeId === content.id}
                 openDetail={() => openDetail && openDetail(content)}
                 toggleFavorite={toggleFavorite}
+                onPlayTrailer={onPlayTrailer}
               />
             </div>
           ))}

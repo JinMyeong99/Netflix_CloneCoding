@@ -5,6 +5,7 @@ export default function ContentCard({
   isActive,
   openDetail,
   toggleFavorite,
+  onPlayTrailer,
 }) {
   const poster =
     ImageUrl(content.poster_path || content.backdrop_path, "w400") || "";
@@ -26,6 +27,11 @@ export default function ContentCard({
   const handleFavorite = () => {
     if (toggleFavorite) {
       toggleFavorite(content);
+    }
+  };
+  const handlePlay = () => {
+    if (onPlayTrailer && content.trailerUrl) {
+      onPlayTrailer(content);
     }
   };
 
@@ -81,7 +87,7 @@ export default function ContentCard({
                 type="button"
                 className="flex items-center justify-center
               h-8 w-8 rounded-full bg-white text-black cursor-pointer"
-                onClick={openDetail}
+                onClick={handlePlay}
               >
                 ▶︎
               </button>

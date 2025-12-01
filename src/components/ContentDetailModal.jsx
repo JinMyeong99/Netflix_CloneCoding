@@ -4,6 +4,7 @@ export default function ContentDetailModal({
   content,
   onClose,
   toggleFavorite,
+  onPlayTrailer,
 }) {
   if (!content) return null;
 
@@ -27,10 +28,18 @@ export default function ContentDetailModal({
         ? content.genre_names
         : [];
 
+  const trailerKey = content.trailerUrl
+    ? content.trailerUrl.split("v=")[1]?.split("&")[0]
+    : null;
+
   const handleFavorite = () => {
     if (toggleFavorite) {
       toggleFavorite(content);
     }
+  };
+
+  const handlePlay = () => {
+    if (onPlayTrailer && content.trailerUrl) onPlayTrailer(content);
   };
 
   return (
@@ -43,15 +52,17 @@ export default function ContentDetailModal({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="relative w-full aspect-video bg-black">
-          {backdrop ? (
+          {trailerKey ? (
+            <iframe
+              className="w-full h-full"
+              src={`https://www.youtube.com/embed/${trailerKey}?controls=1&rel=0&playsinline=1`}
+              title={title}
+              allow="encrypted-media; fullscreen"
+              allowFullScreen
+            />
+          ) : backdrop ? (
             <img
               src={backdrop}
-              alt={title}
-              className="w-full h-full object-cover object-center"
-            />
-          ) : poster ? (
-            <img
-              src={poster}
               alt={title}
               className="w-full h-full object-cover object-center"
             />
@@ -77,6 +88,7 @@ export default function ContentDetailModal({
               <button
                 type="button"
                 className="flex items-center justify-center h-9 px-4 rounded-sm bg-white text-black font-semibold cursor-pointer"
+                onClick={handlePlay}
               >
                 ▶ 재생
               </button>

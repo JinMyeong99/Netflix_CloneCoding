@@ -55,6 +55,11 @@ export default function Home() {
     console.log("찜 토글:", content.id, content.title || content.name);
   };
 
+  const playTrailer = (content) => {
+    if (!content?.trailerUrl) return;
+    window.open(content.trailerUrl, "_blank", "noopener,noreferrer");
+  };
+
   const genreList = useMemo(() => {
     const list = {};
     movieGenres.forEach((genre) => {
@@ -102,36 +107,42 @@ export default function Home() {
           content={addGenreName(popular)}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
+          onPlayTrailer={playTrailer}
         />
         <SectionRow
           title="최고 평점 영화"
           content={addGenreName(topRated)}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
+          onPlayTrailer={playTrailer}
         />
         <SectionRow
           title="액션 ∙ 모험 인기 영화"
           content={addGenreName(actionAdventure)}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
+          onPlayTrailer={playTrailer}
         />
         <SectionRow
           title="코미디 TOP 콘텐츠"
           content={addGenreName(comedyMovies)}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
+          onPlayTrailer={playTrailer}
         />
         <SectionRow
           title="SF ∙ 판타지 추천"
           content={addGenreName(sciFiFantasy)}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
+          onPlayTrailer={playTrailer}
         />
         <SectionRow
           title="코미디 시리즈"
           content={addGenreName(comedySeries)}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
+          onPlayTrailer={playTrailer}
         />
       </div>
 
@@ -140,6 +151,7 @@ export default function Home() {
           content={selectedContent}
           onClose={closeDetail}
           toggleFavorite={toggleFavorite}
+          onPlayTrailer={playTrailer}
         />
       )}
     </div>
