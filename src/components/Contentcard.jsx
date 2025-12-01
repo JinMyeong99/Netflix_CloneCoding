@@ -12,8 +12,7 @@ export default function ContentCard({
   const backdrop =
     ImageUrl(content.backdrop_path || content.poster_path, "w780") || "";
   const title = content.title || content.name || "";
-  const maturityRating =
-    content.maturityRating || content.certification || null;
+
 
   const genre =
     Array.isArray(content.genre) && content.genre.length > 0
@@ -113,7 +112,6 @@ export default function ContentCard({
               </button>
             </div>
           </div>
-          {maturityRating && <span className="">{maturityRating}</span>}
           {mainGenre && <p className="">{mainGenre}</p>}
         </div>
       </div>

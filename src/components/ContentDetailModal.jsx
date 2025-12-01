@@ -14,8 +14,6 @@ export default function ContentDetailModal({
     ImageUrl(content.poster_path || content.backdrop_path, "w500") || "";
   const title = content.title || content.name || "";
   const overview = content.overview || "";
-  const maturityRating =
-    content.maturityRating || content.certification || null;
   const rating =
     typeof content.vote_average === "number"
       ? content.vote_average.toFixed(1)
@@ -105,11 +103,6 @@ export default function ContentDetailModal({
 
           <div className="flex items-center gap-3 text-sm">
             {rating !== null && <span className="">평점: {rating}</span>}
-            {maturityRating && (
-              <span className="border border-neutral-400 px-1.5 py-0.5 rounded-sm">
-                {maturityRating}
-              </span>
-            )}
           </div>
 
           <div className="flex flex-col md:flex-row gap-5">
