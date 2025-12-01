@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchHomeData } from "../RTK/home/homeThunk";
 import SectionRow from "../components/SectionRow";
@@ -21,33 +21,62 @@ export default function Home() {
     error,
   } = useSelector((state) => state.home);
 
+  const {
+    movieGenres,
+    seriesGenres,
+    error: genreError,
+  } = useSelector((state) => state.genre);
+
   useEffect(() => {
     dispatch(fetchHomeData());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (showDetail) {
+      const original = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = original;
+      };
+    }
+  }, [showDetail]);
 
   const openDetail = (content) => {
     setSelectedContent(content);
     setShowDetail(true);
   };
+
   const closeDetail = () => {
     setShowDetail(false);
     setSelectedContent(null);
   };
 
-  useEffect(() => {
-    if (showDetail) {
-      const homeScroll = document.body.style.overflow;
-      document.body.style.overflow = "hidden";
-
-      return () => {
-        document.body.style.overflow = homeScroll;
-      };
-    }
-  }, [showDetail]);
-
   const toggleFavorite = (content) => {
     console.log("찜 토글:", content.id, content.title || content.name);
   };
+
+  const genreList = useMemo(() => {
+    const list = {};
+    movieGenres.forEach((genre) => {
+      list[genre.id] = genre.name;
+    });
+    seriesGenres.forEach((genre) => {
+      if (!list[genre.id]) {
+        list[genre.id] = genre.name;
+      }
+    });
+    return list;
+  }, [movieGenres, seriesGenres]);
+
+  const addGenreName = useCallback(
+    (contents) =>
+      (contents || []).map((content) => ({
+        ...content,
+        genre_names:
+          content.genre_ids?.map((id) => genreList[id]).filter(Boolean) || [],
+      })),
+    [genreList]
+  );
 
   if (loading) {
     return (
@@ -57,10 +86,10 @@ export default function Home() {
     );
   }
 
-  if (error) {
+  if (error || genreError) {
     return (
       <div className="pt-16 min-h-screen flex items-center justify-center text-red-400">
-        에러: {error}
+        에러: {error || genreError}
       </div>
     );
   }
@@ -70,41 +99,42 @@ export default function Home() {
       <div className="pt-16 pb-10 space-y-8 px-[5%]">
         <SectionRow
           title="지금 가장 인기 있는 영화"
-          content={popular}
+          content={addGenreName(popular)}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
         />
         <SectionRow
           title="최고 평점 영화"
-          content={topRated}
+          content={addGenreName(topRated)}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
         />
         <SectionRow
           title="액션 ∙ 모험 인기 영화"
-          content={actionAdventure}
+          content={addGenreName(actionAdventure)}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
         />
         <SectionRow
           title="코미디 TOP 콘텐츠"
-          content={comedyMovies}
+          content={addGenreName(comedyMovies)}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
         />
         <SectionRow
           title="SF ∙ 판타지 추천"
-          content={sciFiFantasy}
+          content={addGenreName(sciFiFantasy)}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
         />
         <SectionRow
           title="코미디 시리즈"
-          content={comedySeries}
+          content={addGenreName(comedySeries)}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
         />
       </div>
+
       {showDetail && selectedContent && (
         <ContentDetailModal
           content={selectedContent}
