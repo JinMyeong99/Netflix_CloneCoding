@@ -1,15 +1,12 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchHomeData } from "../RTK/home/homeThunk";
 import SectionRow from "../components/SectionRow";
 import ContentDetailModal from "../components/ContentDetailModal";
-import { favoriteSlice } from "../RTK/favoriteSlice";
+import useContentDetail from "../hooks/useContentDetail";
 
 export default function Home() {
   const dispatch = useDispatch();
-
-  const [selectedContent, setSelectedContent] = useState(null);
-  const [showDetail, setShowDetail] = useState(false);
 
   const {
     popular,
@@ -23,6 +20,15 @@ export default function Home() {
   } = useSelector((state) => state.home);
 
   const {
+    selectedContent,
+    showDetail,
+    openDetail,
+    closeDetail,
+    toggleFavorite,
+    playTrailer,
+  } = useContentDetail();
+
+  const {
     movieGenres,
     seriesGenres,
     error: genreError,
@@ -31,35 +37,6 @@ export default function Home() {
   useEffect(() => {
     dispatch(fetchHomeData());
   }, [dispatch]);
-
-  useEffect(() => {
-    if (showDetail) {
-      const original = document.body.style.overflow;
-      document.body.style.overflow = "hidden";
-      return () => {
-        document.body.style.overflow = original;
-      };
-    }
-  }, [showDetail]);
-
-  const openDetail = (content) => {
-    setSelectedContent(content);
-    setShowDetail(true);
-  };
-
-  const closeDetail = () => {
-    setShowDetail(false);
-    setSelectedContent(null);
-  };
-
-  const toggleFavorite = (content) => {
-    dispatch(favoriteSlice.actions.toggleFavorite(content));
-  };
-
-  const playTrailer = (content) => {
-    if (!content?.trailerUrl) return;
-    window.open(content.trailerUrl, "_blank", "noopener,noreferrer");
-  };
 
   const genreList = useMemo(() => {
     const list = {};
