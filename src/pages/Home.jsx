@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchHomeData } from "../RTK/home/homeThunk";
 import SectionRow from "../components/SectionRow";
 import ContentDetailModal from "../components/ContentDetailModal";
+import { favoriteSlice } from "../RTK/favoriteSlice";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -52,7 +53,7 @@ export default function Home() {
   };
 
   const toggleFavorite = (content) => {
-    console.log("찜 토글:", content.id, content.title || content.name);
+    dispatch(favoriteSlice.actions.toggleFavorite(content));
   };
 
   const playTrailer = (content) => {

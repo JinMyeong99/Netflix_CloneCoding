@@ -1,10 +1,9 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { favoriteSlice } from "../RTK/favoriteSlice";
 
-export default function Favorite() {
+export default function useContentDetail() {
   const dispatch = useDispatch();
-  const favorites = useSelector((state) => state.favorite.list);
 
   const [selectedContent, setSelectedContent] = useState(null);
   const [showDetail, setShowDetail] = useState(false);
@@ -25,6 +24,25 @@ export default function Favorite() {
 
   const playTrailer = (content) => {
     if (!content?.trailerUrl) return;
-    window.open
+    window.open(content.trailerUrl, "_blank", "noopener,noreferrer");
+  };
+
+  useEffect(() => {
+    if (showDetail) {
+      const original = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = original;
+      };
+    }
+  }, [showDetail]);
+
+  return {
+    selectedContent,
+    showDetail,
+    openDetail,
+    closeDetail,
+    toggleFavorite,
+    playTrailer,
   };
 }

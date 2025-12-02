@@ -6,6 +6,7 @@ import { trendingSlice } from "./trending/trendingSlice";
 import { searchSlice } from "./search/searchSlice";
 import { loginSlice } from "./loginSlice";
 import { genreSlice } from "./genre/genreSlice";
+import { favoriteSlice } from "./favoriteSlice";
 
 export const store = configureStore({
   reducer: {
@@ -16,5 +17,6 @@ export const store = configureStore({
     search: searchSlice.reducer,
     login: loginSlice.reducer,
     genre: genreSlice.reducer,
+    favorite: favoriteSlice.reducer,
   },
 });
