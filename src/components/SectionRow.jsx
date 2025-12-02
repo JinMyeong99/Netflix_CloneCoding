@@ -1,5 +1,6 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import ContentCard from "./ContentCard";
+import useHoverActive from "../hooks/useHoverActive";
 
 export default function SectionRow({
   title,
@@ -9,9 +10,8 @@ export default function SectionRow({
   onPlayTrailer,
 }) {
   const scrollRef = useRef(null);
-  const [activeId, setActiveId] = useState(null);
 
-  const hoverTimerRef = useRef(null);
+  const { activeId, handleMouseEnter, handleMouseLeave } = useHoverActive();
 
   if (!content || content.length === 0) return null;
 
@@ -137,22 +137,8 @@ export default function SectionRow({
                 shrink-0
                 transition-transform duration-200 ease-out
               "
-              onMouseEnter={() => {
-                if (hoverTimerRef.current) {
-                  clearTimeout(hoverTimerRef.current);
-                }
-                hoverTimerRef.current = setTimeout(() => {
-                  setActiveId(content.id);
-                }, 300);
-              }}
-              onMouseLeave={() => {
-                if (hoverTimerRef.current) {
-                  clearTimeout(hoverTimerRef.current);
-                }
-                if (activeId === content.id) {
-                  setActiveId(null);
-                }
-              }}
+              onMouseEnter={() => handleMouseEnter(content.id)}
+              onMouseLeave={() => handleMouseLeave(content.id)}
             >
               <ContentCard
                 content={content}
