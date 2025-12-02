@@ -66,7 +66,11 @@ export default function Movie() {
         ))}
       </div>
 
-      {loading && <div>불러오는 중...</div>}
+      {loading && (
+        <div className="min-h-screen flex items-center justify-center pb-30">
+          불러오는 중...
+        </div>
+      )}
       {hasMore && <div ref={loaderRef} style={{ height: 1 }} />}
       {!hasMore && list.length > 0 && <div>더 이상 영화가 없습니다.</div>}
     </div>

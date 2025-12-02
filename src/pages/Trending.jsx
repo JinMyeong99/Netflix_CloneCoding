@@ -16,7 +16,7 @@ export default function Trending() {
 
   if (loading) {
     return (
-      <div className="pt-16 min-h-screen flex items-center justify-center text-white">
+      <div className="min-h-screen flex items-center justify-center pb-30">
         트렌드 데이터 로딩 중...
       </div>
     );

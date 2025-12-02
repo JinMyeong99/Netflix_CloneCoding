@@ -39,7 +39,11 @@ export default function Search() {
           />
         ))}
       </div>
-      {loading && <div>검색 중...</div>}
+      {loading && (
+        <div className="min-h-screen flex items-center justify-center pb-30">
+          검색 중...
+        </div>
+      )}
       {hasMore && results.length > 0 && (
         <div ref={loaderRef} style={{ height: 1 }} />
       )}

@@ -63,7 +63,7 @@ export default function Home() {
 
   if (loading) {
     return (
-      <div className="pt-16 min-h-screen flex items-center justify-center text-white">
+      <div className="min-h-screen flex items-center justify-center pb-30">
         홈 데이터 로딩 중...
       </div>
     );
