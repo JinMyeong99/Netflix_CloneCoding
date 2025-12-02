@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import { ImageUrl } from "../api/tmdb";
 
 export default function ContentDetailModal({
@@ -6,6 +7,11 @@ export default function ContentDetailModal({
   toggleFavorite,
   onPlayTrailer,
 }) {
+  const favoriteList = useSelector((state) => state.favorite.list);
+  const isFavorite = favoriteList.some(
+    (favContent) => favContent.id === content.id
+  );
+
   if (!content) return null;
 
   const backdrop =
@@ -97,7 +103,7 @@ export default function ContentDetailModal({
                   className="flex items-center justify-center h-11 w-11 rounded-full border border-neutral-500 text-2xl leading-none bg-neutral-800 cursor-pointer"
                   onClick={handleFavorite}
                 >
-                  +
+                  {isFavorite ? "✓" : "+"}
                 </button>
               </div>
             </div>

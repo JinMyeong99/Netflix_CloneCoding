@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 
 export default function useHoverActive() {
-  const [activeId, setActiveId] = useState(null);
+  const [hoverContentId, sethoverContentId] = useState(null);
   const timerRef = useRef(null);
 
   const handleMouseEnter = (id) => {
@@ -9,7 +9,7 @@ export default function useHoverActive() {
       clearTimeout(timerRef.current);
     }
     timerRef.current = setTimeout(() => {
-      setActiveId(id);
+      sethoverContentId(id);
     }, 400);
   };
 
@@ -17,11 +17,11 @@ export default function useHoverActive() {
     if (timerRef.current) {
       clearTimeout(timerRef.current);
     }
-    setActiveId((prev) => (prev === id ? null : prev));
+    sethoverContentId((prev) => (prev === id ? null : prev));
   };
 
   return {
-    activeId,
+    hoverContentId,
     handleMouseEnter,
     handleMouseLeave,
   };

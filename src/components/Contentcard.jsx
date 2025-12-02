@@ -1,8 +1,9 @@
+import { useSelector } from "react-redux";
 import { ImageUrl } from "../api/tmdb";
 
 export default function ContentCard({
   content,
-  isActive,
+  openHover,
   openDetail,
   toggleFavorite,
   onPlayTrailer,
@@ -13,6 +14,10 @@ export default function ContentCard({
     ImageUrl(content.backdrop_path || content.poster_path, "w780") || "";
   const title = content.title || content.name || "";
 
+  const favoriteList = useSelector((state) => state.favorite.list);
+  const isFavorite = favoriteList.some(
+    (favContent) => favContent.id === content.id
+  );
 
   const genre =
     Array.isArray(content.genre) && content.genre.length > 0
@@ -54,7 +59,7 @@ export default function ContentCard({
         className={`absolute left-1/2 -translate-x-1/2 top-5 w-[360px]
         rounded-xl overflow-hidden bg-neutral-900 shadow-xl shadow-black/70
         transition-all duration-200 origin-center
-        ${isActive ? "opacity-100 scale-100 z-30 pointer-events-auto" : "opacity-0 scale-0 z-0 pointer-events-none"}`}
+        ${openHover ? "opacity-100 scale-100 z-30 pointer-events-auto" : "opacity-0 scale-0 z-0 pointer-events-none"}`}
       >
         <div className="relative w-full aspect-video bg-black">
           {backdrop ? (
@@ -97,7 +102,7 @@ export default function ContentCard({
               text-xl leading-none cursor-pointer"
                 onClick={handleFavorite}
               >
-                +
+                {isFavorite ? "✓" : "+"}
               </button>
             </div>
             <div>

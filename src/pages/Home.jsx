@@ -79,7 +79,7 @@ export default function Home() {
 
   return (
     <div className="text-white min-h-screen">
-      <div className="pt-16 pb-10 space-y-8 px-[5%]">
+      <div className="pt-16 pb-10 px-[5%]">
         <SectionRow
           title="지금 가장 인기 있는 영화"
           content={addGenreName(popular)}

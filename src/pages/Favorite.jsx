@@ -1,30 +1,63 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { favoriteSlice } from "../RTK/favoriteSlice";
+import { useSelector } from "react-redux";
+import useContentDetail from "../hooks/useContentDetail";
+import ContentCard from "../components/ContentCard";
+import useHoverActive from "../hooks/useHoverActive";
+import ContentDetailModal from "../components/ContentDetailModal";
 
 export default function Favorite() {
-  const dispatch = useDispatch();
-  const favorites = useSelector((state) => state.favorite.list);
+  const favorite = useSelector((state) => state.favorite.list);
 
-  const [selectedContent, setSelectedContent] = useState(null);
-  const [showDetail, setShowDetail] = useState(false);
+  const {
+    selectedContent,
+    showDetail,
+    openDetail,
+    closeDetail,
+    toggleFavorite,
+    playTrailer,
+  } = useContentDetail();
 
-  const openDetail = (content) => {
-    setSelectedContent(content);
-    setShowDetail(true);
-  };
+  const { hoverContentId, handleMouseEnter, handleMouseLeave } =
+    useHoverActive();
 
-  const closeDetail = () => {
-    setShowDetail(false);
-    setSelectedContent(null);
-  };
+  if (!favorite || favorite.length === 0) {
+    return (
+      <div className="min-h-screen flex items-center justify-center pb-30">
+        <p>아직 찜한 콘텐츠가 없어요.</p>
+      </div>
+    );
+  }
 
-  const toggleFavorite = (content) => {
-    dispatch(favoriteSlice.actions.toggleFavorite(content));
-  };
+  return (
+    <div>
+      <div className="pt-16 pb-10 px-[5%]">
+        <h1 className="text-2xl mb-4">내가 찜한 콘텐츠</h1>
+        <div className="flex flex-wrap justify-between gap-y-20">
+          {favorite.map((favContent) => (
+            <div
+              key={favContent.id}
+              onMouseEnter={() => handleMouseEnter(favContent.id)}
+              onMouseLeave={() => handleMouseLeave(favContent.id)}
+            >
+              <ContentCard
+                content={favContent}
+                openHover={hoverContentId === favContent.id}
+                openDetail={() => openDetail(favContent)}
+                toggleFavorite={toggleFavorite}
+                onPlayTrailer={playTrailer}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
 
-  const playTrailer = (content) => {
-    if (!content?.trailerUrl) return;
-    window.open
-  };
+      {showDetail && selectedContent && (
+        <ContentDetailModal
+          content={selectedContent}
+          onClose={closeDetail}
+          toggleFavorite={toggleFavorite}
+          onPlayTrailer={playTrailer}
+        />
+      )}
+    </div>
+  );
 }

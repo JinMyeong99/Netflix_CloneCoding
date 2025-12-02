@@ -8,7 +8,7 @@ export const favoriteSlice = createSlice({
   reducers: {
     toggleFavorite: (state, action) => {
       const content = action.payload;
-      const index = state.findIndex(
+      const index = state.list.findIndex(
         (favcontent) => favcontent.id === content.id
       );
       if (index >= 0) {

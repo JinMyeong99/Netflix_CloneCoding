@@ -11,7 +11,8 @@ export default function SectionRow({
 }) {
   const scrollRef = useRef(null);
 
-  const { activeId, handleMouseEnter, handleMouseLeave } = useHoverActive();
+  const { hoverContentId, handleMouseEnter, handleMouseLeave } =
+    useHoverActive();
 
   if (!content || content.length === 0) return null;
 
@@ -142,7 +143,7 @@ export default function SectionRow({
             >
               <ContentCard
                 content={content}
-                isActive={activeId === content.id}
+                openHover={hoverContentId === content.id}
                 openDetail={() => openDetail && openDetail(content)}
                 toggleFavorite={toggleFavorite}
                 onPlayTrailer={onPlayTrailer}
