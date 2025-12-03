@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 
-export default function useGenreNames(contents, mode = "auto") {
+export default function useGenreName(contents, mode = "auto") {
   const { movieGenres, seriesGenres } = useSelector((state) => state.genre);
 
   return useMemo(() => {
