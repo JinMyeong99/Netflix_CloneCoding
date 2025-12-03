@@ -5,6 +5,7 @@ import SectionRow from "../components/SectionRow";
 import ContentDetailModal from "../components/ContentDetailModal";
 import useContentDetail from "../hooks/useContentDetail";
 import useGenreName from "../hooks/useGenreName";
+import HeroBanner from "../components/HeroBanner";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -42,6 +43,8 @@ export default function Home() {
   const sciFiFantasyWithGenre = useGenreName(sciFiFantasy, "movie");
   const comedySeriesWithGenre = useGenreName(comedySeries, "series");
 
+  const heroContent = popularWithGenre[0];
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center pb-30">
@@ -59,8 +62,13 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen">
-      <div className="pt-16 pb-10 px-[5%]">
+    <div>
+      <HeroBanner
+        content={heroContent}
+        openDetail={openDetail}
+        onPlayTrailer={playTrailer}
+      />
+      <div className="pb-10 px-[5%]">
         <SectionRow
           title="지금 가장 인기 있는 영화"
           content={popularWithGenre}

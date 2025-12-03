@@ -6,6 +6,7 @@ import SectionRow from "../components/SectionRow";
 import useContentDetail from "../hooks/useContentDetail";
 import useGenreName from "../hooks/useGenreName";
 import ContentDetailModal from "../components/ContentDetailModal";
+import HeroBanner from "../components/HeroBanner";
 
 export default function Trending() {
   const dispatch = useDispatch();
@@ -31,6 +32,8 @@ export default function Trending() {
   const risingWithGenre = useGenreName(rising, "auto");
   const hotWithGenre = useGenreName(hot, "auto");
 
+  const heroContent = weekWithGenre[0];
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center pb-30">
@@ -49,7 +52,12 @@ export default function Trending() {
 
   return (
     <div className="text-white min-h-screen">
-      <div className="pt-16 pb-10 space-y-8 px-[5%]">
+      <HeroBanner
+        content={heroContent}
+        openDetail={openDetail}
+        onPlayTrailer={playTrailer}
+      />
+      <div className="pb-10 px-[5%]">
         <SectionRow
           title="오늘의 트렌드 Top 콘텐츠"
           content={todayWithGenre}
