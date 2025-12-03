@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchHomeData } from "../RTK/home/homeThunk";
 import SectionRow from "../components/SectionRow";
 import ContentDetailModal from "../components/ContentDetailModal";
 import useContentDetail from "../hooks/useContentDetail";
+import useGenreName from "../hooks/useGenreName";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -19,6 +20,10 @@ export default function Home() {
     error,
   } = useSelector((state) => state.home);
 
+  useEffect(() => {
+    dispatch(fetchHomeData());
+  }, [dispatch]);
+
   const {
     selectedContent,
     showDetail,
@@ -28,42 +33,18 @@ export default function Home() {
     playTrailer,
   } = useContentDetail();
 
-  const {
-    movieGenres,
-    seriesGenres,
-    error: genreError,
-  } = useSelector((state) => state.genre);
+  const { error: genreError } = useSelector((state) => state.genre);
 
-  useEffect(() => {
-    dispatch(fetchHomeData());
-  }, [dispatch]);
-
-  const genreList = useMemo(() => {
-    const list = {};
-    movieGenres.forEach((genre) => {
-      list[genre.id] = genre.name;
-    });
-    seriesGenres.forEach((genre) => {
-      if (!list[genre.id]) {
-        list[genre.id] = genre.name;
-      }
-    });
-    return list;
-  }, [movieGenres, seriesGenres]);
-
-  const addGenreName = useCallback(
-    (contents) =>
-      (contents || []).map((content) => ({
-        ...content,
-        genre_names:
-          content.genre_ids?.map((id) => genreList[id]).filter(Boolean) || [],
-      })),
-    [genreList]
-  );
+  const popularWithGenre = useGenreName(popular, "movie");
+  const topRatedWithGenre = useGenreName(topRated, "movie");
+  const actionAdventureWithGenre = useGenreName(actionAdventure, "movie");
+  const comedyMoviesWithGenre = useGenreName(comedyMovies, "movie");
+  const sciFiFantasyWithGenre = useGenreName(sciFiFantasy, "movie");
+  const comedySeriesWithGenre = useGenreName(comedySeries, "series");
 
   if (loading) {
     return (
-      <div className="pt-16 min-h-screen flex items-center justify-center text-white">
+      <div className="min-h-screen flex items-center justify-center pb-30">
         홈 데이터 로딩 중...
       </div>
     );
@@ -78,46 +59,46 @@ export default function Home() {
   }
 
   return (
-    <div className="text-white min-h-screen">
+    <div className="min-h-screen">
       <div className="pt-16 pb-10 px-[5%]">
         <SectionRow
           title="지금 가장 인기 있는 영화"
-          content={addGenreName(popular)}
+          content={popularWithGenre}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
           onPlayTrailer={playTrailer}
         />
         <SectionRow
           title="최고 평점 영화"
-          content={addGenreName(topRated)}
+          content={topRatedWithGenre}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
           onPlayTrailer={playTrailer}
         />
         <SectionRow
           title="액션 ∙ 모험 인기 영화"
-          content={addGenreName(actionAdventure)}
+          content={actionAdventureWithGenre}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
           onPlayTrailer={playTrailer}
         />
         <SectionRow
           title="코미디 TOP 콘텐츠"
-          content={addGenreName(comedyMovies)}
+          content={comedyMoviesWithGenre}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
           onPlayTrailer={playTrailer}
         />
         <SectionRow
           title="SF ∙ 판타지 추천"
-          content={addGenreName(sciFiFantasy)}
+          content={sciFiFantasyWithGenre}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
           onPlayTrailer={playTrailer}
         />
         <SectionRow
           title="코미디 시리즈"
-          content={addGenreName(comedySeries)}
+          content={comedySeriesWithGenre}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
           onPlayTrailer={playTrailer}

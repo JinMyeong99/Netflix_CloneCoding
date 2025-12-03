@@ -5,6 +5,10 @@ import { fetchMoviePage } from "../RTK/movie/movieThunk";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import GenreSelector from "../components/GenreSelector";
 import ContentCard from "../components/ContentCard";
+import useGenreName from "../hooks/useGenreName";
+import useContentDetail from "../hooks/useContentDetail";
+import useHoverActive from "../hooks/useHoverActive";
+import ContentDetailModal from "../components/ContentDetailModal";
 
 export default function Movie() {
   const dispatch = useDispatch();
@@ -46,6 +50,20 @@ export default function Movie() {
     );
   }, [list, selectedGenreId]);
 
+  const moviesWithGenres = useGenreName(filteredMovies, "movie");
+
+  const { hoverContentId, handleMouseEnter, handleMouseLeave } =
+    useHoverActive();
+
+  const {
+    selectedContent,
+    showDetail,
+    openDetail,
+    closeDetail,
+    toggleFavorite,
+    playTrailer,
+  } = useContentDetail();
+
   return (
     <div className="mx-auto max-w-[90%] pb-[100px]">
       <div className="flex items-center gap-6 my-5">
@@ -61,14 +79,39 @@ export default function Movie() {
       {error && <div className="text-red-500 mb-2">{error}</div>}
 
       <div className="flex flex-wrap justify-between gap-y-20">
-        {filteredMovies.map((movie) => (
-          <ContentCard key={movie.id} content={movie} />
+        {moviesWithGenres.map((movie) => (
+          <div
+            key={movie.id}
+            onMouseEnter={() => handleMouseEnter(movie.id)}
+            onMouseLeave={() => handleMouseLeave(movie.id)}
+          >
+            <ContentCard
+              content={movie}
+              openHover={hoverContentId === movie.id}
+              openDetail={() => openDetail(movie)}
+              toggleFavorite={toggleFavorite}
+              onPlayTrailer={playTrailer}
+            />
+          </div>
         ))}
       </div>
 
-      {loading && <div>불러오는 중...</div>}
+      {loading && (
+        <div className="min-h-screen flex items-center justify-center pb-30">
+          불러오는 중...
+        </div>
+      )}
       {hasMore && <div ref={loaderRef} style={{ height: 1 }} />}
       {!hasMore && list.length > 0 && <div>더 이상 영화가 없습니다.</div>}
+
+      {showDetail && selectedContent && (
+        <ContentDetailModal
+          content={selectedContent}
+          onClose={closeDetail}
+          toggleFavorite={toggleFavorite}
+          onPlayTrailer={playTrailer}
+        />
+      )}
     </div>
   );
 }
