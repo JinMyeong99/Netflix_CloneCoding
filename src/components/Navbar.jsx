@@ -18,8 +18,12 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 
-      ${isScrolled ? "bg-neutral-900" : "bg-transparent"}`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-400
+      ${
+        isScrolled
+          ? "bg-neutral-900"
+          : "bg-linear-to-b from-neutral-900/90 via-neutral-900/70 to-transparent"
+      }`}
     >
       <div className="mx-auto max-w-[90%] flex h-18 items-center justify-between">
         <div className="flex items-center gap-8">
