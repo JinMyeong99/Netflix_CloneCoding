@@ -5,6 +5,10 @@ import { fetchSeriesPage } from "../RTK/series/seriesThunk";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import GenreSelector from "../components/GenreSelector";
 import ContentCard from "../components/ContentCard";
+import useContentDetail from "../hooks/useContentDetail";
+import useHoverActive from "../hooks/useHoverActive";
+import ContentDetailModal from "../components/ContentDetailModal";
+import useGenreName from "../hooks/useGenreName";
 
 export default function Series() {
   const dispatch = useDispatch();
@@ -44,6 +48,20 @@ export default function Series() {
     );
   }, [list, selectedGenreId]);
 
+  const seriesWithGenre = useGenreName(filteredSeries, "series");
+
+  const {
+    selectedContent,
+    showDetail,
+    openDetail,
+    closeDetail,
+    toggleFavorite,
+    playTrailer,
+  } = useContentDetail();
+
+  const { hoverContentId, handleMouseEnter, handleMouseLeave } =
+    useHoverActive();
+
   return (
     <div className="mx-auto max-w-[90%] pb-[100px]">
       <div className="flex items-center gap-6 my-5">
@@ -59,8 +77,20 @@ export default function Series() {
       {error && <div className="text-red-500 mb-2">{error}</div>}
 
       <div className="flex flex-wrap justify-between gap-y-20">
-        {filteredSeries.map((series) => (
-          <ContentCard key={series.id} content={series} />
+        {seriesWithGenre.map((series) => (
+          <div
+            key={series.id}
+            onMouseEnter={() => handleMouseEnter(series.id)}
+            onMouseLeave={() => handleMouseLeave(series.id)}
+          >
+            <ContentCard
+              content={series}
+              openHover={hoverContentId === series.id}
+              openDetail={() => openDetail(series)}
+              toggleFavorite={toggleFavorite}
+              onPlayTrailer={playTrailer}
+            />
+          </div>
         ))}
       </div>
 
@@ -71,6 +101,15 @@ export default function Series() {
       )}
       {hasMore && <div ref={loaderRef} style={{ height: 1 }} />}
       {!hasMore && list.length > 0 && <div>더 이상 시리즈가 없습니다.</div>}
+
+      {showDetail && selectedContent && (
+        <ContentDetailModal
+          content={selectedContent}
+          onClose={closeDetail}
+          toggleFavorite={toggleFavorite}
+          onPlayTrailer={playTrailer}
+        />
+      )}
     </div>
   );
 }
