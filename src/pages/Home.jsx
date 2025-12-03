@@ -63,42 +63,42 @@ export default function Home() {
       <div className="pt-16 pb-10 px-[5%]">
         <SectionRow
           title="지금 가장 인기 있는 영화"
-          content={popularWithGenre(popular)}
+          content={popularWithGenre}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
           onPlayTrailer={playTrailer}
         />
         <SectionRow
           title="최고 평점 영화"
-          content={topRatedWithGenre(topRated)}
+          content={topRatedWithGenre}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
           onPlayTrailer={playTrailer}
         />
         <SectionRow
           title="액션 ∙ 모험 인기 영화"
-          content={actionAdventureWithGenre(actionAdventure)}
+          content={actionAdventureWithGenre}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
           onPlayTrailer={playTrailer}
         />
         <SectionRow
           title="코미디 TOP 콘텐츠"
-          content={comedyMoviesWithGenre(comedyMovies)}
+          content={comedyMoviesWithGenre}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
           onPlayTrailer={playTrailer}
         />
         <SectionRow
           title="SF ∙ 판타지 추천"
-          content={sciFiFantasyWithGenre(sciFiFantasy)}
+          content={sciFiFantasyWithGenre}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
           onPlayTrailer={playTrailer}
         />
         <SectionRow
           title="코미디 시리즈"
-          content={comedySeriesWithGenre(comedySeries)}
+          content={comedySeriesWithGenre}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
           onPlayTrailer={playTrailer}
