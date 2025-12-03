@@ -3,6 +3,7 @@ import useContentDetail from "../hooks/useContentDetail";
 import ContentCard from "../components/ContentCard";
 import useHoverActive from "../hooks/useHoverActive";
 import ContentDetailModal from "../components/ContentDetailModal";
+import useGenreName from "../hooks/useGenreName";
 
 export default function Favorite() {
   const favorite = useSelector((state) => state.favorite.list);
@@ -19,6 +20,8 @@ export default function Favorite() {
   const { hoverContentId, handleMouseEnter, handleMouseLeave } =
     useHoverActive();
 
+  const favoritesWithGenre = useGenreName(favorite, "auto");
+
   if (!favorite || favorite.length === 0) {
     return (
       <div className="min-h-screen flex items-center justify-center pb-30">
@@ -32,7 +35,7 @@ export default function Favorite() {
       <div className="pt-16 pb-10 px-[5%]">
         <h1 className="text-2xl mb-4">내가 찜한 콘텐츠</h1>
         <div className="flex flex-wrap justify-between gap-y-20">
-          {favorite.map((favContent) => (
+          {favoritesWithGenre.map((favContent) => (
             <div
               key={favContent.id}
               onMouseEnter={() => handleMouseEnter(favContent.id)}
