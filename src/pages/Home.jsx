@@ -20,6 +20,10 @@ export default function Home() {
     error,
   } = useSelector((state) => state.home);
 
+  useEffect(() => {
+    dispatch(fetchHomeData());
+  }, [dispatch]);
+
   const {
     selectedContent,
     showDetail,
@@ -30,10 +34,6 @@ export default function Home() {
   } = useContentDetail();
 
   const { error: genreError } = useSelector((state) => state.genre);
-
-  useEffect(() => {
-    dispatch(fetchHomeData());
-  }, [dispatch]);
 
   const popularWithGenre = useGenreName(popular, "movie");
   const topRatedWithGenre = useGenreName(topRated, "movie");

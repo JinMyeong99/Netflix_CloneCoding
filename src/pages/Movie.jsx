@@ -40,18 +40,6 @@ export default function Movie() {
 
   const [selectedGenreId, setSelectedGenreId] = useState("");
 
-  const { hoverContentId, handleMouseEnter, handleMouseLeave } =
-    useHoverActive();
-
-  const {
-    selectedContent,
-    showDetail,
-    openDetail,
-    closeDetail,
-    toggleFavorite,
-    playTrailer,
-  } = useContentDetail();
-
   const filteredMovies = useMemo(() => {
     if (!selectedGenreId) return list;
     const genreId = Number(selectedGenreId);
@@ -63,6 +51,18 @@ export default function Movie() {
   }, [list, selectedGenreId]);
 
   const moviesWithGenres = useGenreName(filteredMovies, "movie");
+
+  const { hoverContentId, handleMouseEnter, handleMouseLeave } =
+    useHoverActive();
+
+  const {
+    selectedContent,
+    showDetail,
+    openDetail,
+    closeDetail,
+    toggleFavorite,
+    playTrailer,
+  } = useContentDetail();
 
   return (
     <div className="mx-auto max-w-[90%] pb-[100px]">
