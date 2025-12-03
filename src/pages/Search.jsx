@@ -3,6 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchSearchPage } from "../RTK/search/searchThunk";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import ContentCard from "../components/ContentCard";
+import useContentDetail from "../hooks/useContentDetail";
+import useHoverActive from "../hooks/useHoverActive";
+import useGenreName from "../hooks/useGenreName";
+import ContentDetailModal from "../components/ContentDetailModal";
 
 export default function Search() {
   const dispatch = useDispatch();
@@ -22,6 +26,20 @@ export default function Search() {
     onLoadMore: loadMore,
   });
 
+  const resultsWithGenre = useGenreName(results, "auto");
+
+  const {
+    selectedContent,
+    showDetail,
+    openDetail,
+    closeDetail,
+    toggleFavorite,
+    playTrailer,
+  } = useContentDetail();
+
+  const { hoverContentId, handleMouseEnter, handleMouseLeave } =
+    useHoverActive();
+
   return (
     <div className="mx-auto max-w-[90%] pb-25">
       <h2 className="text-2xl font-bold my-4">
@@ -32,11 +50,20 @@ export default function Search() {
         <div>검색 결과가 없습니다.</div>
       )}
       <div className="flex flex-wrap gap-x-[7.5px] gap-y-30">
-        {results.map((content) => (
-          <ContentCard
+        {resultsWithGenre.map((content) => (
+          <div
             key={`${content.media_type}-${content.id}`}
-            content={content}
-          />
+            onMouseEnter={() => handleMouseEnter(content.id)}
+            onMouseLeave={() => handleMouseLeave(content.id)}
+          >
+            <ContentCard
+              content={content}
+              openHover={hoverContentId === content.id}
+              openDetail={() => openDetail(content)}
+              toggleFavorite={toggleFavorite}
+              onPlayTrailer={playTrailer}
+            />
+          </div>
         ))}
       </div>
       {loading && (
@@ -46,6 +73,15 @@ export default function Search() {
       )}
       {hasMore && results.length > 0 && (
         <div ref={loaderRef} style={{ height: 1 }} />
+      )}
+
+      {showDetail && selectedContent && (
+        <ContentDetailModal
+          content={selectedContent}
+          onClose={closeDetail}
+          toggleFavorite={toggleFavorite}
+          onPlayTrailer={playTrailer}
+        />
       )}
     </div>
   );
