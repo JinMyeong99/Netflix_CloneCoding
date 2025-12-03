@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchHomeData } from "../RTK/home/homeThunk";
 import SectionRow from "../components/SectionRow";
 import ContentDetailModal from "../components/ContentDetailModal";
 import useContentDetail from "../hooks/useContentDetail";
+import useGenreName from "../hooks/useGenreName";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -28,38 +29,18 @@ export default function Home() {
     playTrailer,
   } = useContentDetail();
 
-  const {
-    movieGenres,
-    seriesGenres,
-    error: genreError,
-  } = useSelector((state) => state.genre);
+  const { error: genreError } = useSelector((state) => state.genre);
 
   useEffect(() => {
     dispatch(fetchHomeData());
   }, [dispatch]);
 
-  const genreList = useMemo(() => {
-    const list = {};
-    movieGenres.forEach((genre) => {
-      list[genre.id] = genre.name;
-    });
-    seriesGenres.forEach((genre) => {
-      if (!list[genre.id]) {
-        list[genre.id] = genre.name;
-      }
-    });
-    return list;
-  }, [movieGenres, seriesGenres]);
-
-  const addGenreName = useCallback(
-    (contents) =>
-      (contents || []).map((content) => ({
-        ...content,
-        genre_names:
-          content.genre_ids?.map((id) => genreList[id]).filter(Boolean) || [],
-      })),
-    [genreList]
-  );
+  const popularWithGenre = useGenreName(popular, "mixed");
+  const topRatedWithGenre = useGenreName(topRated, "mixed");
+  const actionAdventureWithGenre = useGenreName(actionAdventure, "mixed");
+  const comedyMoviesWithGenre = useGenreName(comedyMovies, "mixed");
+  const sciFiFantasyWithGenre = useGenreName(sciFiFantasy, "mixed");
+  const comedySeriesWithGenre = useGenreName(comedySeries, "mixed");
 
   if (loading) {
     return (
@@ -82,42 +63,42 @@ export default function Home() {
       <div className="pt-16 pb-10 px-[5%]">
         <SectionRow
           title="지금 가장 인기 있는 영화"
-          content={addGenreName(popular)}
+          content={popularWithGenre(popular)}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
           onPlayTrailer={playTrailer}
         />
         <SectionRow
           title="최고 평점 영화"
-          content={addGenreName(topRated)}
+          content={topRatedWithGenre(topRated)}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
           onPlayTrailer={playTrailer}
         />
         <SectionRow
           title="액션 ∙ 모험 인기 영화"
-          content={addGenreName(actionAdventure)}
+          content={actionAdventureWithGenre(actionAdventure)}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
           onPlayTrailer={playTrailer}
         />
         <SectionRow
           title="코미디 TOP 콘텐츠"
-          content={addGenreName(comedyMovies)}
+          content={comedyMoviesWithGenre(comedyMovies)}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
           onPlayTrailer={playTrailer}
         />
         <SectionRow
           title="SF ∙ 판타지 추천"
-          content={addGenreName(sciFiFantasy)}
+          content={sciFiFantasyWithGenre(sciFiFantasy)}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
           onPlayTrailer={playTrailer}
         />
         <SectionRow
           title="코미디 시리즈"
-          content={addGenreName(comedySeries)}
+          content={comedySeriesWithGenre(comedySeries)}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
           onPlayTrailer={playTrailer}
