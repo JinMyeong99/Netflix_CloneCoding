@@ -9,6 +9,7 @@ import useContentDetail from "../hooks/useContentDetail";
 import useHoverActive from "../hooks/useHoverActive";
 import ContentDetailModal from "../components/ContentDetailModal";
 import useGenreName from "../hooks/useGenreName";
+import HeroBanner from "../components/HeroBanner";
 
 export default function Series() {
   const dispatch = useDispatch();
@@ -62,54 +63,63 @@ export default function Series() {
   const { hoverContentId, handleMouseEnter, handleMouseLeave } =
     useHoverActive();
 
+  const heroContent = seriesWithGenre[0];
+
   return (
-    <div className="mx-auto max-w-[90%] pb-[100px]">
-      <div className="flex items-center gap-6 my-5">
-        <h2 className="text-4xl">인기 시리즈</h2>
+    <div>
+      <HeroBanner
+        content={heroContent}
+        openDetail={openDetail}
+        onPlayTrailer={playTrailer}
+      />
+      <div className="mx-auto max-w-[90%] pb-[100px]">
+        <div className="flex items-center gap-6  mb-5">
+          <h2 className="text-4xl">인기 시리즈</h2>
 
-        <GenreSelector
-          genres={seriesGenres}
-          selectedId={selectedGenreId}
-          onChange={setSelectedGenreId}
-        />
-      </div>
-
-      {error && <div className="text-red-500 mb-2">{error}</div>}
-
-      <div className="flex flex-wrap justify-between gap-y-20">
-        {seriesWithGenre.map((series) => (
-          <div
-            key={series.id}
-            onMouseEnter={() => handleMouseEnter(series.id)}
-            onMouseLeave={() => handleMouseLeave(series.id)}
-          >
-            <ContentCard
-              content={series}
-              openHover={hoverContentId === series.id}
-              openDetail={() => openDetail(series)}
-              toggleFavorite={toggleFavorite}
-              onPlayTrailer={playTrailer}
-            />
-          </div>
-        ))}
-      </div>
-
-      {loading && (
-        <div className="min-h-screen flex items-center justify-center pb-30">
-          불러오는 중...
+          <GenreSelector
+            genres={seriesGenres}
+            selectedId={selectedGenreId}
+            onChange={setSelectedGenreId}
+          />
         </div>
-      )}
-      {hasMore && <div ref={loaderRef} style={{ height: 1 }} />}
-      {!hasMore && list.length > 0 && <div>더 이상 시리즈가 없습니다.</div>}
 
-      {showDetail && selectedContent && (
-        <ContentDetailModal
-          content={selectedContent}
-          onClose={closeDetail}
-          toggleFavorite={toggleFavorite}
-          onPlayTrailer={playTrailer}
-        />
-      )}
+        {error && <div className="text-red-500 mb-2">{error}</div>}
+
+        <div className="flex flex-wrap justify-between gap-y-20">
+          {seriesWithGenre.map((series) => (
+            <div
+              key={series.id}
+              onMouseEnter={() => handleMouseEnter(series.id)}
+              onMouseLeave={() => handleMouseLeave(series.id)}
+            >
+              <ContentCard
+                content={series}
+                openHover={hoverContentId === series.id}
+                openDetail={() => openDetail(series)}
+                toggleFavorite={toggleFavorite}
+                onPlayTrailer={playTrailer}
+              />
+            </div>
+          ))}
+        </div>
+
+        {loading && (
+          <div className="min-h-screen flex items-center justify-center pb-30">
+            불러오는 중...
+          </div>
+        )}
+        {hasMore && <div ref={loaderRef} style={{ height: 1 }} />}
+        {!hasMore && list.length > 0 && <div>더 이상 시리즈가 없습니다.</div>}
+
+        {showDetail && selectedContent && (
+          <ContentDetailModal
+            content={selectedContent}
+            onClose={closeDetail}
+            toggleFavorite={toggleFavorite}
+            onPlayTrailer={playTrailer}
+          />
+        )}
+      </div>
     </div>
   );
 }
