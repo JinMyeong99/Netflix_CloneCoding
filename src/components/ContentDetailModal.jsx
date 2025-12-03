@@ -24,6 +24,12 @@ export default function ContentDetailModal({
     typeof content.vote_average === "number"
       ? content.vote_average.toFixed(1)
       : null;
+  const year =
+    typeof content.release_date === "string" && content.release_date
+      ? content.release_date.slice(0, 4)
+      : typeof content.first_air_date === "string" && content.first_air_date
+        ? content.first_air_date.slice(0, 4)
+        : null;
 
   const genre =
     Array.isArray(content.genre) && content.genre.length > 0
@@ -110,18 +116,27 @@ export default function ContentDetailModal({
 
             <div className="justify-end space-y-1">
               <div>
+                {year && (
+                  <span className="text-neutral-400">
+                    제작연도: <span className="text-white">{year}</span>
+                  </span>
+                )}
+              </div>
+              <div>
                 {rating !== null && (
                   <span className="text-neutral-400">
                     평점: <span className="text-white">{rating}</span>
                   </span>
                 )}
               </div>
-              {genre.length > 0 && (
-                <p className=" text-white">
-                  <span className="text-neutral-400">장르: </span>
-                  {genre.join(" • ")}
-                </p>
-              )}
+              <div>
+                {genre.length > 0 && (
+                  <p className=" text-white">
+                    <span className="text-neutral-400">장르: </span>
+                    {genre.join(" • ")}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
           <div className="flex flex-col md:flex-row gap-5">
