@@ -35,12 +35,12 @@ export default function Home() {
     dispatch(fetchHomeData());
   }, [dispatch]);
 
-  const popularWithGenre = useGenreName(popular, "mixed");
-  const topRatedWithGenre = useGenreName(topRated, "mixed");
-  const actionAdventureWithGenre = useGenreName(actionAdventure, "mixed");
-  const comedyMoviesWithGenre = useGenreName(comedyMovies, "mixed");
-  const sciFiFantasyWithGenre = useGenreName(sciFiFantasy, "mixed");
-  const comedySeriesWithGenre = useGenreName(comedySeries, "mixed");
+  const popularWithGenre = useGenreName(popular, "movie");
+  const topRatedWithGenre = useGenreName(topRated, "movie");
+  const actionAdventureWithGenre = useGenreName(actionAdventure, "movie");
+  const comedyMoviesWithGenre = useGenreName(comedyMovies, "movie");
+  const sciFiFantasyWithGenre = useGenreName(sciFiFantasy, "movie");
+  const comedySeriesWithGenre = useGenreName(comedySeries, "series");
 
   if (loading) {
     return (
