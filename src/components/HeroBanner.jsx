@@ -32,7 +32,7 @@ export default function HeroBanner({ content, openDetail, onPlayTrailer }) {
         ""
       )}
 
-      <div className="absolute inset-0 bg-linear-to-t from-neutral-900 via-neutral-900/20 to-transparent" />
+      <div className="absolute inset-0 bg-linear-to-t from-neutral-900 via-neutral-900/10 to-neutral-900/20" />
 
       <div className="absolute left-[5%] bottom-[10%] max-w-xl space-y-4">
         <h1 className="text-6xl font-extrabold drop-shadow-lg">{title}</h1>

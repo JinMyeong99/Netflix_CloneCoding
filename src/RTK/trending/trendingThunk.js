@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ApiKey, BaseUrl } from "../../api/tmdb";
+import { attachTrailer } from "../../api/attachTrailer";
 
 export const fetchTrendingData = createAsyncThunk(
   "trending/fetchTrendingData",
@@ -41,11 +42,21 @@ export const fetchTrendingData = createAsyncThunk(
         hotRes.json(),
       ]);
 
+      const todayResults = todayData.results || [];
+      const weekResults = weekData.results || [];
+      const risingResults = risingData.results || [];
+      const hotResults = hotData.results || [];
+
+      const today = await attachTrailer(todayResults, "auto");
+      const week = await attachTrailer(weekResults, "auto");
+      const rising = await attachTrailer(risingResults, "auto");
+      const hot = await attachTrailer(hotResults, "auto");
+
       return {
-        today: todayData.results || [],
-        week: weekData.results || [],
-        rising: risingData.results || [],
-        hot: hotData.results || [],
+        today,
+        week,
+        rising,
+        hot,
       };
     } catch (error) {
       return rejectWithValue(error.message || "트렌드 데이터 로딩 실패");

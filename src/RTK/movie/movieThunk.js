@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ApiKey, BaseUrl } from "../../api/tmdb";
+import { attachTrailer } from "../../api/attachTrailer";
 
 export const fetchMoviePage = createAsyncThunk(
   "movie/fetchMoviePage",
@@ -28,10 +29,12 @@ export const fetchMoviePage = createAsyncThunk(
         throw new Error("영화 데이터 로딩 실패");
       }
       const movieData = await res.json();
+      const dataResults = movieData.results || [];
+      const results = await attachTrailer(dataResults, "movie");
 
       return {
         page: nextPage,
-        results: movieData.results || [],
+        results,
         totalPages: movieData.total_pages || nextPage,
       };
     } catch (error) {

@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ApiKey, BaseUrl } from "../../api/tmdb";
+import { attachTrailer } from "../../api/attachTrailer";
 
 export const fetchHomeData = createAsyncThunk(
   "home/fetchHomeData",
@@ -69,48 +70,6 @@ export const fetchHomeData = createAsyncThunk(
         comedySeriesRes.json(),
       ]);
 
-      const paramsVideo = new URLSearchParams({
-        api_key: ApiKey,
-        language: "ko-KR",
-        append_to_response: "videos",
-      }).toString();
-
-      const contentTrailer = async (contents, mediaType) => {
-        return Promise.all(
-          contents.map(async (content) => {
-            try {
-              const videoUrl = `${BaseUrl}/${mediaType}/${content.id}?${paramsVideo}`;
-              const videoRes = await fetch(videoUrl);
-              if (!videoRes.ok) {
-                throw new Error("동영상 로딩 실패");
-              }
-              const videoData = await videoRes.json();
-
-              const trailer =
-                videoData.videos?.results?.find(
-                  (vedio) =>
-                    vedio.site === "YouTube" &&
-                    (vedio.type === "Trailer" || vedio.type === "Teaser")
-                ) || null;
-
-              const trailerUrl = trailer
-                ? `https://www.youtube.com/watch?v=${trailer.key}`
-                : null;
-
-              return {
-                ...content,
-                trailerUrl,
-              };
-            } catch {
-              return {
-                ...content,
-                trailerUrl: null,
-              };
-            }
-          })
-        );
-      };
-
       const [
         popular,
         topRated,
@@ -119,12 +78,12 @@ export const fetchHomeData = createAsyncThunk(
         sciFiFantasy,
         comedySeries,
       ] = await Promise.all([
-        contentTrailer(popularData.results, "movie"),
-        contentTrailer(topRatedData.results, "movie"),
-        contentTrailer(actionAdventureData.results, "movie"),
-        contentTrailer(comedyMoviesData.results, "movie"),
-        contentTrailer(sciFiFantasyData.results, "movie"),
-        contentTrailer(comedySeriesData.results, "tv"),
+        attachTrailer(popularData.results, "movie"),
+        attachTrailer(topRatedData.results, "movie"),
+        attachTrailer(actionAdventureData.results, "movie"),
+        attachTrailer(comedyMoviesData.results, "movie"),
+        attachTrailer(sciFiFantasyData.results, "movie"),
+        attachTrailer(comedySeriesData.results, "tv"),
       ]);
 
       return {

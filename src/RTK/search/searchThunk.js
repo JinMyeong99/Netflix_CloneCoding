@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ApiKey, BaseUrl } from "../../api/tmdb";
+import { attachTrailer } from "../../api/attachTrailer";
 
 export const fetchSearchPage = createAsyncThunk(
   "search/fetchSearchPage",
@@ -29,9 +30,11 @@ export const fetchSearchPage = createAsyncThunk(
           content.media_type === "movie" || content.media_type === "tv"
       );
 
+      const results = await attachTrailer(filteredData, "auto");
+
       return {
         page: nextPage,
-        results: filteredData,
+        results,
         totalPages: filteredData.totoal_pages || nextPage,
       };
     } catch (error) {

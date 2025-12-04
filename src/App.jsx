@@ -30,7 +30,7 @@ function App() {
   return (
     <div className="bg-neutral-900 min-h-screen text-white">
       {!hideNavbar && <Navbar />}
-      <main className={hideNavbar}>
+      <main >
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/series" element={<Series />} />

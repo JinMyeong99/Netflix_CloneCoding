@@ -119,6 +119,7 @@ export default function SearchBar() {
               outline-none
               border
             border-white
+            bg-neutral-900  
             "
           />
         )}
