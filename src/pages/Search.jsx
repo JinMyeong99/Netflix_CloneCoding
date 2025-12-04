@@ -16,7 +16,7 @@ export default function Search() {
 
   const loadMore = useCallback(() => {
     if (!loading && hasMore && query.trim()) {
-      dispatch(fetchSearchPage);
+      dispatch(fetchSearchPage());
     }
   }, [dispatch, loading, hasMore, query]);
 

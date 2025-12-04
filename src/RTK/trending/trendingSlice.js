@@ -8,7 +8,6 @@ export const trendingSlice = createSlice({
     week: [],
     rising: [],
     hot: [],
-    nowPlaying: [],
     loading: false,
     error: null,
   },
@@ -25,11 +24,11 @@ export const trendingSlice = createSlice({
       })
       .addCase(fetchTrendingData.fulfilled, (state, action) => {
         state.loading = false;
-        state.today = action.payload.today;
-        state.week = action.payload.week;
-        state.rising = action.payload.rising;
-        state.hot = action.payload.hot;
-        state.nowPlaying = action.payload.nowPlaying;
+        const { today, week, rising, hot } = action.payload;
+        state.today = today;
+        state.week = week;
+        state.rising = rising;
+        state.hot = hot;
       });
   },
 });

@@ -35,7 +35,7 @@ export const fetchSearchPage = createAsyncThunk(
       return {
         page: nextPage,
         results,
-        totalPages: filteredData.totoal_pages || nextPage,
+        totalPages: searchData.total_pages || nextPage,
       };
     } catch (error) {
       return rejectWithValue(error.message);
