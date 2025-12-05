@@ -4,20 +4,22 @@ export default function useHoverActive() {
   const [hoverContentId, sethoverContentId] = useState(null);
   const timerRef = useRef(null);
 
-  const handleMouseEnter = (id) => {
+  const handleMouseEnter = (contentId) => {
     if (timerRef.current) {
       clearTimeout(timerRef.current);
     }
     timerRef.current = setTimeout(() => {
-      sethoverContentId(id);
+      sethoverContentId(contentId);
     }, 400);
   };
 
-  const handleMouseLeave = (id) => {
+  const handleMouseLeave = (contentId) => {
     if (timerRef.current) {
       clearTimeout(timerRef.current);
     }
-    sethoverContentId((prev) => (prev === id ? null : prev));
+    sethoverContentId((hoverContentId) =>
+      hoverContentId === contentId ? null : hoverContentId
+    );
   };
 
   return {
