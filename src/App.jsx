@@ -12,6 +12,8 @@ import Signup from "./pages/Signup";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchGenre } from "./RTK/genre/genreThunk";
+import AuthInit from "./components/AuthManager";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
   const dispatch = useDispatch();
@@ -29,8 +31,10 @@ function App() {
 
   return (
     <div className="bg-neutral-900 min-h-screen text-white">
+      <AuthInit />
+
       {!hideNavbar && <Navbar />}
-      <main >
+      <main>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/series" element={<Series />} />
@@ -40,6 +44,7 @@ function App() {
           <Route path="/search" element={<Search />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/profile" element={<ProfilePage />} />
         </Routes>
       </main>
     </div>
