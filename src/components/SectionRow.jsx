@@ -1,10 +1,9 @@
 import { useRef } from "react";
 import ContentCard from "./ContentCard";
 import useHoverActive from "../hooks/useHoverActive";
-
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-
+  
 export default function SectionRow({
   title,
   content,

@@ -1,13 +1,18 @@
 import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import { loginSlice } from "../RTK/loginSlice";
-import { Link } from "react-router-dom";
+import { supabase } from "../api/supabaseClient";
 
-export default function Profile() {
+export default function NavProfile() {
   const dispatch = useDispatch();
-  const { email, isLogin } = useSelector((state) => state.login);
+  const navigate = useNavigate();
+  const { user, isLogin } = useSelector((state) => state.login);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
     dispatch(loginSlice.actions.logout());
+
+    navigate("/");
   };
 
   if (!isLogin) {
@@ -21,6 +26,9 @@ export default function Profile() {
     );
   }
 
+  const firstLetter =
+    (user.name && user.name[0]) || (user.email && user.email[0]) || "U";
+
   return (
     <div className="relative group">
       <div
@@ -30,32 +38,31 @@ export default function Profile() {
           cursor-pointer
         "
       >
-        {email?.name ? email.name[0].toUpperCase() : "U"}
+        {firstLetter.toUpperCase()}
       </div>
 
       <div
         className="
           absolute right-0 mt-2 w-32
           bg-black text-white
-          py-2 rounded
+          rounded
           opacity-0 invisible
           group-hover:opacity-100 group-hover:visible
           transition-all duration-200
         "
       >
-        <Link className="block px-4 py-2 hover:bg-neutral-800" to="/profile">
-          프로필 관리
-        </Link>
-        <Link className="block px-4 py-2 hover:bg-neutral-800" to="/account">
-          계정
-        </Link>
         <Link
-          className="block px-4 py-2 hover:bg-neutral-800"
+          className="block px-4 py-2 text-sm hover:bg-neutral-800 "
+          to="/profile"
+        >
+          프로필
+        </Link>
+        <button
+          className="block w-full text-left px-4 py-2 text-sm hover:bg-neutral-800"
           onClick={handleLogout}
-          to="/"
         >
           로그아웃
-        </Link>
+        </button>
       </div>
     </div>
   );

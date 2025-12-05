@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import Netflix_logo from "../assets/Netflix_logo.png";
 import SearchBar from "./Searchbar";
 import { useEffect, useState } from "react";
-import Profile from "./Profile";
+import NavProfile from "./NavProfile";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -67,7 +67,7 @@ export default function Navbar() {
 
         <div className="flex items-center gap-3">
           <SearchBar />
-          <Profile />
+          <NavProfile />
         </div>
       </div>
     </header>
