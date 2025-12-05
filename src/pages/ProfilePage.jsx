@@ -4,11 +4,7 @@ export default function ProfilePage() {
   const { user } = useSelector((state) => state.login);
 
   if (!user) {
-    return (
-      <div className="pt-24 px-[5%]">
-        <p className="text-lg">프로필을 보려면 먼저 로그인해 주세요.</p>
-      </div>
-    );
+    return;
   }
 
   return (

@@ -1,15 +1,18 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { loginSlice } from "../RTK/loginSlice";
 import { supabase } from "../api/supabaseClient";
 
 export default function NavProfile() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { user, isLogin } = useSelector((state) => state.login);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
     dispatch(loginSlice.actions.logout());
+
+    navigate("/");
   };
 
   if (!isLogin) {
