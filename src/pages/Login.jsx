@@ -2,8 +2,9 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Netflix_logo from "../assets/Netflix_logo.png";
-import { loginSlice } from "../RTK/loginSlice";
 import Netflix_background from "../assets/Netflix_background.jpg";
+import { loginSlice } from "../RTK/loginSlice";
+import { supabase } from "../api/supabaseClient";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -12,8 +13,9 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!email.trim() || !password.trim()) {
@@ -21,8 +23,36 @@ export default function Login() {
       return;
     }
 
-    dispatch(loginSlice.actions.login({ email }));
-    navigate("/");
+    try {
+      setLoading(true);
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        setError(error.message || "로그인에 실패했습니다.");
+        return;
+      }
+
+      const user = data.user;
+      if (user) {
+        dispatch(
+          loginSlice.actions.setUser({
+            id: user.id,
+            email: user.email,
+            name: user.user_metadata?.name || "user",
+          })
+        );
+      }
+
+      navigate("/");
+    } catch (error) {
+      setError("알 수 없는 오류가 발생했습니다.");
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -85,15 +115,17 @@ export default function Login() {
 
             <button
               type="submit"
+              disabled={loading}
               className="
                 w-full mt-4
                 bg-red-600 hover:bg-red-700
                 py-3
                 rounded
                 text-sm font-semibold
+                disabled:opacity-60
               "
             >
-              로그인
+              {loading ? "로그인 중..." : "로그인"}
             </button>
           </form>
 
