@@ -157,17 +157,17 @@ export default function SectionRow({
               },
             }}
           >
-            {content.map((item) => (
+            {content.map((content) => (
               <SwiperSlide
-                key={item.id}
-                onMouseEnter={() => handleMouseEnter(item.id)}
-                onMouseLeave={() => handleMouseLeave(item.id)}
+                key={content.id}
+                onMouseEnter={() => handleMouseEnter(content.id)}
+                onMouseLeave={() => handleMouseLeave(content.id)}
               >
                 <div className="shrink-0 transition-transform duration-200 ease-out flex justify-center">
                   <ContentCard
-                    content={item}
-                    openHover={hoverContentId === item.id}
-                    openDetail={() => openDetail && openDetail(item)}
+                    content={content}
+                    openHover={hoverContentId === content.id}
+                    openDetail={() => openDetail && openDetail(content)}
                     toggleFavorite={toggleFavorite}
                     onPlayTrailer={onPlayTrailer}
                   />
