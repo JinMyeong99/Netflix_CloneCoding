@@ -26,38 +26,38 @@ export default function Navbar() {
       }`}
     >
       <div className="mx-auto max-w-[90%] flex h-18 items-center justify-between">
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-6 lg:gap-8">
           <Link to="/">
-            <img src={Netflix_logo} className="h-6" alt="Netflix logo" />
+            <img src={Netflix_logo} className="h-5 lg:h-6" alt="Netflix logo" />
           </Link>
 
-          <nav className="flex gap-5 items-center">
+          <nav className="hidden md:flex gap-4 lg:gap-5 items-center">
             <Link
-              className="text-sm text-gray-100 hover:text-gray-300 transition duration-300"
+              className="text-xs lg:text-sm text-gray-100 hover:text-gray-300 transition duration-300"
               to="/"
             >
               홈
             </Link>
             <Link
-              className="text-sm text-gray-100 hover:text-gray-300 transition duration-300"
+              className="text-xs lg:text-sm text-gray-100 hover:text-gray-300 transition duration-300"
               to="/series"
             >
               시리즈
             </Link>
             <Link
-              className="text-sm text-gray-100 hover:text-gray-300 transition duration-300"
+              className="text-xs lg:text-sm text-gray-100 hover:text-gray-300 transition duration-300"
               to="/movie"
             >
               영화
             </Link>
             <Link
-              className="text-sm text-gray-100 hover:text-gray-300 transition duration-300"
+              className="text-xs lg:text-sm text-gray-100 hover:text-gray-300 transition duration-300"
               to="/trending"
             >
               NEW! 요즘 대세 콘텐츠
             </Link>
             <Link
-              className="text-sm text-gray-100 hover:text-gray-300 transition duration-300"
+              className="text-xs lg:text-sm text-gray-100 hover:text-gray-300 transition duration-300"
               to="/favorite"
             >
               내가 찜한 리스트
