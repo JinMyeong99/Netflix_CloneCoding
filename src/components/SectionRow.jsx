@@ -64,17 +64,19 @@ export default function SectionRow({
         <div
           className="
             pointer-events-none
-            absolute left-0 top-0 h-full w-20
+            absolute left-0 top-0 h-full w-8
             bg-neutral-900/60
             z-10
+            md:w-12 lg:w-15 xl:w-19
           "
         />
         <div
           className="
             pointer-events-none
-            absolute right-0 top-0 h-full w-20
+            absolute right-0 top-0 h-full w-8
             bg-neutral-900/60
             z-10
+            md:w-12 lg:w-15 xl:w-19
           "
         />
 
@@ -86,13 +88,14 @@ export default function SectionRow({
             flex
             absolute left-0 top-1/2 -translate-y-1/2
             z-20
-            h-full w-20
+            h-full w-8
             items-center justify-center
             opacity-0 group-hover:opacity-100
             hover:bg-black/50
             transition-opacity duration-200
             rounded-md
             cursor-pointer
+            md:w-12 lg:w-15 xl:w-19
           "
         >
           <svg
@@ -101,10 +104,11 @@ export default function SectionRow({
             stroke="currentColor"
             strokeWidth="4"
             className="
-              w-14 h-14
+              w-8 h-14
               transition-transform
               duration-200
               group-hover/button:scale-125
+              md:w-12 lg:w-15 xl:w-19
             "
           >
             <path d="M30 10 L18 24 L30 38" />
@@ -119,13 +123,14 @@ export default function SectionRow({
             flex
             absolute right-0 top-1/2 -translate-y-1/2
             z-20
-            h-full w-20
+            h-full w-8
             items-center justify-center
             opacity-0 group-hover:opacity-100
             hover:bg-black/50
             transition-opacity duration-200
             rounded-md
             cursor-pointer
+            md:w-12 lg:w-15 xl:w-19
           "
         >
           <svg
@@ -134,10 +139,11 @@ export default function SectionRow({
             stroke="currentColor"
             strokeWidth="4"
             className="
-              w-14 h-14
+              w-8 h-14
               transition-transform
               duration-200
               group-hover/button:scale-125
+              md:w-12 lg:w-15 xl:w-19
             "
           >
             <path d="M18 10 L30 24 L18 38" />
