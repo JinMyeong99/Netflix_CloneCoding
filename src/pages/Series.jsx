@@ -85,10 +85,11 @@ export default function Series() {
 
         {error && <div className="text-red-500 mb-2">{error}</div>}
 
-        <div className="flex flex-wrap justify-between gap-y-20">
+        <div className="flex flex-wrap gap-y-20">
           {seriesWithGenre.map((series) => (
             <div
               key={series.id}
+              className="w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 flex justify-center px-1"
               onMouseEnter={() => handleMouseEnter(series.id)}
               onMouseLeave={() => handleMouseLeave(series.id)}
             >

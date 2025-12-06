@@ -34,10 +34,11 @@ export default function Favorite() {
     <div>
       <div className="pt-16 pb-10 px-[5%]">
         <h1 className="text-2xl mb-4">내가 찜한 콘텐츠</h1>
-        <div className="flex flex-wrap gap-x-[7.5px] gap-y-20">
+        <div className="flex flex-wrap gap-y-20">
           {favoritesWithGenre.map((favContent) => (
             <div
               key={favContent.id}
+              className="w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 flex justify-center px-1"
               onMouseEnter={() => handleMouseEnter(favContent.id)}
               onMouseLeave={() => handleMouseLeave(favContent.id)}
             >
