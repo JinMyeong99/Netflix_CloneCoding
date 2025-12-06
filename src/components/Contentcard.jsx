@@ -1,4 +1,3 @@
-// src/components/ContentCard.jsx
 import { useSelector } from "react-redux";
 import { ImageUrl } from "../api/tmdb";
 
