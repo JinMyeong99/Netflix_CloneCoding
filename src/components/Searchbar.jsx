@@ -83,7 +83,7 @@ export default function SearchBar() {
         className={`
           relative flex items-center h-9 overflow-hidden
           transition-width duration-300 ease-out
-          ${open ? "w-56" : "w-8"}
+          ${open ? "w-50 lg:w-56" : "w-8"}
         `}
       >
         <button

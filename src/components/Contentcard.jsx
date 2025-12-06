@@ -1,4 +1,3 @@
-// src/components/ContentCard.jsx
 import { useSelector } from "react-redux";
 import { ImageUrl } from "../api/tmdb";
 
@@ -24,8 +23,8 @@ export default function ContentCard({
     Array.isArray(content.genre) && content.genre.length > 0
       ? content.genre.map((g) => g.name)
       : Array.isArray(content.genre_names)
-      ? content.genre_names
-      : [];
+        ? content.genre_names
+        : [];
 
   const mainGenre = genre.slice(0, 3).join("∙");
 
