@@ -1,9 +1,9 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import ContentCard from "./ContentCard";
 import useHoverActive from "../hooks/useHoverActive";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-  
+
 export default function SectionRow({
   title,
   content,
@@ -15,6 +15,8 @@ export default function SectionRow({
     useHoverActive();
 
   const swiperRef = useRef(null);
+
+  const [visibleRange, setVisibleRange] = useState({ start: 0, end: 5 });
 
   if (!content || content.length === 0) return null;
 
@@ -28,6 +30,22 @@ export default function SectionRow({
     if (swiperRef.current) {
       swiperRef.current.slideNext();
     }
+  };
+
+  const updateVisibleRange = (swiper) => {
+    if (!swiper) return;
+
+    let slidesPerView = swiper.params.slidesPerView;
+    const currentBp = swiper.currentBreakpoint;
+    slidesPerView = swiper.params.breakpoints[currentBp].slidesPerView;
+
+    const start = swiper.activeIndex ?? 0;
+    const end = start + slidesPerView - 1;
+
+    setVisibleRange({
+      start,
+      end,
+    });
   };
 
   return (
@@ -46,17 +64,19 @@ export default function SectionRow({
         <div
           className="
             pointer-events-none
-            absolute left-0 top-0 h-full w-20
+            absolute left-0 top-0 h-full w-8
             bg-neutral-900/60
             z-10
+            md:w-12 lg:w-15 xl:w-19
           "
         />
         <div
           className="
             pointer-events-none
-            absolute right-0 top-0 h-full w-20
+            absolute right-0 top-0 h-full w-8
             bg-neutral-900/60
             z-10
+            md:w-12 lg:w-15 xl:w-19
           "
         />
 
@@ -68,13 +88,14 @@ export default function SectionRow({
             flex
             absolute left-0 top-1/2 -translate-y-1/2
             z-20
-            h-full w-20
+            h-full w-8
             items-center justify-center
             opacity-0 group-hover:opacity-100
             hover:bg-black/50
             transition-opacity duration-200
             rounded-md
             cursor-pointer
+            md:w-12 lg:w-15 xl:w-19
           "
         >
           <svg
@@ -83,10 +104,11 @@ export default function SectionRow({
             stroke="currentColor"
             strokeWidth="4"
             className="
-              w-14 h-14
+              w-8 h-14
               transition-transform
               duration-200
               group-hover/button:scale-125
+              md:w-12 lg:w-15 xl:w-19
             "
           >
             <path d="M30 10 L18 24 L30 38" />
@@ -101,13 +123,14 @@ export default function SectionRow({
             flex
             absolute right-0 top-1/2 -translate-y-1/2
             z-20
-            h-full w-20
+            h-full w-8
             items-center justify-center
             opacity-0 group-hover:opacity-100
             hover:bg-black/50
             transition-opacity duration-200
             rounded-md
             cursor-pointer
+            md:w-12 lg:w-15 xl:w-19
           "
         >
           <svg
@@ -116,10 +139,11 @@ export default function SectionRow({
             stroke="currentColor"
             strokeWidth="4"
             className="
-              w-14 h-14
+              w-8 h-14
               transition-transform
               duration-200
               group-hover/button:scale-125
+              md:w-12 lg:w-15 xl:w-19
             "
           >
             <path d="M18 10 L30 24 L18 38" />
@@ -130,6 +154,10 @@ export default function SectionRow({
           <Swiper
             onSwiper={(swiper) => {
               swiperRef.current = swiper;
+              updateVisibleRange(swiper);
+            }}
+            onSlideChange={(swiper) => {
+              updateVisibleRange(swiper);
             }}
             spaceBetween={8}
             slidesPerView={6}
@@ -156,23 +184,32 @@ export default function SectionRow({
               },
             }}
           >
-            {content.map((content) => (
-              <SwiperSlide
-                key={content.id}
-                onMouseEnter={() => handleMouseEnter(content.id)}
-                onMouseLeave={() => handleMouseLeave(content.id)}
-              >
-                <div className="shrink-0 transition-transform duration-200 ease-out flex justify-center">
-                  <ContentCard
-                    content={content}
-                    openHover={hoverContentId === content.id}
-                    openDetail={() => openDetail && openDetail(content)}
-                    toggleFavorite={toggleFavorite}
-                    onPlayTrailer={onPlayTrailer}
-                  />
-                </div>
-              </SwiperSlide>
-            ))}
+            {content.map((item, index) => {
+              const clampedEnd = Math.min(visibleRange.end, content.length - 1);
+
+              let hoverAlign = "center";
+              if (index === visibleRange.start) hoverAlign = "left";
+              else if (index === clampedEnd) hoverAlign = "right";
+
+              return (
+                <SwiperSlide
+                  key={item.id}
+                  onMouseEnter={() => handleMouseEnter(item.id)}
+                  onMouseLeave={() => handleMouseLeave(item.id)}
+                >
+                  <div className="shrink-0 transition-transform duration-200 ease-out flex justify-center">
+                    <ContentCard
+                      content={item}
+                      openHover={hoverContentId === item.id}
+                      openDetail={() => openDetail && openDetail(item)}
+                      toggleFavorite={toggleFavorite}
+                      onPlayTrailer={onPlayTrailer}
+                      hoverAlign={hoverAlign}
+                    />
+                  </div>
+                </SwiperSlide>
+              );
+            })}
           </Swiper>
         </div>
       </div>
