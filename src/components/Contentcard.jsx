@@ -7,6 +7,7 @@ export default function ContentCard({
   openDetail,
   toggleFavorite,
   onPlayTrailer,
+  hoverAlign = "center",
 }) {
   const poster =
     ImageUrl(content.poster_path || content.backdrop_path, "w400") || "";
@@ -36,6 +37,13 @@ export default function ContentCard({
     if (onPlayTrailer && content.trailerUrl) onPlayTrailer(content);
   };
 
+  const hoverPosition =
+    hoverAlign === "left"
+      ? "left-0 origin-left"
+      : hoverAlign === "right"
+        ? "right-0 origin-right"
+        : "left-1/2 -translate-x-1/2 origin-center";
+
   return (
     <article className="relative group/card w-full max-w-[220px]">
       <div className="w-full aspect-2/3 overflow-hidden rounded-md bg-neutral-800">
@@ -53,9 +61,10 @@ export default function ContentCard({
       </div>
 
       <div
-        className={`absolute left-1/2 -translate-x-1/2 top-5 w-[360px]
+        className={`absolute top-5 w-[360px]
         rounded-xl overflow-hidden bg-neutral-900 shadow-xl shadow-black/70
-        transition-all duration-200 origin-center
+        transition-all duration-200 
+        ${hoverPosition}
         ${
           openHover
             ? "opacity-100 scale-100 z-30 pointer-events-auto"

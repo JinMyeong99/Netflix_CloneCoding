@@ -1,9 +1,9 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import ContentCard from "./ContentCard";
 import useHoverActive from "../hooks/useHoverActive";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-  
+
 export default function SectionRow({
   title,
   content,
@@ -15,6 +15,8 @@ export default function SectionRow({
     useHoverActive();
 
   const swiperRef = useRef(null);
+
+  const [visibleRange, setVisibleRange] = useState({ start: 0, end: 5 });
 
   if (!content || content.length === 0) return null;
 
@@ -28,6 +30,22 @@ export default function SectionRow({
     if (swiperRef.current) {
       swiperRef.current.slideNext();
     }
+  };
+
+  const updateVisibleRange = (swiper) => {
+    if (!swiper) return;
+
+    let slidesPerView = swiper.params.slidesPerView;
+    const currentBp = swiper.currentBreakpoint;
+    slidesPerView = swiper.params.breakpoints[currentBp].slidesPerView;
+
+    const start = swiper.activeIndex ?? 0;
+    const end = start + slidesPerView - 1;
+
+    setVisibleRange({
+      start,
+      end,
+    });
   };
 
   return (
@@ -130,6 +148,10 @@ export default function SectionRow({
           <Swiper
             onSwiper={(swiper) => {
               swiperRef.current = swiper;
+              updateVisibleRange(swiper);
+            }}
+            onSlideChange={(swiper) => {
+              updateVisibleRange(swiper);
             }}
             spaceBetween={8}
             slidesPerView={6}
@@ -156,23 +178,32 @@ export default function SectionRow({
               },
             }}
           >
-            {content.map((content) => (
-              <SwiperSlide
-                key={content.id}
-                onMouseEnter={() => handleMouseEnter(content.id)}
-                onMouseLeave={() => handleMouseLeave(content.id)}
-              >
-                <div className="shrink-0 transition-transform duration-200 ease-out flex justify-center">
-                  <ContentCard
-                    content={content}
-                    openHover={hoverContentId === content.id}
-                    openDetail={() => openDetail && openDetail(content)}
-                    toggleFavorite={toggleFavorite}
-                    onPlayTrailer={onPlayTrailer}
-                  />
-                </div>
-              </SwiperSlide>
-            ))}
+            {content.map((item, index) => {
+              const clampedEnd = Math.min(visibleRange.end, content.length - 1);
+
+              let hoverAlign = "center";
+              if (index === visibleRange.start) hoverAlign = "left";
+              else if (index === clampedEnd) hoverAlign = "right";
+
+              return (
+                <SwiperSlide
+                  key={item.id}
+                  onMouseEnter={() => handleMouseEnter(item.id)}
+                  onMouseLeave={() => handleMouseLeave(item.id)}
+                >
+                  <div className="shrink-0 transition-transform duration-200 ease-out flex justify-center">
+                    <ContentCard
+                      content={item}
+                      openHover={hoverContentId === item.id}
+                      openDetail={() => openDetail && openDetail(item)}
+                      toggleFavorite={toggleFavorite}
+                      onPlayTrailer={onPlayTrailer}
+                      hoverAlign={hoverAlign}
+                    />
+                  </div>
+                </SwiperSlide>
+              );
+            })}
           </Swiper>
         </div>
       </div>
