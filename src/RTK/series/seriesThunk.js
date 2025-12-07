@@ -29,7 +29,7 @@ export const fetchSeriesPage = createAsyncThunk(
 
       const data = await res.json();
       const dataResults = data.results || [];
-      const results = await attachTrailer(dataResults, "series");
+      const results = await attachTrailer(dataResults, "tv");
 
       return {
         page: nextPage,
