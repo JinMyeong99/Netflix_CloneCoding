@@ -114,7 +114,7 @@ export default function ContentDetailModal({
               </div>
             </div>
 
-            <div className="justify-end space-y-1">
+            <div className="justify-end space-y-1 text-sm md:text-base">
               <div>
                 {year && (
                   <span className="text-neutral-400">
@@ -142,7 +142,9 @@ export default function ContentDetailModal({
           <div className="flex flex-col md:flex-row gap-5">
             <div className="flex-1 space-y-3">
               {overview && (
-                <p className="leading-relaxed text-[17px]">{overview}</p>
+                <p className="leading-relaxed text-sm md:text-base">
+                  {overview}
+                </p>
               )}
             </div>
 
