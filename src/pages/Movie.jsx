@@ -18,6 +18,8 @@ export default function Movie() {
     (state) => state.movie
   );
 
+  const isInitialLoading = page === 0 && list.length === 0;
+
   useEffect(() => {
     if (page === 0 && list.length === 0) {
       dispatch(MovieSlice.actions.resetMovie());
@@ -67,6 +69,14 @@ export default function Movie() {
 
   const heroContent = moviesWithGenres[0];
 
+  if (isInitialLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        인기 영화 로딩 중...
+      </div>
+    );
+  }
+
   return (
     <div>
       <HeroBanner
@@ -106,7 +116,7 @@ export default function Movie() {
         </div>
 
         {loading && (
-          <div className="min-h-screen flex items-center justify-center pb-30">
+          <div className="min-h-screen flex items-center justify-center">
             불러오는 중...
           </div>
         )}

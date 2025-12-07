@@ -17,6 +17,8 @@ export default function Series() {
     (state) => state.series
   );
 
+  const isInitialLoading = page === 0 && list.length === 0;
+
   useEffect(() => {
     if (page === 0 && list.length === 0) {
       dispatch(seriesSlice.actions.resetSeries());
@@ -64,6 +66,14 @@ export default function Series() {
     useHoverActive();
 
   const heroContent = seriesWithGenre[0];
+
+  if (isInitialLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        인기 시리즈 로딩 중...
+      </div>
+    );
+  }
 
   return (
     <div>
