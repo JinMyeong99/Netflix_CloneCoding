@@ -12,7 +12,7 @@ import Signup from "./pages/Signup";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchGenre } from "./RTK/genre/genreThunk";
-import AuthInit from "./components/AuthManager";
+import AuthManager from "./components/AuthManager";
 import ProfilePage from "./pages/ProfilePage";
 
 function App() {
@@ -31,7 +31,7 @@ function App() {
 
   return (
     <div className="bg-neutral-900 min-h-screen text-white">
-      <AuthInit />
+      <AuthManager />
 
       {!hideNavbar && <Navbar />}
       <main>

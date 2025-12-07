@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { loginSlice } from "../RTK/loginSlice";
 import { supabase } from "../api/supabaseClient";
 
-export default function AuthInit() {
+export default function AuthManager() {
   const dispatch = useDispatch();
 
   useEffect(() => {
