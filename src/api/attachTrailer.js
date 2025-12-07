@@ -6,15 +6,13 @@ const paramsVideo = new URLSearchParams({
   append_to_response: "videos",
 }).toString();
 
-export async function attachTrailer(contents, mode = "auto") {
+export async function attachTrailer(contents, mode) {
   if (!Array.isArray(contents) || contents.length === 0) return [];
 
   async function fetchTrailer(content, mediaType) {
     try {
       const url = `${BaseUrl}/${mediaType}/${content.id}?${paramsVideo}`;
       const res = await fetch(url);
-      if (!res.ok) throw new Error("동영상 로딩 실패");
-
       const data = await res.json();
 
       const trailer =
