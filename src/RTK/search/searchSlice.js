@@ -48,10 +48,22 @@ export const searchSlice = createSlice({
       })
       .addCase(fetchSearchPage.fulfilled, (state, action) => {
         state.loading = false;
-        const { page, results, totalPages } = action.payload;
+        const { page, results = [], totalPages } = action.payload;
+
+        const contentKeys = new Set(
+          state.results.map(
+            (content) => `${content.media_type || "auto"}-${content.id}`
+          )
+        );
+        const filteredResults = results.filter((content) => {
+          const key = `${content.media_type || "auto"}-${content.id}`;
+          if (contentKeys.has(key)) return false;
+          contentKeys.add(key);
+          return true;
+        });
 
         state.page = page;
-        state.results.push(...results);
+        state.results.push(...filteredResults);
 
         if (page >= totalPages || results.length === 0) {
           state.hasMore = false;
