@@ -8,6 +8,7 @@ import ContentCard from "../components/ContentCard";
 import useGenreName from "../hooks/useGenreName";
 import useContentDetail from "../hooks/useContentDetail";
 import useHoverActive from "../hooks/useHoverActive";
+import useFavorite from "../hooks/useFavorite";
 import ContentDetailModal from "../components/ContentDetailModal";
 import HeroBanner from "../components/HeroBanner";
 
@@ -57,6 +58,7 @@ export default function Movie() {
 
   const { hoverContentId, handleMouseEnter, handleMouseLeave } =
     useHoverActive();
+  const { favoriteId } = useFavorite();
 
   const {
     selectedContent,
@@ -106,8 +108,9 @@ export default function Movie() {
             >
               <ContentCard
                 content={movie}
+                isFavorite={favoriteId.has(movie.id)}
                 openHover={hoverContentId === movie.id}
-                openDetail={() => openDetail(movie)}
+                openDetail={openDetail}
                 toggleFavorite={toggleFavorite}
                 onPlayTrailer={playTrailer}
               />

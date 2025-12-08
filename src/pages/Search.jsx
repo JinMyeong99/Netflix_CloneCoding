@@ -6,6 +6,7 @@ import ContentCard from "../components/ContentCard";
 import useContentDetail from "../hooks/useContentDetail";
 import useHoverActive from "../hooks/useHoverActive";
 import useGenreName from "../hooks/useGenreName";
+import useFavorite from "../hooks/useFavorite";
 import ContentDetailModal from "../components/ContentDetailModal";
 
 export default function Search() {
@@ -39,6 +40,7 @@ export default function Search() {
 
   const { hoverContentId, handleMouseEnter, handleMouseLeave } =
     useHoverActive();
+  const { favoriteId } = useFavorite();
 
   return (
     <div className="mx-auto max-w-[90%] pb-25 pt-16">
@@ -58,8 +60,9 @@ export default function Search() {
           >
             <ContentCard
               content={content}
+              isFavorite={favoriteId.has(content.id)}
               openHover={hoverContentId === content.id}
-              openDetail={() => openDetail(content)}
+              openDetail={openDetail}
               toggleFavorite={toggleFavorite}
               onPlayTrailer={playTrailer}
             />

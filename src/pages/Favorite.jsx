@@ -44,8 +44,9 @@ export default function Favorite() {
             >
               <ContentCard
                 content={favContent}
+                isFavorite
                 openHover={hoverContentId === favContent.id}
-                openDetail={() => openDetail(favContent)}
+                openDetail={openDetail}
                 toggleFavorite={toggleFavorite}
                 onPlayTrailer={playTrailer}
               />
