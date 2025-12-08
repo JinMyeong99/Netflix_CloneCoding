@@ -17,7 +17,7 @@ export default function Search() {
 
   const loadMore = useCallback(() => {
     if (!loading && hasMore && query.trim()) {
-      dispatch(fetchSearchPage());
+      dispatch(fetchSearchPage(query));
     }
   }, [dispatch, loading, hasMore, query]);
 
@@ -51,10 +51,11 @@ export default function Search() {
       {!loading && results.length === 0 && query.trim() && !error && (
         <div>검색 결과가 없습니다.</div>
       )}
-      <div className="flex flex-wrap gap-x-[7.5px] gap-y-30">
+      <div className="flex flex-wrap gap-y-20">
         {resultsWithGenre.map((content) => (
           <div
             key={`${content.media_type}-${content.id}`}
+            className="w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 flex justify-center px-1"
             onMouseEnter={() => handleMouseEnter(content.id)}
             onMouseLeave={() => handleMouseLeave(content.id)}
           >

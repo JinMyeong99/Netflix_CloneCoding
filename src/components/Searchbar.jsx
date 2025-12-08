@@ -72,8 +72,8 @@ export default function SearchBar() {
       }
       dispatch(searchSlice.actions.resetSearch());
       dispatch(searchSlice.actions.setQuery(searchValue));
-      dispatch(fetchSearchPage());
-    }, 400);
+      dispatch(fetchSearchPage(searchValue));
+    }, 500);
     return () => clearTimeout(id);
   }, [value, open, location.pathname, originPath, navigate, dispatch]);
 
