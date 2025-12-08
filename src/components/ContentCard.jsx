@@ -1,8 +1,9 @@
-import { useSelector } from "react-redux";
+import { memo } from "react";
 import { ImageUrl } from "../api/tmdb";
 
-export default function ContentCard({
+function ContentCard({
   content,
+  isFavorite = false,
   openHover,
   openDetail,
   toggleFavorite,
@@ -14,11 +15,6 @@ export default function ContentCard({
   const backdrop =
     ImageUrl(content.backdrop_path || content.poster_path, "w780") || "";
   const title = content.title || content.name || "";
-
-  const favoriteList = useSelector((state) => state.favorite.list);
-  const isFavorite = favoriteList.some(
-    (favContent) => favContent.id === content.id
-  );
 
   const genres =
     Array.isArray(content.genre) && content.genre.length > 0
@@ -35,6 +31,10 @@ export default function ContentCard({
 
   const handlePlay = () => {
     if (onPlayTrailer && content.trailerUrl) onPlayTrailer(content);
+  };
+
+  const handleOpenDetail = () => {
+    if (openDetail) openDetail(content);
   };
 
   const hoverPosition =
@@ -120,7 +120,7 @@ export default function ContentCard({
             <button
               type="button"
               className="flex items-center justify-center h-8 w-8 rounded-full border bg-neutral-800 border-neutral-500 cursor-pointer"
-              onClick={openDetail}
+              onClick={handleOpenDetail}
             >
               ⌵
             </button>
@@ -132,3 +132,5 @@ export default function ContentCard({
     </article>
   );
 }
+
+export default memo(ContentCard);
