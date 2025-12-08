@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { ImageUrl } from "../api/tmdb";
+import { backdropSrcSet, ImageUrl, posterSrcSet } from "../api/tmdb";
 
 function ContentCard({
   content,
@@ -10,8 +10,11 @@ function ContentCard({
   onPlayTrailer,
   hoverAlign = "center",
 }) {
-  const poster = ImageUrl(content.poster_path, "w400") || "";
-  const backdrop = ImageUrl(content.backdrop_path, "w780") || "";
+  const posterPath = content.poster_path;
+  const poster = ImageUrl(posterPath, "w342") || "";
+
+  const backdropPath = content.backdrop_path;
+  const backdrop = ImageUrl(backdropPath, "w780") || "";
   const title = content.title || content.name || "";
 
   const genres =
@@ -48,8 +51,12 @@ function ContentCard({
         {poster ? (
           <img
             src={poster}
+            srcSet={posterSrcSet(posterPath)}
+            sizes="(min-width: 1280px) 220px, (min-width: 768px) 180px, 33vw"
             alt={title}
             className="w-full h-full object-cover object-center"
+            loading="lazy"
+            decoding="async"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-neutral-700 text-neutral-300">
@@ -73,8 +80,12 @@ function ContentCard({
           {backdrop ? (
             <img
               src={backdrop}
+              srcSet={backdropSrcSet(backdropPath)}
+              sizes="(min-width: 1280px) 360px, 80vw"
               alt={title}
               className="w-full h-full object-cover object-center"
+              loading="lazy"
+              decoding="async"
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-neutral-300">
