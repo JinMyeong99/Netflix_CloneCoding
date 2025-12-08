@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import ContentCard from "./ContentCard";
 import useHoverActive from "../hooks/useHoverActive";
+import useFavorite from "../hooks/useFavorite";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 
@@ -13,6 +14,8 @@ export default function SectionRow({
 }) {
   const { hoverContentId, handleMouseEnter, handleMouseLeave } =
     useHoverActive();
+
+  const { favoriteId } = useFavorite();
 
   const swiperRef = useRef(null);
 
@@ -200,8 +203,9 @@ export default function SectionRow({
                   <div className="shrink-0 transition-transform duration-200 ease-out flex justify-center">
                     <ContentCard
                       content={item}
+                      isFavorite={favoriteId.has(item.id)}
                       openHover={hoverContentId === item.id}
-                      openDetail={() => openDetail(item)}
+                      openDetail={openDetail}
                       toggleFavorite={toggleFavorite}
                       onPlayTrailer={onPlayTrailer}
                       hoverAlign={hoverAlign}
