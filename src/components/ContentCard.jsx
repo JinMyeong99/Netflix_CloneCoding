@@ -10,10 +10,8 @@ function ContentCard({
   onPlayTrailer,
   hoverAlign = "center",
 }) {
-  const poster =
-    ImageUrl(content.poster_path || content.backdrop_path, "w400") || "";
-  const backdrop =
-    ImageUrl(content.backdrop_path || content.poster_path, "w780") || "";
+  const poster = ImageUrl(content.poster_path, "w400") || "";
+  const backdrop = ImageUrl(content.backdrop_path, "w780") || "";
   const title = content.title || content.name || "";
 
   const genres =
@@ -75,12 +73,6 @@ function ContentCard({
           {backdrop ? (
             <img
               src={backdrop}
-              alt={title}
-              className="w-full h-full object-cover object-center"
-            />
-          ) : poster ? (
-            <img
-              src={poster}
               alt={title}
               className="w-full h-full object-cover object-center"
             />
