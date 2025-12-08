@@ -1,19 +1,20 @@
 import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Navbar";
-import Home from "./pages/Home";
-import Movie from "./pages/Movie";
-import Series from "./pages/Series";
-import Trending from "./pages/Trending";
-import Favorite from "./pages/Favorite";
-import Search from "./pages/Search";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
+import { lazy, Suspense, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
 import { fetchGenre } from "./RTK/genre/genreThunk";
 import AuthManager from "./components/AuthManager";
-import ProfilePage from "./pages/ProfilePage";
+
+const Home = lazy(() => import("./pages/Home"));
+const Movie = lazy(() => import("./pages/Movie"));
+const Series = lazy(() => import("./pages/Series"));
+const Trending = lazy(() => import("./pages/Trending"));
+const Favorite = lazy(() => import("./pages/Favorite"));
+const Search = lazy(() => import("./pages/Search"));
+const Login = lazy(() => import("./pages/Login"));
+const Signup = lazy(() => import("./pages/Signup"));
+const ProfilePage = lazy(() => import("./pages/ProfilePage"));
 
 function App() {
   const dispatch = useDispatch();
@@ -35,17 +36,25 @@ function App() {
 
       {!hideNavbar && <Navbar />}
       <main>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/series" element={<Series />} />
-          <Route path="/movie" element={<Movie />} />
-          <Route path="/trending" element={<Trending />} />
-          <Route path="/favorite" element={<Favorite />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/profile" element={<ProfilePage />} />
-        </Routes>
+        <Suspense
+          fallback={
+            <div className="min-h-screen flex items-center justify-center">
+              로딩 중...
+            </div>
+          }
+        >
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/series" element={<Series />} />
+            <Route path="/movie" element={<Movie />} />
+            <Route path="/trending" element={<Trending />} />
+            <Route path="/favorite" element={<Favorite />} />
+            <Route path="/search" element={<Search />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/profile" element={<ProfilePage />} />
+          </Routes>
+        </Suspense>
       </main>
     </div>
   );
