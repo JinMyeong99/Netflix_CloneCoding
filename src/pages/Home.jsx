@@ -25,17 +25,6 @@ export default function Home() {
     dispatch(fetchHomeData());
   }, [dispatch]);
 
-  const {
-    selectedContent,
-    showDetail,
-    openDetail,
-    closeDetail,
-    toggleFavorite,
-    playTrailer,
-  } = useContentDetail();
-
-  const { error: genreError } = useSelector((state) => state.genre);
-
   const popularWithGenre = useGenreName(popular, "movie");
   const topRatedWithGenre = useGenreName(topRated, "movie");
   const actionAdventureWithGenre = useGenreName(actionAdventure, "movie");
@@ -45,6 +34,15 @@ export default function Home() {
 
   const heroContent = popularWithGenre[0];
 
+  const {
+    selectedContent,
+    showDetail,
+    openDetail,
+    closeDetail,
+    toggleFavorite,
+    playTrailer,
+  } = useContentDetail();
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center pb-30">
@@ -53,10 +51,10 @@ export default function Home() {
     );
   }
 
-  if (error || genreError) {
+  if (error) {
     return (
       <div className="pt-16 min-h-screen flex items-center justify-center text-red-400">
-        에러: {error || genreError}
+        에러: {error}
       </div>
     );
   }

@@ -201,7 +201,7 @@ export default function SectionRow({
                     <ContentCard
                       content={item}
                       openHover={hoverContentId === item.id}
-                      openDetail={() => openDetail && openDetail(item)}
+                      openDetail={() => openDetail(item)}
                       toggleFavorite={toggleFavorite}
                       onPlayTrailer={onPlayTrailer}
                       hoverAlign={hoverAlign}

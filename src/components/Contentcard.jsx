@@ -20,14 +20,14 @@ export default function ContentCard({
     (favContent) => favContent.id === content.id
   );
 
-  const genre =
+  const genres =
     Array.isArray(content.genre) && content.genre.length > 0
-      ? content.genre.map((g) => g.name)
+      ? content.genre.map((genre) => genre.name)
       : Array.isArray(content.genre_names)
         ? content.genre_names
         : [];
 
-  const mainGenre = genre.slice(0, 3).join("∙");
+  const mainGenre = genres.slice(0, 3).join("∙");
 
   const handleFavorite = () => {
     if (toggleFavorite) toggleFavorite(content);

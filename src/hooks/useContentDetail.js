@@ -3,8 +3,6 @@ import { useDispatch } from "react-redux";
 import { favoriteSlice } from "../RTK/favoriteSlice";
 
 export default function useContentDetail() {
-  const dispatch = useDispatch();
-
   const [selectedContent, setSelectedContent] = useState(null);
   const [showDetail, setShowDetail] = useState(false);
 
@@ -17,6 +15,8 @@ export default function useContentDetail() {
     setShowDetail(false);
     setSelectedContent(null);
   };
+
+  const dispatch = useDispatch();
 
   const toggleFavorite = (content) => {
     dispatch(favoriteSlice.actions.toggleFavorite(content));
