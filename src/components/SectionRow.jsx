@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import ContentCard from "./ContentCard";
 import useHoverActive from "../hooks/useHoverActive";
 import useFavorite from "../hooks/useFavorite";
@@ -23,21 +23,41 @@ export default function SectionRow({
 
   const [visibleRange, setVisibleRange] = useState({ start: 0, end: 5 });
 
-  if (!content || content.length === 0) return null;
-
-  const scrollLeft = () => {
+  const scrollLeft = useCallback(() => {
     if (swiperRef.current) {
       swiperRef.current.slidePrev();
     }
-  };
+  }, []);
 
-  const scrollRight = () => {
+  const scrollRight = useCallback(() => {
     if (swiperRef.current) {
       swiperRef.current.slideNext();
     }
-  };
+  }, []);
 
-  const updateVisibleRange = (swiper) => {
+  const breakpoints = useMemo(
+    () => ({
+      0: {
+        slidesPerView: 3,
+        slidesPerGroup: 3,
+      },
+      640: {
+        slidesPerView: 4,
+        slidesPerGroup: 4,
+      },
+      1024: {
+        slidesPerView: 5,
+        slidesPerGroup: 5,
+      },
+      1280: {
+        slidesPerView: 6,
+        slidesPerGroup: 6,
+      },
+    }),
+    []
+  );
+
+  const updateVisibleRange = useCallback((swiper) => {
     if (!swiper) return;
 
     let slidesPerView = swiper.params.slidesPerView || 0;
@@ -53,11 +73,16 @@ export default function SectionRow({
     const start = swiper.activeIndex ?? 0;
     const end = start + slidesPerView - 1;
 
-    setVisibleRange({
-      start,
-      end,
+    setVisibleRange((prev) => {
+      if (prev.start === start && prev.end === end) return prev;
+      return {
+        start,
+        end,
+      };
     });
-  };
+  }, []);
+
+  if (!content || content.length === 0) return null;
 
   return (
     <section className="relative py-4">
@@ -96,24 +121,7 @@ export default function SectionRow({
               addSlidesBefore: 6,
               addSlidesAfter: 6,
             }}
-            breakpoints={{
-              0: {
-                slidesPerView: 3,
-                slidesPerGroup: 3,
-              },
-              640: {
-                slidesPerView: 4,
-                slidesPerGroup: 4,
-              },
-              1024: {
-                slidesPerView: 5,
-                slidesPerGroup: 5,
-              },
-              1280: {
-                slidesPerView: 6,
-                slidesPerGroup: 6,
-              },
-            }}
+            breakpoints={breakpoints}
           >
             {content.map((item, index) => {
               const clampedEnd = Math.min(visibleRange.end, content.length - 1);
