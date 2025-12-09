@@ -3,7 +3,9 @@ import ContentCard from "./ContentCard";
 import useHoverActive from "../hooks/useHoverActive";
 import useFavorite from "../hooks/useFavorite";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Virtual } from "swiper/modules";
 import "swiper/css";
+import SlideButton from "./SlideButton";
 
 export default function SectionRow({
   title,
@@ -38,9 +40,15 @@ export default function SectionRow({
   const updateVisibleRange = (swiper) => {
     if (!swiper) return;
 
-    let slidesPerView = swiper.params.slidesPerView;
+    let slidesPerView = swiper.params.slidesPerView || 0;
+
     const currentBp = swiper.currentBreakpoint;
-    slidesPerView = swiper.params.breakpoints[currentBp].slidesPerView;
+    if (
+      swiper.params.breakpoints &&
+      swiper.params.breakpoints[currentBp]?.slidesPerView
+    ) {
+      slidesPerView = swiper.params.breakpoints[currentBp].slidesPerView;
+    }
 
     const start = swiper.activeIndex ?? 0;
     const end = start + slidesPerView - 1;
@@ -64,97 +72,12 @@ export default function SectionRow({
           group
         "
       >
-        <div
-          className="
-            pointer-events-none
-            absolute left-0 top-0 h-full w-8
-            bg-neutral-900/60
-            z-10
-            md:w-12 lg:w-15 xl:w-19
-          "
-        />
-        <div
-          className="
-            pointer-events-none
-            absolute right-0 top-0 h-full w-8
-            bg-neutral-900/60
-            z-10
-            md:w-12 lg:w-15 xl:w-19
-          "
-        />
-
-        <button
-          type="button"
-          onClick={scrollLeft}
-          className="
-            group/button
-            flex
-            absolute left-0 top-1/2 -translate-y-1/2
-            z-20
-            h-full w-8
-            items-center justify-center
-            opacity-0 group-hover:opacity-100
-            hover:bg-black/50
-            transition-opacity duration-200
-            rounded-md
-            cursor-pointer
-            md:w-12 lg:w-15 xl:w-19
-          "
-        >
-          <svg
-            viewBox="0 0 48 48"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="4"
-            className="
-              w-8 h-14
-              transition-transform
-              duration-200
-              group-hover/button:scale-125
-              md:w-12 lg:w-15 xl:w-19
-            "
-          >
-            <path d="M30 10 L18 24 L30 38" />
-          </svg>
-        </button>
-
-        <button
-          type="button"
-          onClick={scrollRight}
-          className="
-            group/button
-            flex
-            absolute right-0 top-1/2 -translate-y-1/2
-            z-20
-            h-full w-8
-            items-center justify-center
-            opacity-0 group-hover:opacity-100
-            hover:bg-black/50
-            transition-opacity duration-200
-            rounded-md
-            cursor-pointer
-            md:w-12 lg:w-15 xl:w-19
-          "
-        >
-          <svg
-            viewBox="0 0 48 48"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="4"
-            className="
-              w-8 h-14
-              transition-transform
-              duration-200
-              group-hover/button:scale-125
-              md:w-12 lg:w-15 xl:w-19
-            "
-          >
-            <path d="M18 10 L30 24 L18 38" />
-          </svg>
-        </button>
+        <SlideButton direction="left" onClick={scrollLeft} />
+        <SlideButton direction="right" onClick={scrollRight} />
 
         <div className="px-[5.5%]">
           <Swiper
+            modules={[Virtual]}
             onSwiper={(swiper) => {
               swiperRef.current = swiper;
               updateVisibleRange(swiper);
@@ -168,6 +91,11 @@ export default function SectionRow({
             loop={false}
             watchOverflow={true}
             className="mt-2 overflow-visible!"
+            virtual={{
+              enabled: true,
+              addSlidesBefore: 6,
+              addSlidesAfter: 6,
+            }}
             breakpoints={{
               0: {
                 slidesPerView: 3,
@@ -197,6 +125,7 @@ export default function SectionRow({
               return (
                 <SwiperSlide
                   key={item.id}
+                  virtualIndex={index}
                   onMouseEnter={() => handleMouseEnter(item.id)}
                   onMouseLeave={() => handleMouseLeave(item.id)}
                 >
