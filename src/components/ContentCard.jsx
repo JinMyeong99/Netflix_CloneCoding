@@ -54,6 +54,8 @@ function ContentCard({
             srcSet={posterSrcSet(posterPath)}
             sizes="(min-width: 1280px) 220px, (min-width: 768px) 180px, 33vw"
             alt={title}
+            width={342}
+            height={513}
             className="w-full h-full object-cover object-center"
             loading="lazy"
             decoding="async"
@@ -83,6 +85,8 @@ function ContentCard({
               srcSet={backdropSrcSet(backdropPath)}
               sizes="(min-width: 1280px) 360px, 80vw"
               alt={title}
+              width={780}
+              height={439}
               className="w-full h-full object-cover object-center"
               loading="lazy"
               decoding="async"
