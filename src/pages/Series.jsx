@@ -11,12 +11,15 @@ import useFavorite from "../hooks/useFavorite";
 import ContentDetailModal from "../components/ContentDetailModal";
 import useGenreName from "../hooks/useGenreName";
 import HeroBanner from "../components/HeroBanner";
+import useSingleFetch from "../hooks/useSingleFetch";
 
 export default function Series() {
   const dispatch = useDispatch();
   const { list, loading, hasMore, page, error } = useSelector(
     (state) => state.series
   );
+
+  const runOnce = useSingleFetch(loading);
 
   const isInitialLoading = page === 0 && list.length === 0;
 
@@ -28,10 +31,9 @@ export default function Series() {
   }, [dispatch, page, list.length]);
 
   const loadMore = useCallback(() => {
-    if (!loading && hasMore) {
-      dispatch(fetchSeriesPage());
-    }
-  }, [dispatch, loading, hasMore]);
+    if (!hasMore) return;
+    runOnce(() => dispatch(fetchSeriesPage()));
+  }, [dispatch, hasMore, runOnce]);
 
   const loaderRef = useInfiniteScroll({
     loading,

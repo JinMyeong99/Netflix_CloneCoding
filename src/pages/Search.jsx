@@ -8,6 +8,7 @@ import useHoverActive from "../hooks/useHoverActive";
 import useGenreName from "../hooks/useGenreName";
 import useFavorite from "../hooks/useFavorite";
 import ContentDetailModal from "../components/ContentDetailModal";
+import useSingleFetch from "../hooks/useSingleFetch";
 
 export default function Search() {
   const dispatch = useDispatch();
@@ -15,11 +16,13 @@ export default function Search() {
     (state) => state.search
   );
 
+  const runOnce = useSingleFetch(loading);
+
   const loadMore = useCallback(() => {
-    if (!loading && hasMore && query.trim()) {
-      dispatch(fetchSearchPage(query));
-    }
-  }, [dispatch, loading, hasMore, query]);
+    if (!hasMore) return;
+    if (!query.trim()) return;
+    runOnce(() => dispatch(fetchSearchPage(query)));
+  }, [dispatch, hasMore, query, runOnce]);
 
   const loaderRef = useInfiniteScroll({
     loading,
