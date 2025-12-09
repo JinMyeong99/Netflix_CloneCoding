@@ -8,8 +8,10 @@ import ContentCard from "../components/ContentCard";
 import useGenreName from "../hooks/useGenreName";
 import useContentDetail from "../hooks/useContentDetail";
 import useHoverActive from "../hooks/useHoverActive";
+import useFavorite from "../hooks/useFavorite";
 import ContentDetailModal from "../components/ContentDetailModal";
 import HeroBanner from "../components/HeroBanner";
+import useSingleFetch from "../hooks/useSingleFetch";
 
 export default function Movie() {
   const dispatch = useDispatch();
@@ -17,6 +19,8 @@ export default function Movie() {
   const { list, loading, hasMore, page, error } = useSelector(
     (state) => state.movie
   );
+
+  const runOnce = useSingleFetch(loading);
 
   const isInitialLoading = page === 0 && list.length === 0;
 
@@ -28,10 +32,9 @@ export default function Movie() {
   }, [dispatch, page, list.length]);
 
   const loadMore = useCallback(() => {
-    if (!loading && hasMore) {
-      dispatch(fetchMoviePage());
-    }
-  }, [dispatch, loading, hasMore]);
+    if (!hasMore) return;
+    runOnce(() => dispatch(fetchMoviePage()));
+  }, [dispatch, hasMore, runOnce]);
 
   const loaderRef = useInfiniteScroll({
     loading,
@@ -57,6 +60,7 @@ export default function Movie() {
 
   const { hoverContentId, handleMouseEnter, handleMouseLeave } =
     useHoverActive();
+  const { favoriteId } = useFavorite();
 
   const {
     selectedContent,
@@ -106,8 +110,9 @@ export default function Movie() {
             >
               <ContentCard
                 content={movie}
+                isFavorite={favoriteId.has(movie.id)}
                 openHover={hoverContentId === movie.id}
-                openDetail={() => openDetail(movie)}
+                openDetail={openDetail}
                 toggleFavorite={toggleFavorite}
                 onPlayTrailer={playTrailer}
               />

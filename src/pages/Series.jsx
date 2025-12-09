@@ -7,15 +7,19 @@ import GenreSelector from "../components/GenreSelector";
 import ContentCard from "../components/ContentCard";
 import useContentDetail from "../hooks/useContentDetail";
 import useHoverActive from "../hooks/useHoverActive";
+import useFavorite from "../hooks/useFavorite";
 import ContentDetailModal from "../components/ContentDetailModal";
 import useGenreName from "../hooks/useGenreName";
 import HeroBanner from "../components/HeroBanner";
+import useSingleFetch from "../hooks/useSingleFetch";
 
 export default function Series() {
   const dispatch = useDispatch();
   const { list, loading, hasMore, page, error } = useSelector(
     (state) => state.series
   );
+
+  const runOnce = useSingleFetch(loading);
 
   const isInitialLoading = page === 0 && list.length === 0;
 
@@ -27,10 +31,9 @@ export default function Series() {
   }, [dispatch, page, list.length]);
 
   const loadMore = useCallback(() => {
-    if (!loading && hasMore) {
-      dispatch(fetchSeriesPage());
-    }
-  }, [dispatch, loading, hasMore]);
+    if (!hasMore) return;
+    runOnce(() => dispatch(fetchSeriesPage()));
+  }, [dispatch, hasMore, runOnce]);
 
   const loaderRef = useInfiniteScroll({
     loading,
@@ -64,6 +67,7 @@ export default function Series() {
 
   const { hoverContentId, handleMouseEnter, handleMouseLeave } =
     useHoverActive();
+  const { favoriteId } = useFavorite();
 
   const heroContent = seriesWithGenre[0];
 
@@ -105,8 +109,9 @@ export default function Series() {
             >
               <ContentCard
                 content={series}
+                isFavorite={favoriteId.has(series.id)}
                 openHover={hoverContentId === series.id}
-                openDetail={() => openDetail(series)}
+                openDetail={openDetail}
                 toggleFavorite={toggleFavorite}
                 onPlayTrailer={playTrailer}
               />

@@ -11,7 +11,7 @@ export default function SearchBar() {
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
-  const [originPath, setOriginPath] = useState(null);
+  const originPathRef = useRef(null);
 
   const barRef = useRef(null);
   const inputRef = useRef(null);
@@ -19,7 +19,13 @@ export default function SearchBar() {
   const handleButtonClick = () => {
     if (!open) {
       if (!location.pathname.startsWith("/search")) {
-        setOriginPath(location.pathname);
+        originPathRef.current = location.pathname;
+      }
+      if (
+        location.pathname.startsWith("/search") &&
+        originPathRef.current === null
+      ) {
+        originPathRef.current = "/";
       }
       setOpen(true);
     }
@@ -59,23 +65,27 @@ export default function SearchBar() {
       if (!searchValue) {
         dispatch(searchSlice.actions.resetSearch());
 
-        if (location.pathname.startsWith("/search") && originPath) {
-          navigate(originPath);
+        if (
+          location.pathname.startsWith("/search") &&
+          originPathRef.current
+        ) {
+          navigate(originPathRef.current);
+          originPathRef.current = null;
         }
         return;
       }
       if (!location.pathname.startsWith("/search")) {
-        if (!originPath) {
-          setOriginPath(location.pathname);
+        if (!originPathRef.current) {
+          originPathRef.current = location.pathname;
         }
         navigate("/search");
       }
       dispatch(searchSlice.actions.resetSearch());
       dispatch(searchSlice.actions.setQuery(searchValue));
-      dispatch(fetchSearchPage());
-    }, 400);
+      dispatch(fetchSearchPage(searchValue));
+    }, 500);
     return () => clearTimeout(id);
-  }, [value, open, location.pathname, originPath, navigate, dispatch]);
+  }, [value, open, location.pathname, navigate, dispatch]);
 
   return (
     <div ref={barRef} className="flex items-center">

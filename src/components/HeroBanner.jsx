@@ -1,10 +1,10 @@
-import { ImageUrl } from "../api/tmdb";
+import { backdropSrcSet, ImageUrl } from "../api/tmdb";
 
 export default function HeroBanner({ content, openDetail, onPlayTrailer }) {
   if (!content) return null;
 
-  const backdrop =
-    ImageUrl(content.backdrop_path || content.poster_path, "w1280") || "";
+  const backdropPath = content.backdrop_path;
+  const backdrop = ImageUrl(backdropPath, "w1280") || "";
 
   const title = content.title || content.name || "";
 
@@ -25,8 +25,13 @@ export default function HeroBanner({ content, openDetail, onPlayTrailer }) {
       {backdrop ? (
         <img
           src={backdrop}
+          srcSet={backdropSrcSet(backdropPath)}
+          sizes="(min-width: 1280px) 1280px, 100vw"
           alt={title}
           className="w-full max-h-screen object-cover object-center"
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
         />
       ) : (
         ""

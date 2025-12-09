@@ -1,24 +1,21 @@
-import { useSelector } from "react-redux";
-import { ImageUrl } from "../api/tmdb";
+import { memo } from "react";
+import { backdropSrcSet, ImageUrl, posterSrcSet } from "../api/tmdb";
 
-export default function ContentCard({
+function ContentCard({
   content,
+  isFavorite = false,
   openHover,
   openDetail,
   toggleFavorite,
   onPlayTrailer,
   hoverAlign = "center",
 }) {
-  const poster =
-    ImageUrl(content.poster_path || content.backdrop_path, "w400") || "";
-  const backdrop =
-    ImageUrl(content.backdrop_path || content.poster_path, "w780") || "";
-  const title = content.title || content.name || "";
+  const posterPath = content.poster_path;
+  const poster = ImageUrl(posterPath, "w342") || "";
 
-  const favoriteList = useSelector((state) => state.favorite.list);
-  const isFavorite = favoriteList.some(
-    (favContent) => favContent.id === content.id
-  );
+  const backdropPath = content.backdrop_path;
+  const backdrop = ImageUrl(backdropPath, "w780") || "";
+  const title = content.title || content.name || "";
 
   const genres =
     Array.isArray(content.genre) && content.genre.length > 0
@@ -37,6 +34,10 @@ export default function ContentCard({
     if (onPlayTrailer && content.trailerUrl) onPlayTrailer(content);
   };
 
+  const handleOpenDetail = () => {
+    if (openDetail) openDetail(content);
+  };
+
   const hoverPosition =
     hoverAlign === "left"
       ? "left-0 origin-left"
@@ -50,8 +51,14 @@ export default function ContentCard({
         {poster ? (
           <img
             src={poster}
+            srcSet={posterSrcSet(posterPath)}
+            sizes="(min-width: 1280px) 220px, (min-width: 768px) 180px, 33vw"
             alt={title}
+            width={342}
+            height={513}
             className="w-full h-full object-cover object-center"
+            loading="lazy"
+            decoding="async"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-neutral-700 text-neutral-300">
@@ -75,14 +82,14 @@ export default function ContentCard({
           {backdrop ? (
             <img
               src={backdrop}
+              srcSet={backdropSrcSet(backdropPath)}
+              sizes="(min-width: 1280px) 360px, 80vw"
               alt={title}
+              width={780}
+              height={439}
               className="w-full h-full object-cover object-center"
-            />
-          ) : poster ? (
-            <img
-              src={poster}
-              alt={title}
-              className="w-full h-full object-cover object-center"
+              loading="lazy"
+              decoding="async"
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-neutral-300">
@@ -120,7 +127,7 @@ export default function ContentCard({
             <button
               type="button"
               className="flex items-center justify-center h-8 w-8 rounded-full border bg-neutral-800 border-neutral-500 cursor-pointer"
-              onClick={openDetail}
+              onClick={handleOpenDetail}
             >
               ⌵
             </button>
@@ -132,3 +139,5 @@ export default function ContentCard({
     </article>
   );
 }
+
+export default memo(ContentCard);

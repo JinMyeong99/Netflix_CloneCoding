@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { favoriteSlice } from "../RTK/favoriteSlice";
 
@@ -6,26 +6,29 @@ export default function useContentDetail() {
   const [selectedContent, setSelectedContent] = useState(null);
   const [showDetail, setShowDetail] = useState(false);
 
-  const openDetail = (content) => {
+  const openDetail = useCallback((content) => {
     setSelectedContent(content);
     setShowDetail(true);
-  };
+  }, []);
 
-  const closeDetail = () => {
+  const closeDetail = useCallback(() => {
     setShowDetail(false);
     setSelectedContent(null);
-  };
+  }, []);
 
   const dispatch = useDispatch();
 
-  const toggleFavorite = (content) => {
-    dispatch(favoriteSlice.actions.toggleFavorite(content));
-  };
+  const toggleFavorite = useCallback(
+    (content) => {
+      dispatch(favoriteSlice.actions.toggleFavorite(content));
+    },
+    [dispatch]
+  );
 
-  const playTrailer = (content) => {
+  const playTrailer = useCallback((content) => {
     if (!content?.trailerUrl) return;
     window.open(content.trailerUrl, "_blank", "noopener,noreferrer");
-  };
+  }, []);
 
   useEffect(() => {
     if (showDetail) {
