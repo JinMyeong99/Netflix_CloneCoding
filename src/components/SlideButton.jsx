@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 const SlideButton = ({ direction, onClick }) => {
   const isLeft = direction === "left";
   return (
@@ -51,4 +53,4 @@ const SlideButton = ({ direction, onClick }) => {
   );
 };
 
-export default SlideButton;
+export default memo(SlideButton);
