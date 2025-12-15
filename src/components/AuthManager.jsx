@@ -1,10 +1,9 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { loginSlice } from "../RTK/loginSlice";
+import useLoginStore from "../store/useLoginStore";
 import { supabase } from "../api/supabaseClient";
 
 export default function AuthManager() {
-  const dispatch = useDispatch();
+  const setUser = useLoginStore((state) => state.setUser);
 
   useEffect(() => {
     const initAuth = async () => {
@@ -14,13 +13,11 @@ export default function AuthManager() {
 
       const user = session?.user;
       if (user) {
-        dispatch(
-          loginSlice.actions.setUser({
-            id: user.id,
-            email: user.email,
-            name: user.user_metadata?.name || "user",
-          })
-        );
+        setUser({
+          id: user.id,
+          email: user.email,
+          name: user.user_metadata?.name || "user",
+        });
       }
     };
 
@@ -31,22 +28,20 @@ export default function AuthManager() {
     } = supabase.auth.onAuthStateChange((_event, session) => {
       const user = session?.user;
       if (user) {
-        dispatch(
-          loginSlice.actions.setUser({
-            id: user.id,
-            email: user.email,
-            name: user.user_metadata?.name || "user",
-          })
-        );
+        setUser({
+          id: user.id,
+          email: user.email,
+          name: user.user_metadata?.name || "user",
+        });
       } else {
-        dispatch(loginSlice.actions.setUser(null));
+        setUser(null);
       }
     });
 
     return () => {
       subscription.unsubscribe();
     };
-  }, [dispatch]);
+  }, [setUser]);
 
   return null;
 }

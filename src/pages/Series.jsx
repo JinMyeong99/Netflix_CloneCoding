@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { seriesSlice } from "../RTK/series/seriesSlice";
-import { fetchSeriesPage } from "../RTK/series/seriesThunk";
+import useSeriesStore from "../store/useSeriesStore";
+import useGenreStore from "../store/useGenreStore";
 import GenreSelector from "../components/GenreSelector";
 import useContentDetail from "../hooks/useContentDetail";
 import useFavorite from "../hooks/useFavorite";
@@ -12,28 +11,30 @@ import useSingleFetch from "../hooks/useSingleFetch";
 import ContentGrid from "../components/ContentGrid";
 
 export default function Series() {
-  const dispatch = useDispatch();
-  const { list, loading, hasMore, page, error } = useSelector(
-    (state) => state.series
-  );
+  const { list, loading, hasMore, page, error, resetSeries, fetchSeriesPage } =
+    useSeriesStore();
+  const { seriesGenres } = useGenreStore();
 
   const runOnce = useSingleFetch(loading);
 
   const isInitialLoading = page === 0 && list.length === 0;
 
   useEffect(() => {
-    if (page === 0 && list.length === 0) {
-      dispatch(seriesSlice.actions.resetSeries());
-      dispatch(fetchSeriesPage());
+    // Reset store on mount if it's not already fresh
+    if (page !== 0 || list.length !== 0) {
+      resetSeries();
     }
-  }, [dispatch, page, list.length]);
+    fetchSeriesPage();
+
+    return () => {
+      resetSeries();
+    };
+  }, [fetchSeriesPage, resetSeries]);
 
   const loadMore = useCallback(() => {
     if (!hasMore) return;
-    runOnce(() => dispatch(fetchSeriesPage()));
-  }, [dispatch, hasMore, runOnce]);
-
-  const { seriesGenres } = useSelector((state) => state.genre);
+    runOnce(() => fetchSeriesPage());
+  }, [fetchSeriesPage, hasMore, runOnce]);
 
   const [selectedGenreId, setSelectedGenreId] = useState("");
 
@@ -61,7 +62,7 @@ export default function Series() {
 
   const heroContent = seriesWithGenre[0];
 
-  if (isInitialLoading) {
+  if (isInitialLoading && loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         인기 시리즈 로딩 중...
@@ -100,7 +101,7 @@ export default function Series() {
           onLoadMore={loadMore}
         />
 
-        {loading && (
+        {loading && !isInitialLoading && (
           <div className="min-h-screen flex items-center justify-center pb-30">
             불러오는 중...
           </div>

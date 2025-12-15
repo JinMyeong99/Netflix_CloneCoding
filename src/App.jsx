@@ -2,8 +2,8 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import { lazy, Suspense, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchGenre } from "./RTK/genre/genreThunk";
+import useGenreStore from "./store/useGenreStore";
+
 import AuthManager from "./components/AuthManager";
 
 const Home = lazy(() => import("./pages/Home"));
@@ -17,14 +17,13 @@ const Signup = lazy(() => import("./pages/Signup"));
 const ProfilePage = lazy(() => import("./pages/ProfilePage"));
 
 function App() {
-  const dispatch = useDispatch();
-  const genreStatus = useSelector((state) => state.genre.status);
+  const { fetchGenre, status: genreStatus } = useGenreStore();
 
   useEffect(() => {
     if (genreStatus === "idle") {
-      dispatch(fetchGenre());
+      fetchGenre();
     }
-  }, [genreStatus, dispatch]);
+  }, [fetchGenre, genreStatus]);
 
   const location = useLocation();
   const hideNavbar =

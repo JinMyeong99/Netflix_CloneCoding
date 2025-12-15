@@ -1,6 +1,5 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchTrendingData } from "../RTK/trending/trendingThunk";
+import useTrendingStore from "../store/useTrendingStore";
 import SectionRow from "../components/SectionRow";
 import useContentDetail from "../hooks/useContentDetail";
 import useGenreName from "../hooks/useGenreName";
@@ -8,14 +7,12 @@ import ContentDetailModal from "../components/ContentDetailModal";
 import HeroBanner from "../components/HeroBanner";
 
 export default function Trending() {
-  const dispatch = useDispatch();
-  const { today, week, rising, hot, loading, error } = useSelector(
-    (state) => state.trending
-  );
+  const { today, week, rising, hot, loading, error, fetchTrendingData } =
+    useTrendingStore();
 
   useEffect(() => {
-    dispatch(fetchTrendingData());
-  }, [dispatch]);
+    fetchTrendingData();
+  }, [fetchTrendingData]);
 
   const {
     selectedContent,

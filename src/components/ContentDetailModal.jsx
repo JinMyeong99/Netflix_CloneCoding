@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import useFavoriteStore from "../store/useFavoriteStore";
 import { ImageUrl } from "../api/tmdb";
 
 export default function ContentDetailModal({
@@ -7,7 +7,7 @@ export default function ContentDetailModal({
   toggleFavorite,
   onPlayTrailer,
 }) {
-  const favoriteList = useSelector((state) => state.favorite.list);
+  const favoriteList = useFavoriteStore((state) => state.list);
   const isFavorite = favoriteList.some(
     (favContent) => favContent.id === content.id
   );

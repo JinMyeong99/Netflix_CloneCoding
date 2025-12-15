@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { create } from "zustand";
 
 const StorageKey = "favoriteList";
 
@@ -21,24 +21,22 @@ function saveFavorite(favContent) {
   }
 }
 
-export const favoriteSlice = createSlice({
-  name: "favorite",
-  initialState: {
-    list: loadInitialFavorite(),
-  },
-  reducers: {
-    toggleFavorite: (state, action) => {
-      const content = action.payload;
+const useFavoriteStore = create((set) => ({
+  list: loadInitialFavorite(),
+  toggleFavorite: (content) =>
+    set((state) => {
       const index = state.list.findIndex(
         (favContent) => favContent.id === content.id
       );
-
+      const newList = [...state.list];
       if (index >= 0) {
-        state.list.splice(index, 1);
+        newList.splice(index, 1);
       } else {
-        state.list.push(content);
+        newList.push(content);
       }
-      saveFavorite(state.list);
-    },
-  },
-});
+      saveFavorite(newList);
+      return { list: newList };
+    }),
+}));
+
+export default useFavoriteStore;

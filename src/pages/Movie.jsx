@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { MovieSlice } from "../RTK/movie/movieSlice";
-import { fetchMoviePage } from "../RTK/movie/movieThunk";
+import useMovieStore from "../store/useMovieStore";
+import useGenreStore from "../store/useGenreStore";
 import GenreSelector from "../components/GenreSelector";
 import useGenreName from "../hooks/useGenreName";
 import useContentDetail from "../hooks/useContentDetail";
@@ -12,29 +11,30 @@ import useSingleFetch from "../hooks/useSingleFetch";
 import ContentGrid from "../components/ContentGrid";
 
 export default function Movie() {
-  const dispatch = useDispatch();
-
-  const { list, loading, hasMore, page, error } = useSelector(
-    (state) => state.movie
-  );
+  const { list, loading, hasMore, page, error, resetMovie, fetchMoviePage } =
+    useMovieStore();
+  const { movieGenres } = useGenreStore();
 
   const runOnce = useSingleFetch(loading);
 
   const isInitialLoading = page === 0 && list.length === 0;
 
   useEffect(() => {
-    if (page === 0 && list.length === 0) {
-      dispatch(MovieSlice.actions.resetMovie());
-      dispatch(fetchMoviePage());
+    // Reset store on mount if it's not already fresh
+    if (page !== 0 || list.length !== 0) {
+      resetMovie();
     }
-  }, [dispatch, page, list.length]);
+    fetchMoviePage();
+
+    return () => {
+      resetMovie();
+    };
+  }, [fetchMoviePage, resetMovie]);
 
   const loadMore = useCallback(() => {
     if (!hasMore) return;
-    runOnce(() => dispatch(fetchMoviePage()));
-  }, [dispatch, hasMore, runOnce]);
-
-  const { movieGenres } = useSelector((state) => state.genre);
+    runOnce(() => fetchMoviePage());
+  }, [fetchMoviePage, hasMore, runOnce]);
 
   const [selectedGenreId, setSelectedGenreId] = useState("");
 
@@ -63,7 +63,7 @@ export default function Movie() {
 
   const heroContent = moviesWithGenres[0];
 
-  if (isInitialLoading) {
+  if (isInitialLoading && loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         인기 영화 로딩 중...
@@ -101,7 +101,7 @@ export default function Movie() {
           onLoadMore={loadMore}
         />
 
-        {loading && (
+        {loading && !isInitialLoading && (
           <div className="min-h-screen flex items-center justify-center">
             불러오는 중...
           </div>

@@ -1,6 +1,5 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchHomeData } from "../RTK/home/homeThunk";
+import useHomeStore from "../store/useHomeStore";
 import SectionRow from "../components/SectionRow";
 import ContentDetailModal from "../components/ContentDetailModal";
 import useContentDetail from "../hooks/useContentDetail";
@@ -8,8 +7,6 @@ import useGenreName from "../hooks/useGenreName";
 import HeroBanner from "../components/HeroBanner";
 
 export default function Home() {
-  const dispatch = useDispatch();
-
   const {
     popular,
     topRated,
@@ -19,11 +16,12 @@ export default function Home() {
     comedySeries,
     loading,
     error,
-  } = useSelector((state) => state.home);
+    fetchHomeData,
+  } = useHomeStore();
 
   useEffect(() => {
-    dispatch(fetchHomeData());
-  }, [dispatch]);
+    fetchHomeData();
+  }, [fetchHomeData]);
 
   const popularWithGenre = useGenreName(popular, "movie");
   const topRatedWithGenre = useGenreName(topRated, "movie");

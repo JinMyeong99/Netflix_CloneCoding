@@ -1,8 +1,8 @@
 import { useMemo } from "react";
-import { useSelector } from "react-redux";
+import useGenreStore from "../store/useGenreStore";
 
 export default function useGenreName(contents, mode = "auto") {
-  const { movieGenres, seriesGenres } = useSelector((state) => state.genre);
+  const { movieGenres, seriesGenres } = useGenreStore();
 
   return useMemo(() => {
     if (!Array.isArray(contents) || contents.length === 0) return contents;

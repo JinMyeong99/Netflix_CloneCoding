@@ -1,13 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { searchSlice } from "../RTK/search/searchSlice";
-import { fetchSearchPage } from "../RTK/search/searchThunk";
+import useSearchStore from "../store/useSearchStore";
 
 export default function SearchBar() {
   const navigate = useNavigate();
   const location = useLocation();
-  const dispatch = useDispatch();
+  const { resetSearch, setQuery, fetchSearchPage } = useSearchStore();
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
@@ -63,7 +61,7 @@ export default function SearchBar() {
     const searchValue = value.trim();
     const id = setTimeout(() => {
       if (!searchValue) {
-        dispatch(searchSlice.actions.resetSearch());
+        resetSearch();
 
         if (
           location.pathname.startsWith("/search") &&
@@ -80,12 +78,12 @@ export default function SearchBar() {
         }
         navigate("/search");
       }
-      dispatch(searchSlice.actions.resetSearch());
-      dispatch(searchSlice.actions.setQuery(searchValue));
-      dispatch(fetchSearchPage(searchValue));
+      resetSearch();
+      setQuery(searchValue);
+      fetchSearchPage();
     }, 500);
     return () => clearTimeout(id);
-  }, [value, open, location.pathname, navigate, dispatch]);
+  }, [value, open, location.pathname, navigate, resetSearch, setQuery, fetchSearchPage]);
 
   return (
     <div ref={barRef} className="flex items-center">
