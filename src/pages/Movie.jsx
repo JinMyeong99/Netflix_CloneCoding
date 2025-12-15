@@ -12,6 +12,7 @@ import useFavorite from "../hooks/useFavorite";
 import ContentDetailModal from "../components/ContentDetailModal";
 import HeroBanner from "../components/HeroBanner";
 import useSingleFetch from "../hooks/useSingleFetch";
+import useGridHoverAlign from "../hooks/useGridHoverAlign";
 
 export default function Movie() {
   const dispatch = useDispatch();
@@ -61,6 +62,7 @@ export default function Movie() {
   const { hoverContentId, handleMouseEnter, handleMouseLeave } =
     useHoverActive();
   const { favoriteId } = useFavorite();
+  const getHoverAlign = useGridHoverAlign(moviesWithGenres.length);
 
   const {
     selectedContent,
@@ -101,7 +103,7 @@ export default function Movie() {
         {error && <div className="text-red-500 mb-2">{error}</div>}
 
         <div className="flex flex-wrap gap-y-20">
-          {moviesWithGenres.map((movie) => (
+          {moviesWithGenres.map((movie, index) => (
             <div
               key={movie.id}
               className="w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 flex justify-center px-1"
@@ -115,6 +117,7 @@ export default function Movie() {
                 openDetail={openDetail}
                 toggleFavorite={toggleFavorite}
                 onPlayTrailer={playTrailer}
+                hoverAlign={getHoverAlign(index)}
               />
             </div>
           ))}

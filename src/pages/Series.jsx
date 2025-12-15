@@ -12,6 +12,7 @@ import ContentDetailModal from "../components/ContentDetailModal";
 import useGenreName from "../hooks/useGenreName";
 import HeroBanner from "../components/HeroBanner";
 import useSingleFetch from "../hooks/useSingleFetch";
+import useGridHoverAlign from "../hooks/useGridHoverAlign";
 
 export default function Series() {
   const dispatch = useDispatch();
@@ -68,6 +69,7 @@ export default function Series() {
   const { hoverContentId, handleMouseEnter, handleMouseLeave } =
     useHoverActive();
   const { favoriteId } = useFavorite();
+  const getHoverAlign = useGridHoverAlign(seriesWithGenre.length);
 
   const heroContent = seriesWithGenre[0];
 
@@ -100,7 +102,7 @@ export default function Series() {
         {error && <div className="text-red-500 mb-2">{error}</div>}
 
         <div className="flex flex-wrap gap-y-20">
-          {seriesWithGenre.map((series) => (
+          {seriesWithGenre.map((series, index) => (
             <div
               key={series.id}
               className="w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 flex justify-center px-1"
@@ -114,6 +116,7 @@ export default function Series() {
                 openDetail={openDetail}
                 toggleFavorite={toggleFavorite}
                 onPlayTrailer={playTrailer}
+                hoverAlign={getHoverAlign(index)}
               />
             </div>
           ))}
