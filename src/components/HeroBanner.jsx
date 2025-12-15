@@ -39,7 +39,7 @@ export default function HeroBanner({ content, openDetail, onPlayTrailer }) {
 
       <div className="absolute inset-0 bg-linear-to-t from-neutral-900 via-neutral-900/10 to-neutral-900/20" />
 
-      <div className="absolute left-[5%] bottom-[10%] max-w-xl space-y-4">
+      <div className="absolute left-[5%] bottom-[10%] max-w-xl space-y-4 md:space-y-6  xl:space-y-10">
         <h1 className="text-4xl font-extrabold drop-shadow-lg lg:text-5xl xl:text-6xl">
           {title}
         </h1>
@@ -47,7 +47,7 @@ export default function HeroBanner({ content, openDetail, onPlayTrailer }) {
         <div className="flex items-center gap-3">
           <button
             onClick={handlePlay}
-            className="flex items-center justify-center h-9 px-4 rounded-md bg-white text-black text-sm font-semibold cursor-pointer md:h-10 md:px-5 md:text-base lg:h-11 lg:px-6 lg:text-lg"
+            className="flex items-center justify-center h-9 px-4 rounded-md bg-white text-black text-sm font-semibold cursor-pointer md:h-10 md:px-5 md:text-base lg:h-12 lg:px-6 lg:text-xl xl:h-14 xl:px-9 xl:text-2xl"
           >
             ▶ 재생
           </button>
@@ -56,7 +56,7 @@ export default function HeroBanner({ content, openDetail, onPlayTrailer }) {
             onClick={handleMoreInfo}
             className="flex items-center justify-center h-9 px-4 rounded-md bg-neutral-700/80
           text-white text-sm font-semibold cursor-pointer md:h-10 md:px-5 md:text-base
-            lg:h-11 lg:px-6 lg:text-lg "
+            xl:h-14 xl:px-8 xl:text-2xl "
           >
             ⓘ 상세 정보
           </button>

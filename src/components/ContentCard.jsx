@@ -110,7 +110,7 @@ function ContentCard({
             <div className="flex items-center gap-2">
               <button
                 type="button"
-                className="flex items-center justify-center h-10 w-10 rounded-full bg-white text-black cursor-pointer"
+                className="flex items-center justify-center h-11 w-11 rounded-full bg-white text-black cursor-pointer"
                 onClick={handlePlay}
               >
                 ▶︎
@@ -118,7 +118,7 @@ function ContentCard({
 
               <button
                 type="button"
-                className="flex items-center justify-center h-10 w-10 rounded-full border bg-neutral-800 border-neutral-500 text-xl leading-none cursor-pointer"
+                className="flex items-center justify-center h-11 w-11 rounded-full border bg-neutral-800 border-neutral-500 text-xl leading-none cursor-pointer"
                 onClick={handleFavorite}
               >
                 {isFavorite ? "✓" : "+"}
@@ -127,7 +127,7 @@ function ContentCard({
 
             <button
               type="button"
-              className="flex items-center justify-center h-10 w-10 rounded-full border bg-neutral-800 border-neutral-500 cursor-pointer"
+              className="flex items-center justify-center h-11 w-11 rounded-full border bg-neutral-800 border-neutral-500 cursor-pointer"
               onClick={handleOpenDetail}
             >
               ⌵

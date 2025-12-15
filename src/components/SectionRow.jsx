@@ -76,8 +76,8 @@ export default function SectionRow({
   if (!content || content.length === 0) return null;
 
   return (
-    <section className="relative py-4">
-      <h2 className="text-2xl mb-3">{title}</h2>
+    <section className="relative py-6">
+      <h2 className="text-3xl mb-3">{title}</h2>
 
       <div
         className="
