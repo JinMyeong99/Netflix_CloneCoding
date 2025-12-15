@@ -77,7 +77,10 @@ function ContentCard({
             ? "opacity-100 scale-100 z-30 pointer-events-auto"
             : "opacity-0 scale-0 z-0 pointer-events-none"
         }`}
-        style={{ width: "clamp(220px, 80vw, 480px)" }}
+        style={{
+          width: "min(420px, calc(100vw - 32px))",
+          minWidth: "220px",
+        }}
       >
         <div className="relative w-full aspect-video bg-black">
           {backdrop ? (
