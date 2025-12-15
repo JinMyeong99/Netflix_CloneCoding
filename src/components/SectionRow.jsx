@@ -60,25 +60,16 @@ export default function SectionRow({
   const updateVisibleRange = useCallback((swiper) => {
     if (!swiper) return;
 
-    let slidesPerView = swiper.params.slidesPerView || 0;
+    const visibleIndexes = swiper.visibleSlidesIndexes;
 
-    const currentBp = swiper.currentBreakpoint;
-    if (
-      swiper.params.breakpoints &&
-      swiper.params.breakpoints[currentBp]?.slidesPerView
-    ) {
-      slidesPerView = swiper.params.breakpoints[currentBp].slidesPerView;
-    }
+    if (!visibleIndexes || visibleIndexes.length === 0) return;
 
-    const start = swiper.activeIndex ?? 0;
-    const end = start + slidesPerView - 1;
+    const start = visibleIndexes[0];
+    const end = visibleIndexes[visibleIndexes.length - 1];
 
     setVisibleRange((prev) => {
       if (prev.start === start && prev.end === end) return prev;
-      return {
-        start,
-        end,
-      };
+      return { start, end };
     });
   }, []);
 
@@ -122,6 +113,8 @@ export default function SectionRow({
               addSlidesAfter: 6,
             }}
             breakpoints={breakpoints}
+            onResize={updateVisibleRange}
+            onBreakpoint={updateVisibleRange}
           >
             {content.map((item, index) => {
               const clampedEnd = Math.min(visibleRange.end, content.length - 1);
