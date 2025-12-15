@@ -68,7 +68,7 @@ function ContentCard({
       </div>
 
       <div
-        className={`absolute bottom-3 w-[480px]
+        className={`absolute bottom-3
         rounded-xl overflow-hidden bg-neutral-900 shadow-xl shadow-black/70
         transition-all duration-200 
         ${hoverPosition}
@@ -77,6 +77,7 @@ function ContentCard({
             ? "opacity-100 scale-100 z-30 pointer-events-auto"
             : "opacity-0 scale-0 z-0 pointer-events-none"
         }`}
+        style={{ width: "clamp(220px, 80vw, 480px)" }}
       >
         <div className="relative w-full aspect-video bg-black">
           {backdrop ? (
