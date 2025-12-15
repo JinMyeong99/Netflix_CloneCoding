@@ -46,13 +46,13 @@ function ContentCard({
         : "left-1/2 -translate-x-1/2 origin-center";
 
   return (
-    <article className="relative group/card w-full max-w-[220px]">
+    <article className="relative group/card w-full max-w-[260px]">
       <div className="w-full aspect-2/3 overflow-hidden rounded-md bg-neutral-800">
         {poster ? (
           <img
             src={poster}
             srcSet={posterSrcSet(posterPath)}
-            sizes="(min-width: 1280px) 220px, (min-width: 768px) 180px, 33vw"
+            sizes="(min-width: 1280px) 260px, (min-width: 768px) 200px, 33vw"
             alt={title}
             width={342}
             height={513}
@@ -68,7 +68,7 @@ function ContentCard({
       </div>
 
       <div
-        className={`absolute top-5 w-[360px]
+        className={`absolute top-5 w-[420px]
         rounded-xl overflow-hidden bg-neutral-900 shadow-xl shadow-black/70
         transition-all duration-200 
         ${hoverPosition}
@@ -83,7 +83,7 @@ function ContentCard({
             <img
               src={backdrop}
               srcSet={backdropSrcSet(backdropPath)}
-              sizes="(min-width: 1280px) 360px, 80vw"
+              sizes="(min-width: 1280px) 420px, 80vw"
               alt={title}
               width={780}
               height={439}

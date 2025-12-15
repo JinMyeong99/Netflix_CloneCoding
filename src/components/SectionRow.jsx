@@ -110,7 +110,7 @@ export default function SectionRow({
             onSlideChange={(swiper) => {
               updateVisibleRange(swiper);
             }}
-            spaceBetween={8}
+            spaceBetween={10}
             slidesPerView={6}
             slidesPerGroup={6}
             loop={false}
