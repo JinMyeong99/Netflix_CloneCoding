@@ -40,8 +40,8 @@ export default function GenreSelector({ genres, selectedId, onChange }) {
           hover:border-white hover:bg-neutral-800
           rounded
           px-4 py-1.5
-          text-sm font-medium
-          flex items-center gap-2
+          text-lg font-medium
+          flex justify-center items-center gap-2
           cursor-pointer
           transition duration-100
         "
@@ -63,7 +63,7 @@ export default function GenreSelector({ genres, selectedId, onChange }) {
         `}
       >
         <li
-          className="px-4 py-2 hover:bg-white/10 cursor-pointer"
+          className="px-4 py-2 hover:bg-white/10 cursor-pointer text-base"
           onClick={() => handleSelectGenre("")}
         >
           전체
@@ -71,7 +71,7 @@ export default function GenreSelector({ genres, selectedId, onChange }) {
         {genres.map((genre) => (
           <li
             key={genre.id}
-            className="px-4 py-2 hover:bg-white/10 cursor-pointer"
+            className="px-4 py-2 hover:bg-white/10 cursor-pointer text-base"
             onClick={() => handleSelectGenre(genre.id)}
           >
             {genre.name}
