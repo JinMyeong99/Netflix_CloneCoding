@@ -77,7 +77,7 @@ export default function SectionRow({
 
   return (
     <section className="relative py-6">
-      <h2 className="text-3xl mb-3">{title}</h2>
+      <h2 className="text-2xl mb-3 md:text-3xl">{title}</h2>
 
       <div
         className="
