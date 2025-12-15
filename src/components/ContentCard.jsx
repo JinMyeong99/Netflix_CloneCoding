@@ -68,7 +68,7 @@ function ContentCard({
       </div>
 
       <div
-        className={`absolute top-5 w-[420px]
+        className={`absolute bottom-3 w-[480px]
         rounded-xl overflow-hidden bg-neutral-900 shadow-xl shadow-black/70
         transition-all duration-200 
         ${hoverPosition}
@@ -83,7 +83,7 @@ function ContentCard({
             <img
               src={backdrop}
               srcSet={backdropSrcSet(backdropPath)}
-              sizes="(min-width: 1280px) 420px, 80vw"
+              sizes="(min-width: 1280px) 480px, 80vw"
               alt={title}
               width={780}
               height={439}
@@ -99,17 +99,17 @@ function ContentCard({
 
           <div className="absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-black/80 via-black/40 to-transparent pointer-events-none"></div>
 
-          <h3 className="absolute bottom-3 left-3 right-3 font-bold text-2xl line-clamp-1">
+          <h3 className="absolute bottom-4 left-4 right-4 font-bold text-3xl line-clamp-1">
             {title}
           </h3>
         </div>
 
-        <div className="p-3 space-y-3">
+        <div className="p-4 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <button
                 type="button"
-                className="flex items-center justify-center h-8 w-8 rounded-full bg-white text-black cursor-pointer"
+                className="flex items-center justify-center h-10 w-10 rounded-full bg-white text-black cursor-pointer"
                 onClick={handlePlay}
               >
                 ▶︎
@@ -117,7 +117,7 @@ function ContentCard({
 
               <button
                 type="button"
-                className="flex items-center justify-center h-8 w-8 rounded-full border bg-neutral-800 border-neutral-500 text-xl leading-none cursor-pointer"
+                className="flex items-center justify-center h-10 w-10 rounded-full border bg-neutral-800 border-neutral-500 text-xl leading-none cursor-pointer"
                 onClick={handleFavorite}
               >
                 {isFavorite ? "✓" : "+"}
@@ -126,14 +126,14 @@ function ContentCard({
 
             <button
               type="button"
-              className="flex items-center justify-center h-8 w-8 rounded-full border bg-neutral-800 border-neutral-500 cursor-pointer"
+              className="flex items-center justify-center h-10 w-10 rounded-full border bg-neutral-800 border-neutral-500 cursor-pointer"
               onClick={handleOpenDetail}
             >
               ⌵
             </button>
           </div>
 
-          {mainGenre && <p>{mainGenre}</p>}
+          {mainGenre && <p className="text-lg">{mainGenre}</p>}
         </div>
       </div>
     </article>
