@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { seriesSlice } from "../RTK/series/seriesSlice";
 import { fetchSeriesPage } from "../RTK/series/seriesThunk";
-import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import GenreSelector from "../components/GenreSelector";
 import useContentDetail from "../hooks/useContentDetail";
 import useFavorite from "../hooks/useFavorite";
@@ -33,12 +32,6 @@ export default function Series() {
     if (!hasMore) return;
     runOnce(() => dispatch(fetchSeriesPage()));
   }, [dispatch, hasMore, runOnce]);
-
-  const loaderRef = useInfiniteScroll({
-    loading,
-    hasMore,
-    onLoadMore: loadMore,
-  });
 
   const { seriesGenres } = useSelector((state) => state.genre);
 
@@ -102,6 +95,9 @@ export default function Series() {
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
           onPlayTrailer={playTrailer}
+          loading={loading}
+          hasMore={hasMore}
+          onLoadMore={loadMore}
         />
 
         {loading && (
@@ -109,7 +105,6 @@ export default function Series() {
             불러오는 중...
           </div>
         )}
-        {hasMore && <div ref={loaderRef} style={{ height: 1 }} />}
         {!hasMore && list.length > 0 && <div>더 이상 시리즈가 없습니다.</div>}
 
         {showDetail && selectedContent && (

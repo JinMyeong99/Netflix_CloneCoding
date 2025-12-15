@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { MovieSlice } from "../RTK/movie/movieSlice";
 import { fetchMoviePage } from "../RTK/movie/movieThunk";
-import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import GenreSelector from "../components/GenreSelector";
 import useGenreName from "../hooks/useGenreName";
 import useContentDetail from "../hooks/useContentDetail";
@@ -34,12 +33,6 @@ export default function Movie() {
     if (!hasMore) return;
     runOnce(() => dispatch(fetchMoviePage()));
   }, [dispatch, hasMore, runOnce]);
-
-  const loaderRef = useInfiniteScroll({
-    loading,
-    hasMore,
-    onLoadMore: loadMore,
-  });
 
   const { movieGenres } = useSelector((state) => state.genre);
 
@@ -103,6 +96,9 @@ export default function Movie() {
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
           onPlayTrailer={playTrailer}
+          loading={loading}
+          hasMore={hasMore}
+          onLoadMore={loadMore}
         />
 
         {loading && (
@@ -110,7 +106,6 @@ export default function Movie() {
             불러오는 중...
           </div>
         )}
-        {hasMore && <div ref={loaderRef} style={{ height: 1 }} />}
         {!hasMore && list.length > 0 && <div>더 이상 영화가 없습니다.</div>}
 
         {showDetail && selectedContent && (

@@ -1,7 +1,6 @@
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSearchPage } from "../RTK/search/searchThunk";
-import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import useContentDetail from "../hooks/useContentDetail";
 import useGenreName from "../hooks/useGenreName";
 import useFavorite from "../hooks/useFavorite";
@@ -22,12 +21,6 @@ export default function Search() {
     if (!query.trim()) return;
     runOnce(() => dispatch(fetchSearchPage(query)));
   }, [dispatch, hasMore, query, runOnce]);
-
-  const loaderRef = useInfiniteScroll({
-    loading,
-    hasMore,
-    onLoadMore: loadMore,
-  });
 
   const resultsWithGenre = useGenreName(results, "auto");
 
@@ -57,15 +50,15 @@ export default function Search() {
         openDetail={openDetail}
         toggleFavorite={toggleFavorite}
         onPlayTrailer={playTrailer}
+        loading={loading}
+        hasMore={hasMore}
+        onLoadMore={loadMore}
         keyExtractor={(item) => `${item.media_type}-${item.id}`}
       />
       {loading && (
         <div className="min-h-screen flex items-center justify-center pb-30">
           검색 중...
         </div>
-      )}
-      {hasMore && results.length > 0 && (
-        <div ref={loaderRef} style={{ height: 1 }} />
       )}
 
       {showDetail && selectedContent && (

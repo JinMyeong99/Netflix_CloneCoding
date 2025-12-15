@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import ContentCard from "./ContentCard";
 import useHoverActive from "../hooks/useHoverActive";
 import useGridHoverAlign from "../hooks/useGridHoverAlign";
+import useInfiniteScroll from "../hooks/useInfiniteScroll";
 
 export default function ContentGrid({
   items,
@@ -10,12 +11,18 @@ export default function ContentGrid({
   toggleFavorite,
   onPlayTrailer,
   keyExtractor,
+  loading,
+  hasMore,
+  onLoadMore,
 }) {
+  const itemCount = Array.isArray(items) ? items.length : 0;
   const { hoverContentId, handleMouseEnter, handleMouseLeave } =
     useHoverActive();
-  const getHoverAlign = useGridHoverAlign(items.length);
+  const getHoverAlign = useGridHoverAlign(itemCount);
 
   const cardSlots = useMemo(() => {
+    if (!items || items.length === 0) return [];
+
     const extractKey =
       keyExtractor ||
       ((item, index) => {
@@ -34,9 +41,22 @@ export default function ContentGrid({
         onLeave: () => handleMouseLeave(id),
       };
     });
-  }, [items, favoriteSet, getHoverAlign, handleMouseEnter, handleMouseLeave, keyExtractor]);
+  }, [
+    items,
+    favoriteSet,
+    getHoverAlign,
+    handleMouseEnter,
+    handleMouseLeave,
+    keyExtractor,
+  ]);
 
-  if (!items || items.length === 0) return null;
+  const loaderRef = useInfiniteScroll({
+    loading,
+    hasMore,
+    onLoadMore,
+  });
+
+  if (itemCount === 0) return null;
 
   return (
     <div className="flex flex-wrap gap-y-20">
@@ -60,6 +80,7 @@ export default function ContentGrid({
           </div>
         )
       )}
+      {hasMore ? <div ref={loaderRef} style={{ height: 1, width: "100%" }} /> : null}
     </div>
   );
 }
