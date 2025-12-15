@@ -4,15 +4,13 @@ import { MovieSlice } from "../RTK/movie/movieSlice";
 import { fetchMoviePage } from "../RTK/movie/movieThunk";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import GenreSelector from "../components/GenreSelector";
-import ContentCard from "../components/ContentCard";
 import useGenreName from "../hooks/useGenreName";
 import useContentDetail from "../hooks/useContentDetail";
-import useHoverActive from "../hooks/useHoverActive";
 import useFavorite from "../hooks/useFavorite";
 import ContentDetailModal from "../components/ContentDetailModal";
 import HeroBanner from "../components/HeroBanner";
 import useSingleFetch from "../hooks/useSingleFetch";
-import useGridHoverAlign from "../hooks/useGridHoverAlign";
+import ContentGrid from "../components/ContentGrid";
 
 export default function Movie() {
   const dispatch = useDispatch();
@@ -59,10 +57,7 @@ export default function Movie() {
 
   const moviesWithGenres = useGenreName(filteredMovies, "movie");
 
-  const { hoverContentId, handleMouseEnter, handleMouseLeave } =
-    useHoverActive();
   const { favoriteId } = useFavorite();
-  const getHoverAlign = useGridHoverAlign(moviesWithGenres.length);
 
   const {
     selectedContent,
@@ -102,26 +97,13 @@ export default function Movie() {
 
         {error && <div className="text-red-500 mb-2">{error}</div>}
 
-        <div className="flex flex-wrap gap-y-20">
-          {moviesWithGenres.map((movie, index) => (
-            <div
-              key={movie.id}
-              className="w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 flex justify-center px-1"
-              onMouseEnter={() => handleMouseEnter(movie.id)}
-              onMouseLeave={() => handleMouseLeave(movie.id)}
-            >
-              <ContentCard
-                content={movie}
-                isFavorite={favoriteId.has(movie.id)}
-                openHover={hoverContentId === movie.id}
-                openDetail={openDetail}
-                toggleFavorite={toggleFavorite}
-                onPlayTrailer={playTrailer}
-                hoverAlign={getHoverAlign(index)}
-              />
-            </div>
-          ))}
-        </div>
+        <ContentGrid
+          items={moviesWithGenres}
+          favoriteSet={favoriteId}
+          openDetail={openDetail}
+          toggleFavorite={toggleFavorite}
+          onPlayTrailer={playTrailer}
+        />
 
         {loading && (
           <div className="min-h-screen flex items-center justify-center">
