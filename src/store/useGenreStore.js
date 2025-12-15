@@ -1,9 +1,14 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ApiKey, BaseUrl } from "../../api/tmdb";
+import { create } from "zustand";
+import { ApiKey, BaseUrl } from "../api/tmdb";
 
-export const fetchGenre = createAsyncThunk(
-  "genre/fetchGenre",
-  async (_, { rejectWithValue }) => {
+const useGenreStore = create((set) => ({
+  movieGenres: [],
+  seriesGenres: [],
+  status: "idle",
+  error: null,
+
+  fetchGenre: async () => {
+    set({ status: "loading", error: null });
     try {
       const movieGenreUrl = `${BaseUrl}/genre/movie/list?api_key=${ApiKey}&language=ko-KR`;
       const seriesGenreUrl = `${BaseUrl}/genre/tv/list?api_key=${ApiKey}&language=ko-KR`;
@@ -18,12 +23,15 @@ export const fetchGenre = createAsyncThunk(
       const movieGenreData = await movieGenreRes.json();
       const seriesGenreData = await seriesGenreRes.json();
 
-      return {
+      set({
+        status: "succeeded",
         movieGenres: movieGenreData.genres || [],
         seriesGenres: seriesGenreData.genres || [],
-      };
+      });
     } catch (error) {
-      return rejectWithValue(error.message || "장르 로딩 오류");
+      set({ status: "failed", error: error.message || "장르 로딩 오류" });
     }
-  }
-);
+  },
+}));
+
+export default useGenreStore;

@@ -1,7 +1,7 @@
-import { useSelector } from "react-redux";
+import useLoginStore from "../store/useLoginStore";
 
 export default function ProfilePage() {
-  const { user } = useSelector((state) => state.login);
+  const { user } = useLoginStore();
 
   if (!user) {
     return;

@@ -1,10 +1,19 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ApiKey, BaseUrl } from "../../api/tmdb";
-import { attachTrailer } from "../../api/attachTrailer";
+import { create } from "zustand";
+import { ApiKey, BaseUrl } from "../api/tmdb";
+import { attachTrailer } from "../api/attachTrailer";
 
-export const fetchHomeData = createAsyncThunk(
-  "home/fetchHomeData",
-  async (_, { rejectWithValue }) => {
+const useHomeStore = create((set) => ({
+  popular: [],
+  topRated: [],
+  actionAdventure: [],
+  comedyMovies: [],
+  sciFiFantasy: [],
+  comedySeries: [],
+  loading: false,
+  error: null,
+
+  fetchHomeData: async () => {
+    set({ loading: true, error: null });
     try {
       const paramsMovie = new URLSearchParams({
         api_key: ApiKey,
@@ -51,7 +60,15 @@ export const fetchHomeData = createAsyncThunk(
         !sciFiFantasyRes.ok ||
         !comedySeriesRes.ok
       ) {
-        throw new Error("홈 데이터 로딩 실패");
+        const errorDetails = {
+          popular: popularRes.statusText,
+          topRated: topRatedRes.statusText,
+          actionAdventure: actionAdventureRes.statusText,
+          comedyMovies: comedyMoviesRes.statusText,
+          sciFiFantasy: sciFiFantasyRes.statusText,
+          comedySeries: comedySeriesRes.statusText,
+        };
+        throw new Error("홈 데이터 로딩 실패: " + JSON.stringify(errorDetails));
       }
 
       const [
@@ -86,16 +103,19 @@ export const fetchHomeData = createAsyncThunk(
         attachTrailer(comedySeriesData.results, "tv"),
       ]);
 
-      return {
+      set({
         popular,
         topRated,
         actionAdventure,
         comedyMovies,
         sciFiFantasy,
         comedySeries,
-      };
+        loading: false,
+      });
     } catch (error) {
-      return rejectWithValue(error.message || "홈 데이터 로딩 실패");
+      set({ error: error.message || "홈 데이터 로딩 실패", loading: false });
     }
-  }
-);
+  },
+}));
+
+export default useHomeStore;

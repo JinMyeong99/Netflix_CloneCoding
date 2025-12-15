@@ -1,14 +1,13 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { loginSlice } from "../RTK/loginSlice";
+import useLoginStore from "../store/useLoginStore";
 import Netflix_logo from "../assets/Netflix_logo.png";
 import Netflix_background from "../assets/Netflix_background.jpg";
 import { supabase } from "../api/supabaseClient";
 
 export default function Signup() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const setUser = useLoginStore((state) => state.setUser);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -54,19 +53,17 @@ export default function Signup() {
 
       const user = data.user;
       if (user) {
-        dispatch(
-          loginSlice.actions.setUser({
-            id: user.id,
-            email: user.email,
-            name: user.user_metadata?.name || userName,
-          })
-        );
+        setUser({
+          id: user.id,
+          email: user.email,
+          name: user.user_metadata?.name || userName,
+        });
       }
 
       navigate("/");
-    } catch (err) {
+    } catch (error) {
       setError("알 수 없는 오류가 발생했습니다.");
-      console.error(err);
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -133,7 +130,7 @@ export default function Signup() {
                 type="password"
                 value={password}
                 onChange={(e) => {
-                  setPassword(e.target.value);
+                  setPassword(e.targe.value);
                   if (error) setError("");
                 }}
                 className="

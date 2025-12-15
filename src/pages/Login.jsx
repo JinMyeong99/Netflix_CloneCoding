@@ -1,14 +1,13 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Netflix_logo from "../assets/Netflix_logo.png";
 import Netflix_background from "../assets/Netflix_background.jpg";
-import { loginSlice } from "../RTK/loginSlice";
+import useLoginStore from "../store/useLoginStore";
 import { supabase } from "../api/supabaseClient";
 
 export default function Login() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const setUser = useLoginStore((state) => state.setUser);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,13 +36,11 @@ export default function Login() {
 
       const user = data.user;
       if (user) {
-        dispatch(
-          loginSlice.actions.setUser({
-            id: user.id,
-            email: user.email,
-            name: user.user_metadata?.name || "user",
-          })
-        );
+        setUser({
+          id: user.id,
+          email: user.email,
+          name: user.user_metadata?.name || "user",
+        });
       }
 
       navigate("/");

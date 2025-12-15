@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { favoriteSlice } from "../RTK/favoriteSlice";
+import useFavoriteStore from "../store/useFavoriteStore";
 
 export default function useContentDetail() {
   const [selectedContent, setSelectedContent] = useState(null);
@@ -16,13 +15,11 @@ export default function useContentDetail() {
     setSelectedContent(null);
   }, []);
 
-  const dispatch = useDispatch();
-
   const toggleFavorite = useCallback(
     (content) => {
-      dispatch(favoriteSlice.actions.toggleFavorite(content));
+      useFavoriteStore.getState().toggleFavorite(content);
     },
-    [dispatch]
+    []
   );
 
   const playTrailer = useCallback((content) => {

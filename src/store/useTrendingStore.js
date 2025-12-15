@@ -1,10 +1,17 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ApiKey, BaseUrl } from "../../api/tmdb";
-import { attachTrailer } from "../../api/attachTrailer";
+import { ApiKey, BaseUrl } from "../api/tmdb";
+import { attachTrailer } from "../api/attachTrailer";
+import { create } from "zustand";
 
-export const fetchTrendingData = createAsyncThunk(
-  "trending/fetchTrendingData",
-  async (_, { rejectWithValue }) => {
+const useTrendingStore = create((set) => ({
+  today: [],
+  week: [],
+  rising: [],
+  hot: [],
+  loading: false,
+  error: null,
+
+  fetchTrendingData: async () => {
+    set({ loading: true, error: null });
     try {
       const common = new URLSearchParams({
         api_key: ApiKey,
@@ -52,14 +59,20 @@ export const fetchTrendingData = createAsyncThunk(
       const rising = await attachTrailer(risingResults, "auto");
       const hot = await attachTrailer(hotResults, "auto");
 
-      return {
+      set({
         today,
         week,
         rising,
         hot,
-      };
+        loading: false,
+      });
     } catch (error) {
-      return rejectWithValue(error.message || "트렌드 데이터 로딩 실패");
+      set({
+        error: error.message || "트렌드 데이터 로딩 실패",
+        loading: false,
+      });
     }
-  }
-);
+  },
+}));
+
+export default useTrendingStore;

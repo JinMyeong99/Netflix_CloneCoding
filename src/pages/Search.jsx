@@ -1,26 +1,24 @@
 import { useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchSearchPage } from "../RTK/search/searchThunk";
+import { shallow } from "zustand/shallow";
 import useContentDetail from "../hooks/useContentDetail";
 import useGenreName from "../hooks/useGenreName";
 import useFavorite from "../hooks/useFavorite";
 import ContentDetailModal from "../components/ContentDetailModal";
 import useSingleFetch from "../hooks/useSingleFetch";
 import ContentGrid from "../components/ContentGrid";
+import useSearchStore from "../store/useSearchStore";
 
 export default function Search() {
-  const dispatch = useDispatch();
-  const { query, results, loading, hasMore, error } = useSelector(
-    (state) => state.search
-  );
+  const state = useSearchStore((state) => state, shallow);
+  const { query, results, loading, hasMore, error, fetchSearchPage } = state;
 
   const runOnce = useSingleFetch(loading);
 
   const loadMore = useCallback(() => {
     if (!hasMore) return;
     if (!query.trim()) return;
-    runOnce(() => dispatch(fetchSearchPage(query)));
-  }, [dispatch, hasMore, query, runOnce]);
+    runOnce(() => fetchSearchPage());
+  }, [hasMore, query, runOnce, fetchSearchPage]);
 
   const resultsWithGenre = useGenreName(results, "auto");
 
@@ -52,7 +50,7 @@ export default function Search() {
         onPlayTrailer={playTrailer}
         loading={loading}
         hasMore={hasMore}
-        onLoadMore={loadMore}
+        onLoadMore={loadMore} // Restored loadMore
         keyExtractor={(item) => `${item.media_type}-${item.id}`}
       />
       {loading && (
