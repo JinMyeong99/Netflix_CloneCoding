@@ -22,6 +22,12 @@ export default function SectionRow({
   const swiperRef = useRef(null);
 
   const [visibleRange, setVisibleRange] = useState({ start: 0, end: 5 });
+  const items = useMemo(
+    () => (Array.isArray(content) ? content : []),
+    [content]
+  );
+  const itemCount = items.length;
+  const swiperModules = useMemo(() => [Virtual], []);
 
   const scrollLeft = useCallback(() => {
     if (swiperRef.current) {
@@ -57,6 +63,46 @@ export default function SectionRow({
     []
   );
 
+  const virtualConfig = useMemo(
+    () => ({
+      enabled: true,
+      addSlidesBefore: 6,
+      addSlidesAfter: 6,
+    }),
+    []
+  );
+
+  const clampedVisibleEnd = useMemo(
+    () => (itemCount === 0 ? 0 : Math.min(visibleRange.end, itemCount - 1)),
+    [itemCount, visibleRange.end]
+  );
+
+  const slides = useMemo(() => {
+    if (itemCount === 0) return [];
+
+    return items.map((item, index) => {
+      const id = item?.id ?? index;
+
+      return {
+        id,
+        item,
+        virtualIndex: index,
+        isFavorite: favoriteId.has(id),
+        onEnter: () => handleMouseEnter(id),
+        onLeave: () => handleMouseLeave(id),
+      };
+    });
+  }, [favoriteId, handleMouseEnter, handleMouseLeave, itemCount, items]);
+
+  const getHoverAlign = useCallback(
+    (index) => {
+      if (index === visibleRange.start) return "left";
+      if (index === clampedVisibleEnd) return "right";
+      return "center";
+    },
+    [clampedVisibleEnd, visibleRange.start]
+  );
+
   const updateVisibleRange = useCallback((swiper) => {
     if (!swiper) return;
 
@@ -73,7 +119,22 @@ export default function SectionRow({
     });
   }, []);
 
-  if (!content || content.length === 0) return null;
+  const handleSwiperInit = useCallback(
+    (swiper) => {
+      swiperRef.current = swiper;
+      updateVisibleRange(swiper);
+    },
+    [updateVisibleRange]
+  );
+
+  const handleSlideChange = useCallback(
+    (swiper) => {
+      updateVisibleRange(swiper);
+    },
+    [updateVisibleRange]
+  );
+
+  if (itemCount === 0) return null;
 
   return (
     <section className="relative py-6">
@@ -93,57 +154,45 @@ export default function SectionRow({
 
         <div className="px-[5.5%]">
           <Swiper
-            modules={[Virtual]}
-            onSwiper={(swiper) => {
-              swiperRef.current = swiper;
-              updateVisibleRange(swiper);
-            }}
-            onSlideChange={(swiper) => {
-              updateVisibleRange(swiper);
-            }}
+            modules={swiperModules}
+            onSwiper={handleSwiperInit}
+            onSlideChange={handleSlideChange}
             spaceBetween={10}
             slidesPerView={6}
             slidesPerGroup={6}
             loop={false}
             watchOverflow={true}
             className="mt-2 overflow-visible!"
-            virtual={{
-              enabled: true,
-              addSlidesBefore: 6,
-              addSlidesAfter: 6,
-            }}
+            virtual={virtualConfig}
             breakpoints={breakpoints}
             onResize={updateVisibleRange}
             onBreakpoint={updateVisibleRange}
           >
-            {content.map((item, index) => {
-              const clampedEnd = Math.min(visibleRange.end, content.length - 1);
-
-              let hoverAlign = "center";
-              if (index === visibleRange.start) hoverAlign = "left";
-              else if (index === clampedEnd) hoverAlign = "right";
-
-              return (
-                <SwiperSlide
-                  key={item.id}
-                  virtualIndex={index}
-                  onMouseEnter={() => handleMouseEnter(item.id)}
-                  onMouseLeave={() => handleMouseLeave(item.id)}
-                >
-                  <div className="shrink-0 transition-transform duration-200 ease-out flex justify-center">
-                    <ContentCard
-                      content={item}
-                      isFavorite={favoriteId.has(item.id)}
-                      openHover={hoverContentId === item.id}
-                      openDetail={openDetail}
-                      toggleFavorite={toggleFavorite}
-                      onPlayTrailer={onPlayTrailer}
-                      hoverAlign={hoverAlign}
-                    />
-                  </div>
-                </SwiperSlide>
-              );
-            })}
+            {slides.map(
+              ({ id, item, virtualIndex, isFavorite, onEnter, onLeave }) => {
+                const hoverAlign = getHoverAlign(virtualIndex);
+                return (
+                  <SwiperSlide
+                    key={id}
+                    virtualIndex={virtualIndex}
+                    onMouseEnter={onEnter}
+                    onMouseLeave={onLeave}
+                  >
+                    <div className="shrink-0 transition-transform duration-200 ease-out flex justify-center">
+                      <ContentCard
+                        content={item}
+                        isFavorite={isFavorite}
+                        openHover={hoverContentId === id}
+                        openDetail={openDetail}
+                        toggleFavorite={toggleFavorite}
+                        onPlayTrailer={onPlayTrailer}
+                        hoverAlign={hoverAlign}
+                      />
+                    </div>
+                  </SwiperSlide>
+                );
+              }
+            )}
           </Swiper>
         </div>
       </div>

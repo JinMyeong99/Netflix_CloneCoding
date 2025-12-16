@@ -1,24 +1,23 @@
+import { memo, useCallback } from "react";
 import { backdropSrcSet, ImageUrl } from "../api/tmdb";
 
-export default function HeroBanner({ content, openDetail, onPlayTrailer }) {
+function HeroBanner({ content, openDetail, onPlayTrailer }) {
+  const handlePlay = useCallback(() => {
+    if (!content) return;
+    if (onPlayTrailer && content.trailerUrl) onPlayTrailer(content);
+    else if (openDetail) openDetail(content);
+  }, [onPlayTrailer, openDetail, content]);
+
+  const handleMoreInfo = useCallback(() => {
+    if (!content) return;
+    if (openDetail) openDetail(content);
+  }, [openDetail, content]);
+
   if (!content) return null;
 
   const backdropPath = content.backdrop_path;
-  const backdrop = ImageUrl(backdropPath, "w1280") || "";
-
+  const backdrop = ImageUrl(backdropPath, "w780") || "";
   const title = content.title || content.name || "";
-
-  const handlePlay = () => {
-    if (onPlayTrailer && content.trailerUrl) {
-      onPlayTrailer(content);
-    } else if (openDetail) {
-      openDetail(content);
-    }
-  };
-
-  const handleMoreInfo = () => {
-    if (openDetail) openDetail(content);
-  };
 
   return (
     <section className="relative w-full max-h-[85vh] overflow-hidden">
@@ -26,7 +25,7 @@ export default function HeroBanner({ content, openDetail, onPlayTrailer }) {
         <img
           src={backdrop}
           srcSet={backdropSrcSet(backdropPath)}
-          sizes="(min-width: 1280px) 1280px, 100vw"
+          sizes="(min-width: 1536px) 90vw, (min-width: 1024px) 90vw, 100vw"
           alt={title}
           className="w-full max-h-screen object-cover object-center"
           loading="eager"
@@ -65,3 +64,5 @@ export default function HeroBanner({ content, openDetail, onPlayTrailer }) {
     </section>
   );
 }
+
+export default memo(HeroBanner);
