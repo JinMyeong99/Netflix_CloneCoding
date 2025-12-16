@@ -27,6 +27,7 @@ export default function SectionRow({
     [content]
   );
   const itemCount = items.length;
+  const swiperModules = useMemo(() => [Virtual], []);
 
   const scrollLeft = useCallback(() => {
     if (swiperRef.current) {
@@ -58,6 +59,15 @@ export default function SectionRow({
         slidesPerView: 6,
         slidesPerGroup: 6,
       },
+    }),
+    []
+  );
+
+  const virtualConfig = useMemo(
+    () => ({
+      enabled: true,
+      addSlidesBefore: 6,
+      addSlidesAfter: 6,
     }),
     []
   );
@@ -144,7 +154,7 @@ export default function SectionRow({
 
         <div className="px-[5.5%]">
           <Swiper
-            modules={[Virtual]}
+            modules={swiperModules}
             onSwiper={handleSwiperInit}
             onSlideChange={handleSlideChange}
             spaceBetween={10}
@@ -153,11 +163,7 @@ export default function SectionRow({
             loop={false}
             watchOverflow={true}
             className="mt-2 overflow-visible!"
-            virtual={{
-              enabled: true,
-              addSlidesBefore: 6,
-              addSlidesAfter: 6,
-            }}
+            virtual={virtualConfig}
             breakpoints={breakpoints}
             onResize={updateVisibleRange}
             onBreakpoint={updateVisibleRange}
