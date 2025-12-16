@@ -1,3 +1,4 @@
+import { useCallback, useMemo } from "react";
 import useFavoriteStore from "../store/useFavoriteStore";
 import { ImageUrl } from "../api/tmdb";
 
@@ -8,49 +9,57 @@ export default function ContentDetailModal({
   onPlayTrailer,
 }) {
   const favoriteList = useFavoriteStore((state) => state.list);
-  const isFavorite = favoriteList.some(
-    (favContent) => favContent.id === content.id
-  );
+  const isFavorite = useMemo(() => {
+    if (!content) return false;
+    return favoriteList.some((favContent) => favContent.id === content.id);
+  }, [favoriteList, content?.id]);
 
-  if (!content) return null;
+  const detail = useMemo(() => {
+    if (!content) return null;
 
-  const backdrop =
-    ImageUrl(content.backdrop_path || content.poster_path, "w1280") || "";
-  const poster =
-    ImageUrl(content.poster_path || content.backdrop_path, "w500") || "";
-  const title = content.title || content.name || "";
-  const overview = content.overview || "";
-  const rating =
-    typeof content.vote_average === "number"
-      ? content.vote_average.toFixed(1)
-      : null;
-  const year =
-    typeof content.release_date === "string" && content.release_date
-      ? content.release_date.slice(0, 4)
-      : typeof content.first_air_date === "string" && content.first_air_date
-        ? content.first_air_date.slice(0, 4)
+    const backdrop =
+      ImageUrl(content.backdrop_path || content.poster_path, "w1280") || "";
+    const poster =
+      ImageUrl(content.poster_path || content.backdrop_path, "w500") || "";
+    const title = content.title || content.name || "";
+    const overview = content.overview || "";
+    const rating =
+      typeof content.vote_average === "number"
+        ? content.vote_average.toFixed(1)
         : null;
+    const year =
+      typeof content.release_date === "string" && content.release_date
+        ? content.release_date.slice(0, 4)
+        : typeof content.first_air_date === "string" && content.first_air_date
+          ? content.first_air_date.slice(0, 4)
+          : null;
 
-  const genre =
-    Array.isArray(content.genre) && content.genre.length > 0
-      ? content.genre.map((genre) => genre.name)
-      : Array.isArray(content.genre_names)
-        ? content.genre_names
-        : [];
+    const genre =
+      Array.isArray(content.genre) && content.genre.length > 0
+        ? content.genre.map((genre) => genre.name)
+        : Array.isArray(content.genre_names)
+          ? content.genre_names
+          : [];
 
-  const trailerKey = content.trailerUrl
-    ? content.trailerUrl.split("v=")[1]?.split("&")[0]
-    : null;
+    const trailerKey = content.trailerUrl
+      ? content.trailerUrl.split("v=")[1]?.split("&")[0]
+      : null;
 
-  const handleFavorite = () => {
-    if (toggleFavorite) {
+    return { backdrop, poster, title, overview, rating, year, genre, trailerKey };
+  }, [content]);
+
+  const handleFavorite = useCallback(() => {
+    if (content && toggleFavorite) {
       toggleFavorite(content);
     }
-  };
+  }, [content, toggleFavorite]);
 
-  const handlePlay = () => {
-    if (onPlayTrailer && content.trailerUrl) onPlayTrailer(content);
-  };
+  const handlePlay = useCallback(() => {
+    if (content && onPlayTrailer && content.trailerUrl) onPlayTrailer(content);
+  }, [content, onPlayTrailer]);
+
+  if (!detail) return null;
+  const { backdrop, poster, title, overview, rating, year, genre, trailerKey } = detail;
 
   return (
     <div
