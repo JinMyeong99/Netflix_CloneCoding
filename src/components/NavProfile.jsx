@@ -1,7 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../api/supabaseClient";
 import useLoginStore from "../store/useLoginStore";
-import { shallow } from "zustand/shallow";
 
 export default function NavProfile() {
   const navigate = useNavigate();

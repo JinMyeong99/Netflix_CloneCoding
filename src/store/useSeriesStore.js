@@ -38,9 +38,7 @@ const useSeriesStore = create((set, get) => ({
       const results = await attachTrailer(dataResults, "tv");
 
       const uniqueItemsMap = new Map();
-      // Add existing items to the map
       list.forEach((item) => uniqueItemsMap.set(item.id, item));
-      // Add new results to the map (this will overwrite duplicates with the new version if IDs match)
       results.forEach((item) => uniqueItemsMap.set(item.id, item));
 
       const deDuplicatedList = Array.from(uniqueItemsMap.values());

@@ -46,7 +46,7 @@ function ContentCard({
         : "left-1/2 -translate-x-1/2 origin-center";
 
   return (
-    <article className="relative group/card w-full max-w-[260px]">
+    <article className="relative group/card w-full max-w-65">
       <div className="w-full aspect-2/3 overflow-hidden rounded-md bg-neutral-800">
         {poster ? (
           <img
