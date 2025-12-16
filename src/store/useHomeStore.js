@@ -1,3 +1,4 @@
+import axios from "axios";
 import { create } from "zustand";
 import { ApiKey, BaseUrl } from "../api/tmdb";
 import { attachTrailer } from "../api/attachTrailer";
@@ -44,48 +45,20 @@ const useHomeStore = create((set) => ({
         sciFiFantasyRes,
         comedySeriesRes,
       ] = await Promise.all([
-        fetch(popularUrl),
-        fetch(topRatedUrl),
-        fetch(actionAdventureUrl),
-        fetch(comedyMoviesUrl),
-        fetch(sciFiFantasyUrl),
-        fetch(comedySeriesUrl),
+        axios.get(popularUrl),
+        axios.get(topRatedUrl),
+        axios.get(actionAdventureUrl),
+        axios.get(comedyMoviesUrl),
+        axios.get(sciFiFantasyUrl),
+        axios.get(comedySeriesUrl),
       ]);
 
-      if (
-        !popularRes.ok ||
-        !topRatedRes.ok ||
-        !actionAdventureRes.ok ||
-        !comedyMoviesRes.ok ||
-        !sciFiFantasyRes.ok ||
-        !comedySeriesRes.ok
-      ) {
-        const errorDetails = {
-          popular: popularRes.statusText,
-          topRated: topRatedRes.statusText,
-          actionAdventure: actionAdventureRes.statusText,
-          comedyMovies: comedyMoviesRes.statusText,
-          sciFiFantasy: sciFiFantasyRes.statusText,
-          comedySeries: comedySeriesRes.statusText,
-        };
-        throw new Error("홈 데이터 로딩 실패: " + JSON.stringify(errorDetails));
-      }
-
-      const [
-        popularData,
-        topRatedData,
-        actionAdventureData,
-        comedyMoviesData,
-        sciFiFantasyData,
-        comedySeriesData,
-      ] = await Promise.all([
-        popularRes.json(),
-        topRatedRes.json(),
-        actionAdventureRes.json(),
-        comedyMoviesRes.json(),
-        sciFiFantasyRes.json(),
-        comedySeriesRes.json(),
-      ]);
+      const popularData = popularRes.data;
+      const topRatedData = topRatedRes.data;
+      const actionAdventureData = actionAdventureRes.data;
+      const comedyMoviesData = comedyMoviesRes.data;
+      const sciFiFantasyData = sciFiFantasyRes.data;
+      const comedySeriesData = comedySeriesRes.data;
 
       const [
         popular,
@@ -113,7 +86,11 @@ const useHomeStore = create((set) => ({
         loading: false,
       });
     } catch (error) {
-      set({ error: error.message || "홈 데이터 로딩 실패", loading: false });
+      set({
+        error:
+          error?.response?.statusText || error?.message || "홈 데이터 로딩 실패",
+        loading: false,
+      });
     }
   },
 }));

@@ -58,7 +58,7 @@ export default function ContentDetailModal({
       onClick={onClose}
     >
       <div
-        className="relative max-w-[900px] w-full max-h-[90vh] bg-neutral-900 rounded-xl overflow-auto scrollbar-none"
+        className="relative max-w-225 w-full max-h-[90vh] bg-neutral-900 rounded-xl overflow-auto scrollbar-none"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="relative w-full aspect-video bg-black">
@@ -149,7 +149,7 @@ export default function ContentDetailModal({
             </div>
 
             {poster && (
-              <div className="w-[150px] shrink-0 hidden md:block">
+              <div className="w-37.5 shrink-0 hidden md:block">
                 <img
                   src={poster}
                   alt={title}

@@ -20,10 +20,7 @@ export default function Series() {
   const isInitialLoading = page === 0 && list.length === 0;
 
   useEffect(() => {
-    // Reset store on mount if it's not already fresh
-    if (page !== 0 || list.length !== 0) {
-      resetSeries();
-    }
+    resetSeries();
     fetchSeriesPage();
 
     return () => {
@@ -77,7 +74,7 @@ export default function Series() {
         openDetail={openDetail}
         onPlayTrailer={playTrailer}
       />
-      <div className="mx-auto max-w-[90%] pb-[100px]">
+      <div className="mx-auto max-w-[90%] pb-25">
         <div className="flex items-center gap-6  mb-5">
           <h2 className="text-4xl">인기 시리즈</h2>
 
