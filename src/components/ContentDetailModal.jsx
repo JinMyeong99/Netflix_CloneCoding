@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from "react";
 import useFavoriteStore from "../store/useFavoriteStore";
-import { ImageUrl } from "../api/tmdb";
+import { backdropSrcSet, ImageUrl, posterSrcSet } from "../api/tmdb";
 
 export default function ContentDetailModal({
   content,
@@ -19,9 +19,9 @@ export default function ContentDetailModal({
     if (!content) return null;
 
     const backdrop =
-      ImageUrl(content.backdrop_path || content.poster_path, "w1280") || "";
+      ImageUrl(content.backdrop_path || content.poster_path, "w780") || "";
     const poster =
-      ImageUrl(content.poster_path || content.backdrop_path, "w500") || "";
+      ImageUrl(content.poster_path || content.backdrop_path, "w185") || "";
     const title = content.title || content.name || "";
     const overview = content.overview || "";
     const rating =
@@ -83,8 +83,12 @@ export default function ContentDetailModal({
           ) : backdrop ? (
             <img
               src={backdrop}
+              srcSet={backdropSrcSet(content.backdrop_path || content.poster_path)}
+              sizes="(min-width: 1280px) 70vw, 90vw"
               alt={title}
               className="w-full h-full object-cover object-center"
+              loading="lazy"
+              decoding="async"
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-neutral-300">
@@ -162,8 +166,12 @@ export default function ContentDetailModal({
               <div className="w-37.5 shrink-0 hidden md:block">
                 <img
                   src={poster}
+                  srcSet={posterSrcSet(content.poster_path || content.backdrop_path)}
+                  sizes="(min-width: 1280px) 200px, (min-width: 768px) 180px, 150px"
                   alt={title}
                   className="w-full h-auto rounded-md object-cover "
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
             )}

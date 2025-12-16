@@ -16,7 +16,7 @@ function HeroBanner({ content, openDetail, onPlayTrailer }) {
   if (!content) return null;
 
   const backdropPath = content.backdrop_path;
-  const backdrop = ImageUrl(backdropPath, "w1280") || "";
+  const backdrop = ImageUrl(backdropPath, "w780") || "";
   const title = content.title || content.name || "";
 
   return (
@@ -25,7 +25,7 @@ function HeroBanner({ content, openDetail, onPlayTrailer }) {
         <img
           src={backdrop}
           srcSet={backdropSrcSet(backdropPath)}
-          sizes="(min-width: 1280px) 1280px, 100vw"
+          sizes="(min-width: 1536px) 90vw, (min-width: 1024px) 90vw, 100vw"
           alt={title}
           className="w-full max-h-screen object-cover object-center"
           loading="eager"
