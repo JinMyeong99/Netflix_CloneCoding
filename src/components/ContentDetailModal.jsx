@@ -9,10 +9,11 @@ export default function ContentDetailModal({
   onPlayTrailer,
 }) {
   const favoriteList = useFavoriteStore((state) => state.list);
+  const contentId = content?.id;
   const isFavorite = useMemo(() => {
-    if (!content) return false;
-    return favoriteList.some((favContent) => favContent.id === content.id);
-  }, [favoriteList, content?.id]);
+    if (!contentId) return false;
+    return favoriteList.some((favContent) => favContent.id === contentId);
+  }, [favoriteList, contentId]);
 
   const detail = useMemo(() => {
     if (!content) return null;
