@@ -1,3 +1,4 @@
+import axios from "axios";
 import { ApiKey, BaseUrl } from "./tmdb";
 
 const paramsVideo = new URLSearchParams({
@@ -12,8 +13,7 @@ export async function attachTrailer(contents, mode) {
   async function fetchTrailer(content, mediaType) {
     try {
       const url = `${BaseUrl}/${mediaType}/${content.id}?${paramsVideo}`;
-      const res = await fetch(url);
-      const data = await res.json();
+      const { data } = await axios.get(url);
 
       const trailer =
         data.videos?.results?.find(

@@ -20,15 +20,13 @@ export default function Series() {
   const isInitialLoading = page === 0 && list.length === 0;
 
   useEffect(() => {
-    if (page !== 0 || list.length !== 0) {
-      resetSeries();
-    }
+    resetSeries();
     fetchSeriesPage();
 
     return () => {
       resetSeries();
     };
-  }, [fetchSeriesPage, resetSeries, page, list.length]);
+  }, [fetchSeriesPage, resetSeries]);
 
   const loadMore = useCallback(() => {
     if (!hasMore) return;

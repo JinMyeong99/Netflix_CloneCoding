@@ -1,3 +1,4 @@
+import axios from "axios";
 import { ApiKey, BaseUrl } from "../api/tmdb";
 import { attachTrailer } from "../api/attachTrailer";
 import { create } from "zustand";
@@ -32,22 +33,16 @@ const useTrendingStore = create((set) => ({
       const hotUrl = `${BaseUrl}/trending/all/day?${common}`;
 
       const [todayRes, weekRes, risingRes, hotRes] = await Promise.all([
-        fetch(todayUrl),
-        fetch(weekUrl),
-        fetch(risingUrl),
-        fetch(hotUrl),
+        axios.get(todayUrl),
+        axios.get(weekUrl),
+        axios.get(risingUrl),
+        axios.get(hotUrl),
       ]);
 
-      if (!todayRes.ok || !weekRes.ok || !risingRes.ok || !hotRes.ok) {
-        throw new Error("트렌드 데이터 로딩 실패");
-      }
-
-      const [todayData, weekData, risingData, hotData] = await Promise.all([
-        todayRes.json(),
-        weekRes.json(),
-        risingRes.json(),
-        hotRes.json(),
-      ]);
+      const todayData = todayRes.data;
+      const weekData = weekRes.data;
+      const risingData = risingRes.data;
+      const hotData = hotRes.data;
 
       const todayResults = todayData.results || [];
       const weekResults = weekData.results || [];
@@ -68,7 +63,10 @@ const useTrendingStore = create((set) => ({
       });
     } catch (error) {
       set({
-        error: error.message || "트렌드 데이터 로딩 실패",
+        error:
+          error?.response?.statusText ||
+          error?.message ||
+          "트렌드 데이터 로딩 실패",
         loading: false,
       });
     }

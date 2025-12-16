@@ -1,3 +1,4 @@
+import axios from "axios";
 import { create } from "zustand";
 import { ApiKey, BaseUrl } from "../api/tmdb";
 import { attachTrailer } from "../api/attachTrailer";
@@ -29,11 +30,7 @@ const useSeriesStore = create((set, get) => ({
       }).toString();
 
       const seriesUrl = `${BaseUrl}/discover/tv?${params}`;
-      const res = await fetch(seriesUrl);
-      if (!res.ok) {
-        throw new Error("시리즈 로딩 실패");
-      }
-      const seriesData = await res.json();
+      const { data: seriesData } = await axios.get(seriesUrl);
       const dataResults = seriesData.results || [];
       const results = await attachTrailer(dataResults, "tv");
 
@@ -50,7 +47,9 @@ const useSeriesStore = create((set, get) => ({
         loading: false,
       }));
     } catch (error) {
-      set({ error: error.message, loading: false });
+      const message =
+        error?.response?.statusText || error?.message || "시리즈 로딩 실패";
+      set({ error: message, loading: false });
     }
   },
 

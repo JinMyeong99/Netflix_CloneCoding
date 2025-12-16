@@ -1,3 +1,4 @@
+import axios from "axios";
 import { create } from "zustand";
 import { ApiKey, BaseUrl } from "../api/tmdb";
 
@@ -14,14 +15,12 @@ const useGenreStore = create((set) => ({
       const seriesGenreUrl = `${BaseUrl}/genre/tv/list?api_key=${ApiKey}&language=ko-KR`;
 
       const [movieGenreRes, seriesGenreRes] = await Promise.all([
-        fetch(movieGenreUrl),
-        fetch(seriesGenreUrl),
+        axios.get(movieGenreUrl),
+        axios.get(seriesGenreUrl),
       ]);
-      if (!movieGenreRes.ok) throw new Error("영화 장르 로딩 실패");
-      if (!seriesGenreRes.ok) throw new Error("시리즈 장르 로딩 실패");
 
-      const movieGenreData = await movieGenreRes.json();
-      const seriesGenreData = await seriesGenreRes.json();
+      const movieGenreData = movieGenreRes.data;
+      const seriesGenreData = seriesGenreRes.data;
 
       set({
         status: "succeeded",
@@ -29,7 +28,11 @@ const useGenreStore = create((set) => ({
         seriesGenres: seriesGenreData.genres || [],
       });
     } catch (error) {
-      set({ status: "failed", error: error.message || "장르 로딩 오류" });
+      set({
+        status: "failed",
+        error:
+          error?.response?.statusText || error?.message || "장르 로딩 오류",
+      });
     }
   },
 }));

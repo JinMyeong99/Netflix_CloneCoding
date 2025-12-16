@@ -20,15 +20,13 @@ export default function Movie() {
   const isInitialLoading = page === 0 && list.length === 0;
 
   useEffect(() => {
-    if (page !== 0 || list.length !== 0) {
-      resetMovie();
-    }
+    resetMovie();
     fetchMoviePage();
 
     return () => {
       resetMovie();
     };
-  }, [fetchMoviePage, resetMovie, page, list.length]);
+  }, [fetchMoviePage, resetMovie]);
 
   const loadMore = useCallback(() => {
     if (!hasMore) return;

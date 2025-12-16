@@ -1,3 +1,4 @@
+import axios from "axios";
 import { create } from "zustand";
 import { ApiKey, BaseUrl } from "../api/tmdb";
 import { attachTrailer } from "../api/attachTrailer";
@@ -41,10 +42,7 @@ const useSearchStore = create((set, get) => ({
 
       const searchUrl = `${BaseUrl}/search/multi?api_key=${ApiKey}&language=ko-KR&include_adult=false&query=${encodeURIComponent(searchValue)}&page=${nextPage}`;
 
-      const res = await fetch(searchUrl);
-      if (!res.ok) throw new Error("검색 결과 로딩 실패");
-
-      const searchData = await res.json();
+      const { data: searchData } = await axios.get(searchUrl);
 
       const filteredData = (searchData.results || []).filter(
         (content) =>
@@ -72,7 +70,9 @@ const useSearchStore = create((set, get) => ({
         loading: false,
       }));
     } catch (error) {
-      set({ error: error.message, loading: false });
+      const message =
+        error?.response?.statusText || error?.message || "검색 결과 로딩 실패";
+      set({ error: message, loading: false });
     }
   },
 }));

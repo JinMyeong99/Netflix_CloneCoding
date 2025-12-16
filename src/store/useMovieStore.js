@@ -1,3 +1,4 @@
+import axios from "axios";
 import { create } from "zustand";
 import { ApiKey, BaseUrl } from "../api/tmdb";
 import { attachTrailer } from "../api/attachTrailer";
@@ -29,13 +30,7 @@ const useMovieStore = create((set, get) => ({
       });
 
       const movieUrl = `${BaseUrl}/discover/movie?${params.toString()}`;
-      const res = await fetch(movieUrl);
-
-      if (!res.ok) {
-        throw new Error("영화 데이터 로딩 실패: " + res.statusText);
-      }
-
-      const movieData = await res.json();
+      const { data: movieData } = await axios.get(movieUrl);
 
       const dataResults = movieData.results || [];
 
@@ -53,7 +48,9 @@ const useMovieStore = create((set, get) => ({
         loading: false,
       }));
     } catch (error) {
-      set({ error: error.message, loading: false });
+      const message =
+        error?.response?.statusText || error?.message || "영화 데이터 로딩 실패";
+      set({ error: message, loading: false });
     }
   },
 
