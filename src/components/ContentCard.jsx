@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useCallback, useMemo } from "react";
 import { backdropSrcSet, ImageUrl, posterSrcSet } from "../api/tmdb";
 
 function ContentCard({
@@ -10,40 +10,66 @@ function ContentCard({
   onPlayTrailer,
   hoverAlign = "center",
 }) {
-  const posterPath = content.poster_path;
-  const poster = ImageUrl(posterPath, "w342") || "";
+  const {
+    poster_path,
+    backdrop_path,
+    title: contentTitle,
+    name,
+    genre,
+    genre_names,
+    trailerUrl,
+  } = content;
 
-  const backdropPath = content.backdrop_path;
-  const backdrop = ImageUrl(backdropPath, "w780") || "";
-  const title = content.title || content.name || "";
+  const poster = useMemo(
+    () => ImageUrl(poster_path, "w342") || "",
+    [poster_path]
+  );
+  const backdrop = useMemo(
+    () => ImageUrl(backdrop_path, "w780") || "",
+    [backdrop_path]
+  );
+  const title = contentTitle || name || "";
 
-  const genres =
-    Array.isArray(content.genre) && content.genre.length > 0
-      ? content.genre.map((genre) => genre.name)
-      : Array.isArray(content.genre_names)
-        ? content.genre_names
-        : [];
+  const mainGenre = useMemo(() => {
+    const genres =
+      Array.isArray(genre) && genre.length > 0
+        ? genre.map((g) => g.name)
+        : Array.isArray(genre_names)
+          ? genre_names
+          : [];
+    return genres.slice(0, 3).join("∙");
+  }, [genre, genre_names]);
 
-  const mainGenre = genres.slice(0, 3).join("∙");
-
-  const handleFavorite = () => {
+  const handleFavorite = useCallback(() => {
     if (toggleFavorite) toggleFavorite(content);
-  };
+  }, [toggleFavorite, content]);
 
-  const handlePlay = () => {
-    if (onPlayTrailer && content.trailerUrl) onPlayTrailer(content);
-  };
+  const handlePlay = useCallback(() => {
+    if (onPlayTrailer && trailerUrl) onPlayTrailer(content);
+  }, [onPlayTrailer, content, trailerUrl]);
 
-  const handleOpenDetail = () => {
+  const handleOpenDetail = useCallback(() => {
     if (openDetail) openDetail(content);
-  };
+  }, [openDetail, content]);
 
-  const hoverPosition =
-    hoverAlign === "left"
-      ? "left-0 origin-left"
-      : hoverAlign === "right"
-        ? "right-0 origin-right"
-        : "left-1/2 -translate-x-1/2 origin-center";
+  const hoverPosition = useMemo(() => {
+    switch (hoverAlign) {
+      case "left":
+        return "left-0 origin-left";
+      case "right":
+        return "right-0 origin-right";
+      default:
+        return "left-1/2 -translate-x-1/2 origin-center";
+    }
+  }, [hoverAlign]);
+
+  const hoverCardStyle = useMemo(
+    () => ({
+      width: "min(420px, calc(100vw - 32px))",
+      minWidth: "220px",
+    }),
+    []
+  );
 
   return (
     <article className="relative group/card w-full max-w-65">
@@ -51,7 +77,7 @@ function ContentCard({
         {poster ? (
           <img
             src={poster}
-            srcSet={posterSrcSet(posterPath)}
+            srcSet={posterSrcSet(poster_path)}
             sizes="(min-width: 1280px) 260px, (min-width: 768px) 200px, 33vw"
             alt={title}
             width={342}
@@ -77,16 +103,13 @@ function ContentCard({
             ? "opacity-100 scale-100 z-30 pointer-events-auto"
             : "opacity-0 scale-0 z-0 pointer-events-none"
         }`}
-        style={{
-          width: "min(420px, calc(100vw - 32px))",
-          minWidth: "220px",
-        }}
+        style={hoverCardStyle}
       >
         <div className="relative w-full aspect-video bg-black">
           {backdrop ? (
             <img
               src={backdrop}
-              srcSet={backdropSrcSet(backdropPath)}
+              srcSet={backdropSrcSet(backdrop_path)}
               sizes="(min-width: 1280px) 480px, 80vw"
               alt={title}
               width={780}
