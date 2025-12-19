@@ -7,54 +7,64 @@ const paramsVideo = new URLSearchParams({
   append_to_response: "videos",
 }).toString();
 
+const trailerCache = new Map();
+
+function setMediaType(content, mode) {
+  if (mode === "auto") {
+    if (content.media_type === "movie") return "movie";
+    if (content.media_type === "tv") return "tv";
+    return null;
+  }
+
+  if (mode === "movie" || mode === "tv") return mode;
+  return null;
+}
+
+async function fetchTrailerUrl(contentId, mediaType) {
+  try {
+    const url = `${BaseUrl}/${mediaType}/${contentId}?${paramsVideo}`;
+    const { data } = await axios.get(url);
+
+    const trailer =
+      data.videos?.results?.find(
+        (video) =>
+          video.site === "YouTube" &&
+          (video.type === "Trailer" || video.type === "Teaser")
+      ) || null;
+
+    return trailer ? `https://www.youtube.com/watch?v=${trailer.key}` : null;
+  } catch {
+    return null;
+  }
+}
+
 export async function attachTrailer(contents, mode) {
   if (!Array.isArray(contents) || contents.length === 0) return [];
 
-  async function fetchTrailer(content, mediaType) {
-    try {
-      const url = `${BaseUrl}/${mediaType}/${content.id}?${paramsVideo}`;
-      const { data } = await axios.get(url);
-
-      const trailer =
-        data.videos?.results?.find(
-          (video) =>
-            video.site === "YouTube" &&
-            (video.type === "Trailer" || video.type === "Teaser")
-        ) || null;
-
-      const trailerUrl = trailer
-        ? `https://www.youtube.com/watch?v=${trailer.key}`
-        : null;
-
-      return {
-        ...content,
-        trailerUrl,
-      };
-    } catch {
-      return {
-        ...content,
-        trailerUrl: null,
-      };
-    }
-  }
-
   return Promise.all(
     contents.map(async (content) => {
-      let mediaType = mode;
+      const mediaType = setMediaType(content, mode);
 
-      if (mode === "auto") {
-        if (content.media_type === "movie") mediaType = "movie";
-        else if (content.media_type === "tv") mediaType = "tv";
-        else {
-          return { ...content, trailerUrl: null };
-        }
-      }
-
-      if (mediaType !== "movie" && mediaType !== "tv") {
+      if (!mediaType || !content?.id) {
         return { ...content, trailerUrl: null };
       }
 
-      return fetchTrailer(content, mediaType);
+      if (content.trailerUrl) {
+        return content;
+      }
+
+      const cacheKey = `${mediaType}-${content.id}`;
+      if (trailerCache.has(cacheKey)) {
+        const cachedTrailer = await trailerCache.get(cacheKey);
+        return { ...content, trailerUrl: cachedTrailer };
+      }
+
+      const trailerPromise = fetchTrailerUrl(content.id, mediaType);
+      trailerCache.set(cacheKey, trailerPromise);
+      const trailerUrl = await trailerPromise;
+      trailerCache.set(cacheKey, trailerUrl);
+
+      return { ...content, trailerUrl };
     })
   );
 }
