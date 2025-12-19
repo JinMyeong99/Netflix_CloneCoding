@@ -16,7 +16,7 @@ function HeroBanner({ content, openDetail, onPlayTrailer }) {
   if (!content) return null;
 
   const backdropPath = content.backdrop_path;
-  const backdrop = ImageUrl(backdropPath, "w780") || "";
+  const backdrop = ImageUrl(backdropPath, "original") || "";
   const title = content.title || content.name || "";
 
   return (
