@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import useFavoriteStore from "../store/useFavoriteStore";
+import toast from "react-hot-toast";
 
 export default function useContentDetail() {
   const [selectedContent, setSelectedContent] = useState(null);
@@ -18,7 +19,15 @@ export default function useContentDetail() {
   const toggleFavorite = useFavoriteStore((state) => state.toggleFavorite);
 
   const playTrailer = useCallback((content) => {
-    if (!content?.trailerUrl) return;
+    if (!content?.trailerUrl) {
+      toast("영상이 없는 콘텐츠입니다.", {
+        id: "no-trailer",
+        icon: "⚠️",
+        duration: 2200,
+      });
+      return;
+    }
+
     window.open(content.trailerUrl, "_blank", "noopener,noreferrer");
   }, []);
 

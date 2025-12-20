@@ -17,7 +17,6 @@ function ContentCard({
     name,
     genre,
     genre_names,
-    trailerUrl,
   } = content;
 
   const poster = useMemo(
@@ -45,8 +44,8 @@ function ContentCard({
   }, [toggleFavorite, content]);
 
   const handlePlay = useCallback(() => {
-    if (onPlayTrailer && trailerUrl) onPlayTrailer(content);
-  }, [onPlayTrailer, content, trailerUrl]);
+    if (onPlayTrailer) onPlayTrailer(content);
+  }, [onPlayTrailer, content]);
 
   const handleOpenDetail = useCallback(() => {
     if (openDetail) openDetail(content);

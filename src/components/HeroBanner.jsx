@@ -4,9 +4,8 @@ import { backdropSrcSet, ImageUrl } from "../api/tmdb";
 function HeroBanner({ content, openDetail, onPlayTrailer }) {
   const handlePlay = useCallback(() => {
     if (!content) return;
-    if (onPlayTrailer && content.trailerUrl) onPlayTrailer(content);
-    else if (openDetail) openDetail(content);
-  }, [onPlayTrailer, openDetail, content]);
+    if (onPlayTrailer) onPlayTrailer(content);
+  }, [onPlayTrailer, content]);
 
   const handleMoreInfo = useCallback(() => {
     if (!content) return;

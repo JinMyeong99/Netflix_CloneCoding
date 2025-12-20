@@ -46,7 +46,16 @@ export default function ContentDetailModal({
       ? content.trailerUrl.split("v=")[1]?.split("&")[0]
       : null;
 
-    return { backdrop, poster, title, overview, rating, year, genre, trailerKey };
+    return {
+      backdrop,
+      poster,
+      title,
+      overview,
+      rating,
+      year,
+      genre,
+      trailerKey,
+    };
   }, [content]);
 
   const handleFavorite = useCallback(() => {
@@ -56,11 +65,13 @@ export default function ContentDetailModal({
   }, [content, toggleFavorite]);
 
   const handlePlay = useCallback(() => {
-    if (content && onPlayTrailer && content.trailerUrl) onPlayTrailer(content);
+    if (!content) return;
+    if (onPlayTrailer) onPlayTrailer(content);
   }, [content, onPlayTrailer]);
 
   if (!detail) return null;
-  const { backdrop, poster, title, overview, rating, year, genre, trailerKey } = detail;
+  const { backdrop, poster, title, overview, rating, year, genre, trailerKey } =
+    detail;
 
   return (
     <div
@@ -83,7 +94,9 @@ export default function ContentDetailModal({
           ) : backdrop ? (
             <img
               src={backdrop}
-              srcSet={backdropSrcSet(content.backdrop_path || content.poster_path)}
+              srcSet={backdropSrcSet(
+                content.backdrop_path || content.poster_path
+              )}
               sizes="(min-width: 1280px) 70vw, 90vw"
               alt={title}
               className="w-full h-full object-cover object-center"
@@ -166,7 +179,9 @@ export default function ContentDetailModal({
               <div className="w-37.5 shrink-0 hidden md:block">
                 <img
                   src={poster}
-                  srcSet={posterSrcSet(content.poster_path || content.backdrop_path)}
+                  srcSet={posterSrcSet(
+                    content.poster_path || content.backdrop_path
+                  )}
                   sizes="(min-width: 1280px) 200px, (min-width: 768px) 180px, 150px"
                   alt={title}
                   className="w-full h-auto rounded-md object-cover "
