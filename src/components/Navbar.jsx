@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import Netflix_logo from "../assets/Netflix_logo.png";
-import SearchBar from "./Searchbar";
 import { useEffect, useState } from "react";
+import NetflixLogoSmall from "../assets/Netflix_logo_small.png";
+import SearchBar from "./Searchbar";
 import NavProfile from "./NavProfile";
 
 export default function Navbar() {
@@ -28,7 +28,14 @@ export default function Navbar() {
       <div className="mx-auto max-w-[90%] flex h-18 items-center justify-between">
         <div className="flex items-center gap-6 lg:gap-8">
           <Link to="/">
-            <img src={Netflix_logo} className="h-5 lg:h-6" alt="Netflix logo" />
+            <img
+              src={NetflixLogoSmall}
+              width={256}
+              height={69}
+              decoding="async"
+              className="h-5 lg:h-6 w-auto"
+              alt="Netflix logo"
+            />
           </Link>
 
           <nav className="hidden md:flex gap-4 lg:gap-5 items-center">
