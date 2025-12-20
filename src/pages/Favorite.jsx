@@ -29,7 +29,7 @@ export default function Favorite() {
   return (
     <div>
       <div className="pt-16 pb-10 px-[5%]">
-        <h1 className="text-2xl mb-4">내가 찜한 콘텐츠</h1>
+        <h1 className="text-2xl md:text-3xl my-5">내가 찜한 콘텐츠</h1>
         <ContentGrid
           items={favoritesWithGenre}
           favoriteSet={favoriteId}
