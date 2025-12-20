@@ -17,8 +17,9 @@ export const posterSrcSet = (path) => {
 export const backdropSrcSet = (path) => {
   if (!path) return "";
   return [
-    `${ImageUrl(path, "w300")} 300w`,  
-    `${ImageUrl(path, "w780")} 780w`,  
-    `${ImageUrl(path, "w1280")} 1280w` 
+    `${ImageUrl(path, "w300")} 300w`,
+    `${ImageUrl(path, "w780")} 780w`,
+    `${ImageUrl(path, "w1280")} 1280w`,
+    `${ImageUrl(path, "original")} 2000w`,
   ].join(", ");
 };

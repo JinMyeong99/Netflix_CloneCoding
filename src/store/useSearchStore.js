@@ -24,7 +24,7 @@ const useSearchStore = create((set, get) => ({
   clearResults: () => set({ results: [], page: 0, hasMore: true, error: null }),
 
   fetchSearchPage: async () => {
-    const { query, page, hasMore, results } = get();
+    const { query, page, hasMore } = get();
 
     const searchValue = query.trim();
     if (!searchValue) {
@@ -51,28 +51,38 @@ const useSearchStore = create((set, get) => ({
 
       const attachedResults = await attachTrailer(filteredData, "auto");
 
-      const contentKeys = new Set(
-        results.map(
-          (content) => `${content.media_type || "auto"}-${content.id}`
-        )
-      );
-      const filteredNewResults = attachedResults.filter((content) => {
-        const key = `${content.media_type || "auto"}-${content.id}`;
-        if (contentKeys.has(key)) return false;
-        contentKeys.add(key);
-        return true;
-      });
+      set((state) => {
+        // ignore stale responses when the query changed mid-flight
+        if (state.query.trim() !== searchValue) return state;
 
-      set((state) => ({
-        results: [...state.results, ...filteredNewResults],
-        page: nextPage,
-        hasMore: nextPage < searchData.total_pages,
-        loading: false,
-      }));
+        const contentKeys = new Set(
+          state.results.map(
+            (content) => `${content.media_type || "auto"}-${content.id}`
+          )
+        );
+
+        const filteredNewResults = attachedResults.filter((content) => {
+          const key = `${content.media_type || "auto"}-${content.id}`;
+          if (contentKeys.has(key)) return false;
+          contentKeys.add(key);
+          return true;
+        });
+
+        return {
+          ...state,
+          results: [...state.results, ...filteredNewResults],
+          page: nextPage,
+          hasMore: nextPage < searchData.total_pages,
+          loading: false,
+        };
+      });
     } catch (error) {
       const message =
         error?.response?.statusText || error?.message || "검색 결과 로딩 실패";
-      set({ error: message, loading: false });
+      set((state) => {
+        if (state.query.trim() !== searchValue) return state;
+        return { ...state, error: message, loading: false };
+      });
     }
   },
 }));

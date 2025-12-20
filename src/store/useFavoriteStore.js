@@ -28,14 +28,14 @@ const useFavoriteStore = create((set) => ({
       const index = state.list.findIndex(
         (favContent) => favContent.id === content.id
       );
-      const newList = [...state.list];
+      const favList = [...state.list];
       if (index >= 0) {
-        newList.splice(index, 1);
+        favList.splice(index, 1);
       } else {
-        newList.push(content);
+        favList.push(content);
       }
-      saveFavorite(newList);
-      return { list: newList };
+      saveFavorite(favList);
+      return { list: favList };
     }),
 }));
 

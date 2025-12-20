@@ -35,7 +35,7 @@ export default function Search() {
 
   return (
     <div className="mx-auto max-w-[90%] pb-25 pt-16">
-      <h2 className="text-2xl font-bold my-5">
+      <h2 className="text-2xl md:text-3xl font-bold my-5">
         검색 결과: {query && <span>"{query}"</span>}
       </h2>
       {error && <div>{error}</div>}

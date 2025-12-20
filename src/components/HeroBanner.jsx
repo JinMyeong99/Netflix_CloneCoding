@@ -16,7 +16,7 @@ function HeroBanner({ content, openDetail, onPlayTrailer }) {
   if (!content) return null;
 
   const backdropPath = content.backdrop_path;
-  const backdrop = ImageUrl(backdropPath, "w780") || "";
+  const backdrop = ImageUrl(backdropPath, "original") || "";
   const title = content.title || content.name || "";
 
   return (
@@ -27,7 +27,9 @@ function HeroBanner({ content, openDetail, onPlayTrailer }) {
           srcSet={backdropSrcSet(backdropPath)}
           sizes="(min-width: 1536px) 90vw, (min-width: 1024px) 90vw, 100vw"
           alt={title}
-          className="w-full max-h-screen object-cover object-center"
+          width={2000}
+          height={1125}
+          className="w-full max-h-screen aspect-video object-cover object-center"
           loading="eager"
           fetchPriority="high"
           decoding="async"

@@ -13,7 +13,6 @@ export default function Home() {
     actionAdventure,
     comedyMovies,
     sciFiFantasy,
-    comedySeries,
     loading,
     error,
     fetchHomeData,
@@ -28,7 +27,6 @@ export default function Home() {
   const actionAdventureWithGenre = useGenreName(actionAdventure, "movie");
   const comedyMoviesWithGenre = useGenreName(comedyMovies, "movie");
   const sciFiFantasyWithGenre = useGenreName(sciFiFantasy, "movie");
-  const comedySeriesWithGenre = useGenreName(comedySeries, "series");
 
   const heroContent = popularWithGenre[0];
 
@@ -96,13 +94,6 @@ export default function Home() {
         <SectionRow
           title="SF ∙ 판타지 추천"
           content={sciFiFantasyWithGenre}
-          openDetail={openDetail}
-          toggleFavorite={toggleFavorite}
-          onPlayTrailer={playTrailer}
-        />
-        <SectionRow
-          title="코미디 시리즈"
-          content={comedySeriesWithGenre}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
           onPlayTrailer={playTrailer}
