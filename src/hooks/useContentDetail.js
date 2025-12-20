@@ -15,12 +15,7 @@ export default function useContentDetail() {
     setSelectedContent(null);
   }, []);
 
-  const toggleFavorite = useCallback(
-    (content) => {
-      useFavoriteStore.getState().toggleFavorite(content);
-    },
-    []
-  );
+  const toggleFavorite = useFavoriteStore((s) => s.toggleFavorite);
 
   const playTrailer = useCallback((content) => {
     if (!content?.trailerUrl) return;
