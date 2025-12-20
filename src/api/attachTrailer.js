@@ -16,7 +16,7 @@ function setMediaType(content, mode) {
     return null;
   }
 
-  if (mode === "movie" || mode === "tv") return mode;
+  if (mode === "movie" || mode === "series") return mode;
   return null;
 }
 
