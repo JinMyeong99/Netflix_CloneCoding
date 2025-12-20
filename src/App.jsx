@@ -3,8 +3,8 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import { lazy, Suspense, useEffect } from "react";
 import useGenreStore from "./store/useGenreStore";
-
 import AuthManager from "./components/AuthManager";
+import { Toaster } from "react-hot-toast";
 
 const Home = lazy(() => import("./pages/Home"));
 const Movie = lazy(() => import("./pages/Movie"));
@@ -32,7 +32,14 @@ function App() {
   return (
     <div className="bg-neutral-900 min-h-screen text-white">
       <AuthManager />
-
+      <Toaster
+        position="top-right"
+        containerStyle={{ top: 80, right: 90 }}
+        toastOptions={{
+          className:
+            "!bg-red-950/90 !text-red-50 !border !border-red-400/30 !rounded-xl !shadow-lg !backdrop-blur !px-4 !py-3",
+        }}
+      />
       {!hideNavbar && <Navbar />}
       <main>
         <Suspense
