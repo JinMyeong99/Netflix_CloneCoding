@@ -20,6 +20,5 @@ export const backdropSrcSet = (path) => {
     `${ImageUrl(path, "w300")} 300w`,
     `${ImageUrl(path, "w780")} 780w`,
     `${ImageUrl(path, "w1280")} 1280w`,
-    `${ImageUrl(path, "original")} 2000w`,
   ].join(", ");
 };

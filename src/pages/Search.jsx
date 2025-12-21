@@ -47,7 +47,7 @@ export default function Search() {
         favoriteSet={favoriteId}
         openDetail={openDetail}
         toggleFavorite={toggleFavorite}
-        onPlayTrailer={playTrailer}
+        playTrailer={playTrailer}
         loading={loading}
         hasMore={hasMore}
         onLoadMore={loadMore} // Restored loadMore
@@ -64,7 +64,7 @@ export default function Search() {
           content={selectedContent}
           onClose={closeDetail}
           toggleFavorite={toggleFavorite}
-          onPlayTrailer={playTrailer}
+          playTrailer={playTrailer}
         />
       )}
     </div>

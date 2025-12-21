@@ -9,7 +9,7 @@ export default function ContentGrid({
   favoriteSet,
   openDetail,
   toggleFavorite,
-  onPlayTrailer,
+  playTrailer,
   keyExtractor,
   loading,
   hasMore,
@@ -74,13 +74,15 @@ export default function ContentGrid({
               openHover={hoverContentId === id}
               openDetail={openDetail}
               toggleFavorite={toggleFavorite}
-              onPlayTrailer={onPlayTrailer}
+              playTrailer={playTrailer}
               hoverAlign={hoverAlign}
             />
           </div>
         )
       )}
-      {hasMore ? <div ref={loaderRef} style={{ height: 1, width: "100%" }} /> : null}
+      {hasMore ? (
+        <div ref={loaderRef} style={{ height: 1, width: "100%" }} />
+      ) : null}
     </div>
   );
 }

@@ -35,7 +35,7 @@ export default function Favorite() {
           favoriteSet={favoriteId}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
-          onPlayTrailer={playTrailer}
+          playTrailer={playTrailer}
         />
       </div>
 
@@ -44,7 +44,7 @@ export default function Favorite() {
           content={selectedContent}
           onClose={closeDetail}
           toggleFavorite={toggleFavorite}
-          onPlayTrailer={playTrailer}
+          playTrailer={playTrailer}
         />
       )}
     </div>

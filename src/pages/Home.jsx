@@ -60,7 +60,7 @@ export default function Home() {
       <HeroBanner
         content={heroContent}
         openDetail={openDetail}
-        onPlayTrailer={playTrailer}
+        playTrailer={playTrailer}
       />
       <div className="pb-10 px-[5%]">
         <SectionRow
@@ -68,35 +68,35 @@ export default function Home() {
           content={popularWithGenre}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
-          onPlayTrailer={playTrailer}
+          playTrailer={playTrailer}
         />
         <SectionRow
           title="최고 평점 영화"
           content={topRatedWithGenre}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
-          onPlayTrailer={playTrailer}
+          playTrailer={playTrailer}
         />
         <SectionRow
           title="액션 ∙ 모험 인기 영화"
           content={actionAdventureWithGenre}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
-          onPlayTrailer={playTrailer}
+          playTrailer={playTrailer}
         />
         <SectionRow
           title="코미디 TOP 콘텐츠"
           content={comedyMoviesWithGenre}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
-          onPlayTrailer={playTrailer}
+          playTrailer={playTrailer}
         />
         <SectionRow
           title="SF ∙ 판타지 추천"
           content={sciFiFantasyWithGenre}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
-          onPlayTrailer={playTrailer}
+          playTrailer={playTrailer}
         />
       </div>
 
@@ -105,7 +105,7 @@ export default function Home() {
           content={selectedContent}
           onClose={closeDetail}
           toggleFavorite={toggleFavorite}
-          onPlayTrailer={playTrailer}
+          playTrailer={playTrailer}
         />
       )}
     </div>

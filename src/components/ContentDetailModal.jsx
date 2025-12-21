@@ -6,7 +6,7 @@ export default function ContentDetailModal({
   content,
   onClose,
   toggleFavorite,
-  onPlayTrailer,
+  playTrailer,
 }) {
   const favoriteList = useFavoriteStore((state) => state.list);
   const contentId = content?.id;
@@ -66,8 +66,8 @@ export default function ContentDetailModal({
 
   const handlePlay = useCallback(() => {
     if (!content) return;
-    if (onPlayTrailer) onPlayTrailer(content);
-  }, [content, onPlayTrailer]);
+    if (playTrailer) playTrailer(content);
+  }, [content, playTrailer]);
 
   if (!detail) return null;
   const { backdrop, poster, title, overview, rating, year, genre, trailerKey } =

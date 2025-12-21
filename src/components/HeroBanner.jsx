@@ -1,11 +1,11 @@
 import { memo, useCallback } from "react";
 import { backdropSrcSet, ImageUrl } from "../api/tmdb";
 
-function HeroBanner({ content, openDetail, onPlayTrailer }) {
+function HeroBanner({ content, openDetail, playTrailer }) {
   const handlePlay = useCallback(() => {
     if (!content) return;
-    if (onPlayTrailer) onPlayTrailer(content);
-  }, [onPlayTrailer, content]);
+    if (playTrailer) playTrailer(content);
+  }, [playTrailer, content]);
 
   const handleMoreInfo = useCallback(() => {
     if (!content) return;

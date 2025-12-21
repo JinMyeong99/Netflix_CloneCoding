@@ -73,7 +73,7 @@ export default function Movie() {
       <HeroBanner
         content={heroContent}
         openDetail={openDetail}
-        onPlayTrailer={playTrailer}
+        playTrailer={playTrailer}
       />
       <div className="mx-auto max-w-[90%] pb-25">
         <div className="flex items-center gap-6 pb-5">
@@ -92,7 +92,7 @@ export default function Movie() {
           favoriteSet={favoriteId}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
-          onPlayTrailer={playTrailer}
+          playTrailer={playTrailer}
           loading={loading}
           hasMore={hasMore}
           onLoadMore={loadMore}
@@ -110,7 +110,7 @@ export default function Movie() {
             content={selectedContent}
             onClose={closeDetail}
             toggleFavorite={toggleFavorite}
-            onPlayTrailer={playTrailer}
+            playTrailer={playTrailer}
           />
         )}
       </div>

@@ -7,7 +7,7 @@ function ContentCard({
   openHover,
   openDetail,
   toggleFavorite,
-  onPlayTrailer,
+  playTrailer,
   hoverAlign = "center",
 }) {
   const {
@@ -44,8 +44,8 @@ function ContentCard({
   }, [toggleFavorite, content]);
 
   const handlePlay = useCallback(() => {
-    if (onPlayTrailer) onPlayTrailer(content);
-  }, [onPlayTrailer, content]);
+    if (playTrailer) playTrailer(content);
+  }, [playTrailer, content]);
 
   const handleOpenDetail = useCallback(() => {
     if (openDetail) openDetail(content);
