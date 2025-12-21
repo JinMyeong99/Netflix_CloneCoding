@@ -6,7 +6,7 @@ export default function ContentDetailModal({
   content,
   onClose,
   toggleFavorite,
-  playTrailer,
+  openTrailer,
 }) {
   const favoriteList = useFavoriteStore((state) => state.list);
   const contentId = content?.id;
@@ -64,10 +64,10 @@ export default function ContentDetailModal({
     }
   }, [content, toggleFavorite]);
 
-  const handlePlay = useCallback(() => {
+  const handleOpenTrailer = useCallback(() => {
     if (!content) return;
-    if (playTrailer) playTrailer(content);
-  }, [content, playTrailer]);
+    if (openTrailer) openTrailer(content);
+  }, [content, openTrailer]);
 
   if (!detail) return null;
   const { backdrop, poster, title, overview, rating, year, genre, trailerKey } =
@@ -126,7 +126,7 @@ export default function ContentDetailModal({
                 <button
                   type="button"
                   className="flex items-center justify-center h-11 px-7 rounded-sm bg-white text-black font-semibold text-xl cursor-pointer"
-                  onClick={handlePlay}
+                  onClick={handleOpenTrailer}
                 >
                   ▶ 재생
                 </button>

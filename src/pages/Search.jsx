@@ -28,7 +28,7 @@ export default function Search() {
     openDetail,
     closeDetail,
     toggleFavorite,
-    playTrailer,
+    openTrailer,
   } = useContentDetail();
 
   const { favoriteId } = useFavorite();
@@ -47,7 +47,7 @@ export default function Search() {
         favoriteSet={favoriteId}
         openDetail={openDetail}
         toggleFavorite={toggleFavorite}
-        playTrailer={playTrailer}
+        openTrailer={openTrailer}
         loading={loading}
         hasMore={hasMore}
         onLoadMore={loadMore} // Restored loadMore
@@ -64,7 +64,7 @@ export default function Search() {
           content={selectedContent}
           onClose={closeDetail}
           toggleFavorite={toggleFavorite}
-          playTrailer={playTrailer}
+          openTrailer={openTrailer}
         />
       )}
     </div>

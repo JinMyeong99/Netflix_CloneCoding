@@ -52,7 +52,7 @@ export default function Series() {
     openDetail,
     closeDetail,
     toggleFavorite,
-    playTrailer,
+    openTrailer,
   } = useContentDetail();
 
   const { favoriteId } = useFavorite();
@@ -72,7 +72,7 @@ export default function Series() {
       <HeroBanner
         content={heroContent}
         openDetail={openDetail}
-        playTrailer={playTrailer}
+        openTrailer={openTrailer}
       />
       <div className="mx-auto max-w-[90%] pb-25">
         <div className="flex items-center gap-6  mb-5">
@@ -92,7 +92,7 @@ export default function Series() {
           favoriteSet={favoriteId}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
-          playTrailer={playTrailer}
+          openTrailer={openTrailer}
           loading={loading}
           hasMore={hasMore}
           onLoadMore={loadMore}
@@ -110,7 +110,7 @@ export default function Series() {
             content={selectedContent}
             onClose={closeDetail}
             toggleFavorite={toggleFavorite}
-            playTrailer={playTrailer}
+            openTrailer={openTrailer}
           />
         )}
       </div>

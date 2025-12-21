@@ -12,7 +12,7 @@ export default function SectionRow({
   content,
   openDetail,
   toggleFavorite,
-  playTrailer,
+  openTrailer,
 }) {
   const { hoverContentId, handleMouseEnter, handleMouseLeave } =
     useHoverActive();
@@ -185,7 +185,7 @@ export default function SectionRow({
                         openHover={hoverContentId === id}
                         openDetail={openDetail}
                         toggleFavorite={toggleFavorite}
-                        playTrailer={playTrailer}
+                        openTrailer={openTrailer}
                         hoverAlign={hoverAlign}
                       />
                     </div>

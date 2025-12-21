@@ -1,7 +1,7 @@
 import { memo, useCallback, useMemo } from "react";
 import { backdropSrcSet, ImageUrl } from "../api/tmdb";
 
-function HeroBanner({ content, openDetail, playTrailer }) {
+function HeroBanner({ content, openDetail, openTrailer }) {
   const title = useMemo(() => {
     if (!content) return "";
     return content.title || content.name || "";
@@ -13,12 +13,12 @@ function HeroBanner({ content, openDetail, playTrailer }) {
     return backdropPath ? ImageUrl(backdropPath, "w1280") : "";
   }, [backdropPath]);
 
-  const handlePlay = useCallback(() => {
+  const handleOpenTrailer = useCallback(() => {
     if (!content) return;
-    if (playTrailer) playTrailer(content);
-  }, [playTrailer, content]);
+    if (openTrailer) openTrailer(content);
+  }, [openTrailer, content]);
 
-  const handleMoreInfo = useCallback(() => {
+  const handleOpenDetail = useCallback(() => {
     if (!content) return;
     if (openDetail) openDetail(content);
   }, [openDetail, content]);
@@ -51,14 +51,14 @@ function HeroBanner({ content, openDetail, playTrailer }) {
 
         <div className="flex items-center gap-3">
           <button
-            onClick={handlePlay}
+            onClick={handleOpenTrailer}
             className="flex items-center justify-center h-9 px-4 rounded-md bg-white text-black text-sm font-semibold cursor-pointer md:h-10 md:px-5 md:text-base lg:h-12 lg:px-6 lg:text-xl xl:h-14 xl:px-9 xl:text-2xl hover:bg-neutral-300"
           >
             ▶ 재생
           </button>
 
           <button
-            onClick={handleMoreInfo}
+            onClick={handleOpenDetail}
             className="flex items-center justify-center h-9 px-4 rounded-md bg-neutral-500/80 text-white text-sm font-semibold cursor-pointer md:h-10 md:px-5 md:text-base xl:h-14 xl:px-8 xl:text-2xl hover:bg-neutral-600/60"
           >
             ⓘ 상세 정보

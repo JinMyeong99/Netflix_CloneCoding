@@ -20,7 +20,7 @@ export default function Trending() {
     openDetail,
     closeDetail,
     toggleFavorite,
-    playTrailer,
+    openTrailer,
   } = useContentDetail();
 
   const todayWithGenre = useGenreName(today, "auto");
@@ -51,7 +51,7 @@ export default function Trending() {
       <HeroBanner
         content={heroContent}
         openDetail={openDetail}
-        playTrailer={playTrailer}
+        openTrailer={openTrailer}
       />
       <div className="pb-10 px-[5%]">
         <SectionRow
@@ -59,28 +59,28 @@ export default function Trending() {
           content={todayWithGenre}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
-          playTrailer={playTrailer}
+          openTrailer={openTrailer}
         />
         <SectionRow
           title="이번 주 트렌드 Top 콘텐츠"
           content={weekWithGenre}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
-          playTrailer={playTrailer}
+          openTrailer={openTrailer}
         />
         <SectionRow
           title="급상승 인기 콘텐츠"
           content={risingWithGenre}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
-          playTrailer={playTrailer}
+          openTrailer={openTrailer}
         />
         <SectionRow
           title="지금 화제가 되는 콘텐츠"
           content={hotWithGenre}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
-          playTrailer={playTrailer}
+          openTrailer={openTrailer}
         />
       </div>
       {showDetail && selectedContent && (
@@ -88,7 +88,7 @@ export default function Trending() {
           content={selectedContent}
           onClose={closeDetail}
           toggleFavorite={toggleFavorite}
-          playTrailer={playTrailer}
+          openTrailer={openTrailer}
         />
       )}
     </div>

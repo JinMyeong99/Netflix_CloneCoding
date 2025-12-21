@@ -13,7 +13,7 @@ export default function Favorite() {
     openDetail,
     closeDetail,
     toggleFavorite,
-    playTrailer,
+    openTrailer,
   } = useContentDetail();
 
   const favoritesWithGenre = useGenreName(favorite, "auto");
@@ -35,7 +35,7 @@ export default function Favorite() {
           favoriteSet={favoriteId}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
-          playTrailer={playTrailer}
+          openTrailer={openTrailer}
         />
       </div>
 
@@ -44,7 +44,7 @@ export default function Favorite() {
           content={selectedContent}
           onClose={closeDetail}
           toggleFavorite={toggleFavorite}
-          playTrailer={playTrailer}
+          openTrailer={openTrailer}
         />
       )}
     </div>

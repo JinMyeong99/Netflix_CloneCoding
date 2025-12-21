@@ -9,7 +9,7 @@ export default function ContentGrid({
   favoriteSet,
   openDetail,
   toggleFavorite,
-  playTrailer,
+  openTrailer,
   keyExtractor,
   loading,
   hasMore,
@@ -74,7 +74,7 @@ export default function ContentGrid({
               openHover={hoverContentId === id}
               openDetail={openDetail}
               toggleFavorite={toggleFavorite}
-              playTrailer={playTrailer}
+              openTrailer={openTrailer}
               hoverAlign={hoverAlign}
             />
           </div>
