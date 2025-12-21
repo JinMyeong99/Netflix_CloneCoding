@@ -13,12 +13,16 @@ export default function useSwiperRange(initial = { start: 0, end: 5 }) {
   const [visibleRange, setVisibleRange] = useState(initial);
 
   const updateVisibleRange = useCallback((swiper) => {
-    const next = getVisibleRange(swiper);
-    if (!next) return;
+    const currentRange = getVisibleRange(swiper);
+    if (!currentRange) return;
 
-    setVisibleRange((prev) => {
-      if (prev.start === next.start && prev.end === next.end) return prev;
-      return next;
+    setVisibleRange((visibleRange) => {
+      if (
+        visibleRange.start === currentRange.start &&
+        visibleRange.end === currentRange.end
+      )
+        return visibleRange;
+      else return currentRange;
     });
   }, []);
 
