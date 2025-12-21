@@ -20,7 +20,7 @@ export default function Favorite() {
 
   if (!favorite || favorite.length === 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center pb-30">
+      <div className="min-h-screen flex items-center justify-center">
         <p>아직 찜한 콘텐츠가 없어요.</p>
       </div>
     );
