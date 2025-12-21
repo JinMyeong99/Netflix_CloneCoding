@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import useTrendingStore from "../store/useTrendingStore";
-import SectionRow from "../components/SectionRow";
+import Carousel from "../components/Carousel";
 import useContentDetail from "../hooks/useContentDetail";
 import useGenreName from "../hooks/useGenreName";
 import ContentDetailModal from "../components/ContentDetailModal";
@@ -54,28 +54,28 @@ export default function Trending() {
         openTrailer={openTrailer}
       />
       <div className="pb-10 px-[5%]">
-        <SectionRow
+        <Carousel
           title="오늘의 트렌드 Top 콘텐츠"
           content={todayWithGenre}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
           openTrailer={openTrailer}
         />
-        <SectionRow
+        <Carousel
           title="이번 주 트렌드 Top 콘텐츠"
           content={weekWithGenre}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
           openTrailer={openTrailer}
         />
-        <SectionRow
+        <Carousel
           title="급상승 인기 콘텐츠"
           content={risingWithGenre}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
           openTrailer={openTrailer}
         />
-        <SectionRow
+        <Carousel
           title="지금 화제가 되는 콘텐츠"
           content={hotWithGenre}
           openDetail={openDetail}

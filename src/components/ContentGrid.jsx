@@ -15,10 +15,10 @@ export default function ContentGrid({
   hasMore,
   onLoadMore,
 }) {
-  const itemCount = Array.isArray(items) ? items.length : 0;
+  const contentCount = Array.isArray(items) ? items.length : 0;
   const { hoverContentId, handleMouseEnter, handleMouseLeave } =
     useHoverActive();
-  const getHoverAlign = useGridHoverAlign(itemCount);
+  const getHoverAlign = useGridHoverAlign(contentCount);
 
   const cardSlots = useMemo(() => {
     if (!items || items.length === 0) return [];
@@ -37,8 +37,8 @@ export default function ContentGrid({
         item,
         hoverAlign: getHoverAlign(index),
         isFavorite: favoriteSet ? favoriteSet.has(id) : false,
-        onEnter: () => handleMouseEnter(id),
-        onLeave: () => handleMouseLeave(id),
+        onMouseEnter: () => handleMouseEnter(id),
+        onMouseLeave: () => handleMouseLeave(id),
       };
     });
   }, [
@@ -56,17 +56,17 @@ export default function ContentGrid({
     onLoadMore,
   });
 
-  if (itemCount === 0) return null;
+  if (contentCount === 0) return null;
 
   return (
     <div className="flex flex-wrap gap-y-20">
       {cardSlots.map(
-        ({ id, item, hoverAlign, isFavorite, onEnter, onLeave }) => (
+        ({ id, item, hoverAlign, isFavorite, onMouseEnter, onMouseLeave }) => (
           <div
             key={id}
             className="w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 flex justify-center px-1"
-            onMouseEnter={onEnter}
-            onMouseLeave={onLeave}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
           >
             <ContentCard
               content={item}

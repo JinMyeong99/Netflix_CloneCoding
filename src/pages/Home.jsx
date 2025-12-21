@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import useHomeStore from "../store/useHomeStore";
-import SectionRow from "../components/SectionRow";
+import Carousel from "../components/Carousel";
 import ContentDetailModal from "../components/ContentDetailModal";
 import useContentDetail from "../hooks/useContentDetail";
 import useGenreName from "../hooks/useGenreName";
@@ -63,35 +63,35 @@ export default function Home() {
         openTrailer={openTrailer}
       />
       <div className="pb-10 px-[5%]">
-        <SectionRow
+        <Carousel
           title="지금 가장 인기 있는 영화"
           content={popularMovie}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
           openTrailer={openTrailer}
         />
-        <SectionRow
+        <Carousel
           title="최고 평점 영화"
           content={topRatedMovie}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
           openTrailer={openTrailer}
         />
-        <SectionRow
+        <Carousel
           title="액션 ∙ 모험 인기 영화"
           content={actionAdventureMovie}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
           openTrailer={openTrailer}
         />
-        <SectionRow
+        <Carousel
           title="코미디 TOP 콘텐츠"
           content={comedyMovie}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
           openTrailer={openTrailer}
         />
-        <SectionRow
+        <Carousel
           title="SF ∙ 판타지 추천"
           content={sciFiFantasyMovie}
           openDetail={openDetail}
