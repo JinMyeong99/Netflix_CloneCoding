@@ -43,18 +43,18 @@ export default function Search() {
         <div>검색 결과가 없습니다.</div>
       )}
       <ContentGrid
-        items={resultsWithGenre}
+        contents={resultsWithGenre}
         favoriteSet={favoriteId}
         openDetail={openDetail}
         toggleFavorite={toggleFavorite}
         openTrailer={openTrailer}
         loading={loading}
         hasMore={hasMore}
-        onLoadMore={loadMore} // Restored loadMore
-        keyExtractor={(item) => `${item.media_type}-${item.id}`}
+        onLoadMore={loadMore} 
+        keyExtractor={(content) => `${content.media_type}-${content.id}`}
       />
       {loading && (
-        <div className="min-h-screen flex items-center justify-center pb-30">
+        <div className="min-h-screen flex items-center justify-center pb-60">
           검색 중...
         </div>
       )}

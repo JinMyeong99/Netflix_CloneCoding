@@ -5,7 +5,7 @@ import useGridHoverAlign from "../hooks/useGridHoverAlign";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 
 export default function ContentGrid({
-  items,
+  contents,
   favoriteSet,
   openDetail,
   toggleFavorite,
@@ -15,34 +15,36 @@ export default function ContentGrid({
   hasMore,
   onLoadMore,
 }) {
-  const contentCount = Array.isArray(items) ? items.length : 0;
+  const contentCount = Array.isArray(contents) ? contents.length : 0;
   const { hoverContentId, handleMouseEnter, handleMouseLeave } =
     useHoverActive();
   const getHoverAlign = useGridHoverAlign(contentCount);
 
   const cardSlots = useMemo(() => {
-    if (!items || items.length === 0) return [];
+    if (!contents || contents.length === 0) return [];
 
-    const extractKey =
+    const getKey =
       keyExtractor ||
-      ((item, index) => {
-        if (item && (item.id || item.id === 0)) return item.id;
-        return index;
+      ((content) => {
+        if (content?.media_type) return `${content.media_type}-${content.id}`;
+        return String(content.id);
       });
 
-    return items.map((item, index) => {
-      const id = extractKey(item, index);
+    return contents.map((content, index) => {
+      const contentId = content.id;
+      const contentKey = getKey(content);
       return {
-        id,
-        item,
+        contentKey,
+        contentId,
+        content,
         hoverAlign: getHoverAlign(index),
-        isFavorite: favoriteSet ? favoriteSet.has(id) : false,
-        onMouseEnter: () => handleMouseEnter(id),
-        onMouseLeave: () => handleMouseLeave(id),
+        isFavorite: favoriteSet ? favoriteSet.has(contentId) : false,
+        onMouseEnter: () => handleMouseEnter(contentId),
+        onMouseLeave: () => handleMouseLeave(contentId),
       };
     });
   }, [
-    items,
+    contents,
     favoriteSet,
     getHoverAlign,
     handleMouseEnter,
@@ -61,17 +63,25 @@ export default function ContentGrid({
   return (
     <div className="flex flex-wrap gap-y-20">
       {cardSlots.map(
-        ({ id, item, hoverAlign, isFavorite, onMouseEnter, onMouseLeave }) => (
+        ({
+          contentKey,
+          contentId,
+          content,
+          hoverAlign,
+          isFavorite,
+          onMouseEnter,
+          onMouseLeave,
+        }) => (
           <div
-            key={id}
+            key={contentKey}
             className="w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 flex justify-center px-1"
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
           >
             <ContentCard
-              content={item}
+              content={content}
               isFavorite={isFavorite}
-              openHover={hoverContentId === id}
+              openHover={hoverContentId === contentId}
               openDetail={openDetail}
               toggleFavorite={toggleFavorite}
               openTrailer={openTrailer}

@@ -81,14 +81,14 @@ export default function Series() {
           <GenreSelector
             genres={seriesGenres}
             selectedId={selectedGenreId}
-            onChange={setSelectedGenreId}
+            selectedGenre={setSelectedGenreId}
           />
         </div>
 
         {error && <div className="text-red-500 mb-2">{error}</div>}
 
         <ContentGrid
-          items={seriesWithGenre}
+          contents={seriesWithGenre}
           favoriteSet={favoriteId}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
