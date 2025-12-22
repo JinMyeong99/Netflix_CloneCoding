@@ -62,7 +62,7 @@ export default function Search() {
       {showDetail && selectedContent && (
         <ContentDetailModal
           content={selectedContent}
-          onClose={closeDetail}
+          closeDetail={closeDetail}
           toggleFavorite={toggleFavorite}
           openTrailer={openTrailer}
         />

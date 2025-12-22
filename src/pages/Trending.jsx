@@ -86,7 +86,7 @@ export default function Trending() {
       {showDetail && selectedContent && (
         <ContentDetailModal
           content={selectedContent}
-          onClose={closeDetail}
+          closeDetail={closeDetail}
           toggleFavorite={toggleFavorite}
           openTrailer={openTrailer}
         />

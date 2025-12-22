@@ -42,7 +42,7 @@ export default function Favorite() {
       {showDetail && selectedContent && (
         <ContentDetailModal
           content={selectedContent}
-          onClose={closeDetail}
+          closeDetail={closeDetail}
           toggleFavorite={toggleFavorite}
           openTrailer={openTrailer}
         />

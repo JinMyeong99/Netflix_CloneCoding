@@ -9,7 +9,7 @@ import useHoverActive from "../hooks/useHoverActive";
 import useFavorite from "../hooks/useFavorite";
 import useSwiperRange from "../hooks/useSwiperRange";
 
-const SWIPER_MODULES = [Virtual];
+const VIRTUAL_MODULES = [Virtual];
 
 const BREAKPOINTS = {
   0: { slidesPerView: 3, slidesPerGroup: 3 },
@@ -37,12 +37,12 @@ export default function Carousel({
   const { swiperRef, visibleRange, updateVisibleRange, handleSwiperInit } =
     useSwiperRange({ start: 0, end: 5 });
 
-  const contents = useMemo(() => {
+  const validContents = useMemo(() => {
     if (!Array.isArray(content)) return [];
     return content.filter((c) => c?.id != null);
   }, [content]);
 
-  const contentCount = contents.length;
+  const contentCount = validContents.length;
 
   const visibleEndIndex =
     contentCount === 0 ? 0 : Math.min(visibleRange.end, contentCount - 1);
@@ -76,7 +76,7 @@ export default function Carousel({
 
         <div className="px-[5.5%]">
           <Swiper
-            modules={SWIPER_MODULES}
+            modules={VIRTUAL_MODULES}
             virtual={SWIPER_VIRTUAL}
             breakpoints={BREAKPOINTS}
             spaceBetween={10}
@@ -90,7 +90,7 @@ export default function Carousel({
             onResize={updateVisibleRange}
             onBreakpoint={updateVisibleRange}
           >
-            {contents.map((content, index) => {
+            {validContents.map((content, index) => {
               const contentId = content.id;
               return (
                 <SwiperSlide
