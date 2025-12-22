@@ -27,19 +27,19 @@ const useMovieStore = create((set, get) => ({
         page: String(nextPage),
         include_adult: "false",
         with_origin_country: "KR|US|JP|GB",
-      });
+      }).toString();
 
-      const movieUrl = `${BaseUrl}/discover/movie?${params.toString()}`;
+      const movieUrl = `${BaseUrl}/discover/movie?${params}`;
       const { data: movieData } = await axios.get(movieUrl);
 
       const dataResults = movieData.results || [];
 
       const results = await attachTrailer(dataResults, "movie");
 
-      const uniqueItemsMap = new Map();
-      list.forEach((item) => uniqueItemsMap.set(item.id, item));
-      results.forEach((item) => uniqueItemsMap.set(item.id, item));
-      const deDuplicatedList = Array.from(uniqueItemsMap.values());
+      const uniqueContentsMap = new Map();
+      list.forEach((content) => uniqueContentsMap.set(content.id, content));
+      results.forEach((content) => uniqueContentsMap.set(content.id, content));
+      const deDuplicatedList = Array.from(uniqueContentsMap.values());
 
       set(() => ({
         list: deDuplicatedList,
@@ -49,7 +49,9 @@ const useMovieStore = create((set, get) => ({
       }));
     } catch (error) {
       const message =
-        error?.response?.statusText || error?.message || "영화 데이터 로딩 실패";
+        error?.response?.statusText ||
+        error?.message ||
+        "영화 데이터 로딩 실패";
       set({ error: message, loading: false });
     }
   },

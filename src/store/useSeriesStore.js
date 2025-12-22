@@ -34,11 +34,11 @@ const useSeriesStore = create((set, get) => ({
       const dataResults = seriesData.results || [];
       const results = await attachTrailer(dataResults, "tv");
 
-      const uniqueItemsMap = new Map();
-      list.forEach((item) => uniqueItemsMap.set(item.id, item));
-      results.forEach((item) => uniqueItemsMap.set(item.id, item));
+      const uniqueContentsMap = new Map();
+      list.forEach((content) => uniqueContentsMap.set(content.id, content));
+      results.forEach((content) => uniqueContentsMap.set(content.id, content));
 
-      const deDuplicatedList = Array.from(uniqueItemsMap.values());
+      const deDuplicatedList = Array.from(uniqueContentsMap.values());
 
       set(() => ({
         list: deDuplicatedList,

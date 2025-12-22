@@ -1,17 +1,16 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useRef } from "react";
 
-export default function useSingleFetch(isLoading) {
-  const isFetchingRef = useRef(false);
+export default function useSingleFetch() {
+  const lockedRef = useRef(false);
 
-  useEffect(() => {
-    if (!isLoading) {
-      isFetchingRef.current = false;
+  return useCallback(async (fetchData) => {
+    if (lockedRef.current) return;
+    lockedRef.current = true;
+
+    try {
+      await fetchData();
+    } finally {
+      lockedRef.current = false;
     }
-  }, [isLoading]);
-
-  return useCallback((fetchData) => {
-    if (isFetchingRef.current) return;
-    isFetchingRef.current = true;
-    fetchData();
   }, []);
 }
