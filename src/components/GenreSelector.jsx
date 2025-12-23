@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
-export default function GenreSelector({ genres, selectedId, onChange }) {
+export default function GenreSelector({ genres, selectedId, selectedGenre }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -17,15 +17,15 @@ export default function GenreSelector({ genres, selectedId, onChange }) {
   }, []);
 
   const selectedGenreName = useMemo(() => {
-    if (!selectedId) return "장르";
+    if (!selectedId) return "전체";
     const idNum = Number(selectedId);
-    const genre = genres.find((g) => g.id === idNum);
-    return genre?.name || "장르";
+    const genre = genres.find((genre) => genre.id === idNum);
+    return genre?.name || "전체";
   }, [selectedId, genres]);
 
   const handleSelectGenre = (id) => {
     const value = id === "" ? "" : String(id);
-    onChange(value);
+    selectedGenre(value);
     setDropdownOpen(false);
   };
 
@@ -58,7 +58,7 @@ export default function GenreSelector({ genres, selectedId, onChange }) {
           border border-gray-700 rounded text-sm z-20 
           transition-all duration-300
           overflow-y-auto overflow-x-hidden
-          ${dropdownOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}
+          ${dropdownOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0 pointer-events-none"}
           scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent
         `}
       >

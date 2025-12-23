@@ -1,51 +1,46 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import useMovieStore from "../store/useMovieStore";
-import useGenreStore from "../store/useGenreStore";
+import { useCallback, useMemo, useState } from "react";
 import GenreSelector from "../components/GenreSelector";
 import useGenreName from "../hooks/useGenreName";
 import useContentDetail from "../hooks/useContentDetail";
 import useFavorite from "../hooks/useFavorite";
 import ContentDetailModal from "../components/ContentDetailModal";
 import HeroBanner from "../components/HeroBanner";
-import useSingleFetch from "../hooks/useSingleFetch";
 import ContentGrid from "../components/ContentGrid";
+import useDiscoverInfinite from "../hooks/queries/useDiscoverInfinite";
+import useGenresQuery from "../hooks/queries/useGenresQuery";
 
 export default function Movie() {
-  const { list, loading, hasMore, page, error, resetMovie, fetchMoviePage } =
-    useMovieStore();
-  const { movieGenres } = useGenreStore();
-
-  const runOnce = useSingleFetch(loading);
-
-  const isInitialLoading = page === 0 && list.length === 0;
-
-  useEffect(() => {
-    resetMovie();
-    fetchMoviePage();
-
-    return () => {
-      resetMovie();
-    };
-  }, [fetchMoviePage, resetMovie]);
-
-  const loadMore = useCallback(() => {
-    if (!hasMore) return;
-    runOnce(() => fetchMoviePage());
-  }, [fetchMoviePage, hasMore, runOnce]);
+  const { data: genreData } = useGenresQuery();
+  const movieGenres = genreData?.movieGenres ?? [];
 
   const [selectedGenreId, setSelectedGenreId] = useState("");
 
-  const filteredMovies = useMemo(() => {
-    if (!selectedGenreId) return list;
-    const genreId = Number(selectedGenreId);
+  const {
+    data,
+    isLoading,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+    error,
+  } = useDiscoverInfinite({
+    type: "movie",
+    genreId: selectedGenreId || undefined,
+  });
 
-    return list.filter(
-      (movie) =>
-        Array.isArray(movie.genre_ids) && movie.genre_ids.includes(genreId)
-    );
-  }, [list, selectedGenreId]);
+  const movies = useMemo(
+    () => data?.pages?.flatMap((page) => page.contents) ?? [],
+    [data]
+  );
 
-  const moviesWithGenres = useGenreName(filteredMovies, "movie");
+  const isInitialLoading = isLoading && movies.length === 0;
+  const loading = isLoading || isFetchingNextPage;
+
+  const loadMore = useCallback(() => {
+    if (!hasNextPage) return;
+    fetchNextPage();
+  }, [fetchNextPage, hasNextPage]);
+
+  const moviesWithGenres = useGenreName(movies, "movie");
 
   const { favoriteId } = useFavorite();
 
@@ -55,10 +50,11 @@ export default function Movie() {
     openDetail,
     closeDetail,
     toggleFavorite,
-    playTrailer,
+    openTrailer,
   } = useContentDetail();
 
   const heroContent = moviesWithGenres[0];
+  const errorMessage = error?.message;
 
   if (isInitialLoading && loading) {
     return (
@@ -73,7 +69,7 @@ export default function Movie() {
       <HeroBanner
         content={heroContent}
         openDetail={openDetail}
-        onPlayTrailer={playTrailer}
+        openTrailer={openTrailer}
       />
       <div className="mx-auto max-w-[90%] pb-25">
         <div className="flex items-center gap-6 pb-5">
@@ -81,20 +77,22 @@ export default function Movie() {
           <GenreSelector
             genres={movieGenres}
             selectedId={selectedGenreId}
-            onChange={setSelectedGenreId}
+            selectedGenre={setSelectedGenreId}
           />
         </div>
 
-        {error && <div className="text-red-500 mb-2">{error}</div>}
+        {errorMessage && (
+          <div className="text-red-500 mb-2">{errorMessage}</div>
+        )}
 
         <ContentGrid
-          items={moviesWithGenres}
+          contents={moviesWithGenres}
           favoriteSet={favoriteId}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
-          onPlayTrailer={playTrailer}
+          openTrailer={openTrailer}
           loading={loading}
-          hasMore={hasMore}
+          hasMore={hasNextPage}
           onLoadMore={loadMore}
         />
 
@@ -103,14 +101,16 @@ export default function Movie() {
             불러오는 중...
           </div>
         )}
-        {!hasMore && list.length > 0 && <div>더 이상 영화가 없습니다.</div>}
+        {!hasNextPage && movies.length > 0 && (
+          <div>더 이상 영화가 없습니다.</div>
+        )}
 
         {showDetail && selectedContent && (
           <ContentDetailModal
             content={selectedContent}
-            onClose={closeDetail}
+            closeDetail={closeDetail}
             toggleFavorite={toggleFavorite}
-            onPlayTrailer={playTrailer}
+            openTrailer={openTrailer}
           />
         )}
       </div>

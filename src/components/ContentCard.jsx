@@ -7,7 +7,7 @@ function ContentCard({
   openHover,
   openDetail,
   toggleFavorite,
-  onPlayTrailer,
+  openTrailer,
   hoverAlign = "center",
 }) {
   const {
@@ -43,9 +43,9 @@ function ContentCard({
     if (toggleFavorite) toggleFavorite(content);
   }, [toggleFavorite, content]);
 
-  const handlePlay = useCallback(() => {
-    if (onPlayTrailer) onPlayTrailer(content);
-  }, [onPlayTrailer, content]);
+  const handleOpenTrailer = useCallback(() => {
+    if (openTrailer) openTrailer(content);
+  }, [openTrailer, content]);
 
   const handleOpenDetail = useCallback(() => {
     if (openDetail) openDetail(content);
@@ -136,7 +136,7 @@ function ContentCard({
               <button
                 type="button"
                 className="flex items-center justify-center h-11 w-11 rounded-full bg-white text-black cursor-pointer"
-                onClick={handlePlay}
+                onClick={handleOpenTrailer}
               >
                 ▶︎
               </button>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Netflix_logo from "../assets/Netflix_logo.png";
+import Netflix_logo_small from "../assets/Netflix_logo_small.png";
 import Netflix_background from "../assets/Netflix_background.jpg";
 import useLoginStore from "../store/useLoginStore";
 import { supabase } from "../api/supabaseClient";
@@ -61,7 +61,7 @@ export default function Login() {
 
       <header className="relative z-10 flex items-center h-16 px-8">
         <Link to="/">
-          <img src={Netflix_logo} alt="Netflix_logo" className="h-7 " />
+          <img src={Netflix_logo_small} alt="Netflix_logo" className="h-7 " />
         </Link>
       </header>
 

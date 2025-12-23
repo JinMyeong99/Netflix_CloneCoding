@@ -13,13 +13,13 @@ export default function useInfiniteScroll({
     if (!hasMore) return;
     if (!onLoadMore) return;
 
-    const element = loaderRef.current;
-    if (!element) return;
+    const loaderElement = loaderRef.current;
+    if (!loaderElement) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
-        const first = entries[0];
-        if (first.isIntersecting) onLoadMore();
+        const loaderEntry = entries[0];
+        if (loaderEntry.isIntersecting) onLoadMore();
       },
       {
         root: root && "current" in root ? root.current : root,
@@ -28,10 +28,10 @@ export default function useInfiniteScroll({
       }
     );
 
-    observer.observe(element);
+    observer.observe(loaderElement);
 
     return () => {
-      if (element) observer.unobserve(element);
+      if (loaderElement) observer.unobserve(loaderElement);
       observer.disconnect();
     };
   }, [loading, hasMore, onLoadMore, root]);

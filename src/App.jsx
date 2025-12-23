@@ -1,8 +1,7 @@
+import { lazy, Suspense } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Navbar";
-import { lazy, Suspense, useEffect } from "react";
-import useGenreStore from "./store/useGenreStore";
 import AuthManager from "./components/AuthManager";
 import { Toaster } from "react-hot-toast";
 
@@ -17,14 +16,6 @@ const Signup = lazy(() => import("./pages/Signup"));
 const ProfilePage = lazy(() => import("./pages/ProfilePage"));
 
 function App() {
-  const { fetchGenre, status: genreStatus } = useGenreStore();
-
-  useEffect(() => {
-    if (genreStatus === "idle") {
-      fetchGenre();
-    }
-  }, [fetchGenre, genreStatus]);
-
   const location = useLocation();
   const hideNavbar =
     location.pathname === "/login" || location.pathname === "/signup";

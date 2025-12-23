@@ -1,18 +1,12 @@
-import { useEffect } from "react";
-import useTrendingStore from "../store/useTrendingStore";
-import SectionRow from "../components/SectionRow";
+import useTrendingQuery from "../hooks/queries/useTrendingQuery";
+import Carousel from "../components/Carousel";
 import useContentDetail from "../hooks/useContentDetail";
 import useGenreName from "../hooks/useGenreName";
 import ContentDetailModal from "../components/ContentDetailModal";
 import HeroBanner from "../components/HeroBanner";
 
 export default function Trending() {
-  const { today, week, rising, hot, loading, error, fetchTrendingData } =
-    useTrendingStore();
-
-  useEffect(() => {
-    fetchTrendingData();
-  }, [fetchTrendingData]);
+  const { data, isLoading, error } = useTrendingQuery();
 
   const {
     selectedContent,
@@ -20,17 +14,17 @@ export default function Trending() {
     openDetail,
     closeDetail,
     toggleFavorite,
-    playTrailer,
+    openTrailer,
   } = useContentDetail();
 
-  const todayWithGenre = useGenreName(today, "auto");
-  const weekWithGenre = useGenreName(week, "auto");
-  const risingWithGenre = useGenreName(rising, "auto");
-  const hotWithGenre = useGenreName(hot, "auto");
+  const todayWithGenre = useGenreName(data?.today ?? [], "auto");
+  const weekWithGenre = useGenreName(data?.week ?? [], "auto");
+  const risingWithGenre = useGenreName(data?.rising ?? [], "auto");
+  const hotWithGenre = useGenreName(data?.hot ?? [], "auto");
 
   const heroContent = weekWithGenre[0];
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         트렌드 데이터 로딩 중...
@@ -41,7 +35,7 @@ export default function Trending() {
   if (error) {
     return (
       <div className="pt-16 min-h-screen flex items-center justify-center text-red-400">
-        에러: {error}
+        에러: {error.message}
       </div>
     );
   }
@@ -51,44 +45,44 @@ export default function Trending() {
       <HeroBanner
         content={heroContent}
         openDetail={openDetail}
-        onPlayTrailer={playTrailer}
+        openTrailer={openTrailer}
       />
       <div className="pb-10 px-[5%]">
-        <SectionRow
+        <Carousel
           title="오늘의 트렌드 Top 콘텐츠"
           content={todayWithGenre}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
-          onPlayTrailer={playTrailer}
+          openTrailer={openTrailer}
         />
-        <SectionRow
+        <Carousel
           title="이번 주 트렌드 Top 콘텐츠"
           content={weekWithGenre}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
-          onPlayTrailer={playTrailer}
+          openTrailer={openTrailer}
         />
-        <SectionRow
+        <Carousel
           title="급상승 인기 콘텐츠"
           content={risingWithGenre}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
-          onPlayTrailer={playTrailer}
+          openTrailer={openTrailer}
         />
-        <SectionRow
+        <Carousel
           title="지금 화제가 되는 콘텐츠"
           content={hotWithGenre}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
-          onPlayTrailer={playTrailer}
+          openTrailer={openTrailer}
         />
       </div>
       {showDetail && selectedContent && (
         <ContentDetailModal
           content={selectedContent}
-          onClose={closeDetail}
+          closeDetail={closeDetail}
           toggleFavorite={toggleFavorite}
-          onPlayTrailer={playTrailer}
+          openTrailer={openTrailer}
         />
       )}
     </div>

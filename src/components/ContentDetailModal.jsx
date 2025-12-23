@@ -4,9 +4,9 @@ import { backdropSrcSet, ImageUrl, posterSrcSet } from "../api/tmdb";
 
 export default function ContentDetailModal({
   content,
-  onClose,
+  closeDetail,
   toggleFavorite,
-  onPlayTrailer,
+  openTrailer,
 }) {
   const favoriteList = useFavoriteStore((state) => state.list);
   const contentId = content?.id;
@@ -18,10 +18,8 @@ export default function ContentDetailModal({
   const detail = useMemo(() => {
     if (!content) return null;
 
-    const backdrop =
-      ImageUrl(content.backdrop_path || content.poster_path, "w780") || "";
-    const poster =
-      ImageUrl(content.poster_path || content.backdrop_path, "w185") || "";
+    const backdrop = ImageUrl(content.backdrop_path, "w780") || "";
+    const poster = ImageUrl(content.poster_path, "w185") || "";
     const title = content.title || content.name || "";
     const overview = content.overview || "";
     const rating =
@@ -64,10 +62,10 @@ export default function ContentDetailModal({
     }
   }, [content, toggleFavorite]);
 
-  const handlePlay = useCallback(() => {
+  const handleOpenTrailer = useCallback(() => {
     if (!content) return;
-    if (onPlayTrailer) onPlayTrailer(content);
-  }, [content, onPlayTrailer]);
+    if (openTrailer) openTrailer(content);
+  }, [content, openTrailer]);
 
   if (!detail) return null;
   const { backdrop, poster, title, overview, rating, year, genre, trailerKey } =
@@ -76,7 +74,7 @@ export default function ContentDetailModal({
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
-      onClick={onClose}
+      onClick={closeDetail}
     >
       <div
         className="relative max-w-225 w-full max-h-[90vh] bg-neutral-900 rounded-xl overflow-auto scrollbar-none"
@@ -94,9 +92,7 @@ export default function ContentDetailModal({
           ) : backdrop ? (
             <img
               src={backdrop}
-              srcSet={backdropSrcSet(
-                content.backdrop_path || content.poster_path
-              )}
+              srcSet={backdropSrcSet(content.backdrop_path)}
               sizes="(min-width: 1280px) 70vw, 90vw"
               alt={title}
               className="w-full h-full object-cover object-center"
@@ -111,7 +107,7 @@ export default function ContentDetailModal({
 
           <button
             type="button"
-            onClick={onClose}
+            onClick={closeDetail}
             className="absolute right-3 top-3 h-8 w-8 rounded-full bg-black/70 flex items-center justify-center text-xl cursor-pointer"
           >
             ✕
@@ -126,7 +122,7 @@ export default function ContentDetailModal({
                 <button
                   type="button"
                   className="flex items-center justify-center h-11 px-7 rounded-sm bg-white text-black font-semibold text-xl cursor-pointer"
-                  onClick={handlePlay}
+                  onClick={handleOpenTrailer}
                 >
                   ▶ 재생
                 </button>
@@ -179,9 +175,7 @@ export default function ContentDetailModal({
               <div className="w-37.5 shrink-0 hidden md:block">
                 <img
                   src={poster}
-                  srcSet={posterSrcSet(
-                    content.poster_path || content.backdrop_path
-                  )}
+                  srcSet={posterSrcSet(content.poster_path)}
                   sizes="(min-width: 1280px) 200px, (min-width: 768px) 180px, 150px"
                   alt={title}
                   className="w-full h-auto rounded-md object-cover "

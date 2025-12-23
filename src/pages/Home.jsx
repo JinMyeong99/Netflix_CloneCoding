@@ -1,34 +1,23 @@
-import { useEffect } from "react";
-import useHomeStore from "../store/useHomeStore";
-import SectionRow from "../components/SectionRow";
+import useHomeDataQuery from "../hooks/queries/useHomeDataQuery";
+import Carousel from "../components/Carousel";
 import ContentDetailModal from "../components/ContentDetailModal";
 import useContentDetail from "../hooks/useContentDetail";
 import useGenreName from "../hooks/useGenreName";
 import HeroBanner from "../components/HeroBanner";
 
 export default function Home() {
-  const {
-    popular,
-    topRated,
-    actionAdventure,
-    comedyMovies,
-    sciFiFantasy,
-    loading,
-    error,
-    fetchHomeData,
-  } = useHomeStore();
+  const { data, isLoading, error } = useHomeDataQuery();
 
-  useEffect(() => {
-    fetchHomeData();
-  }, [fetchHomeData]);
+  const popularMovie = useGenreName(data?.popular ?? [], "movie");
+  const topRatedMovie = useGenreName(data?.topRated ?? [], "movie");
+  const actionAdventureMovie = useGenreName(
+    data?.actionAdventure ?? [],
+    "movie"
+  );
+  const comedyMovie = useGenreName(data?.comedy ?? [], "movie");
+  const sciFiFantasyMovie = useGenreName(data?.sciFiFantasy ?? [], "movie");
 
-  const popularWithGenre = useGenreName(popular, "movie");
-  const topRatedWithGenre = useGenreName(topRated, "movie");
-  const actionAdventureWithGenre = useGenreName(actionAdventure, "movie");
-  const comedyMoviesWithGenre = useGenreName(comedyMovies, "movie");
-  const sciFiFantasyWithGenre = useGenreName(sciFiFantasy, "movie");
-
-  const heroContent = popularWithGenre[0];
+  const heroContent = popularMovie[0];
 
   const {
     selectedContent,
@@ -36,10 +25,10 @@ export default function Home() {
     openDetail,
     closeDetail,
     toggleFavorite,
-    playTrailer,
+    openTrailer,
   } = useContentDetail();
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         홈 데이터 로딩 중...
@@ -50,7 +39,7 @@ export default function Home() {
   if (error) {
     return (
       <div className="pt-16 min-h-screen flex items-center justify-center text-red-400">
-        에러: {error}
+        에러: {error.message}
       </div>
     );
   }
@@ -60,52 +49,52 @@ export default function Home() {
       <HeroBanner
         content={heroContent}
         openDetail={openDetail}
-        onPlayTrailer={playTrailer}
+        openTrailer={openTrailer}
       />
       <div className="pb-10 px-[5%]">
-        <SectionRow
+        <Carousel
           title="지금 가장 인기 있는 영화"
-          content={popularWithGenre}
+          content={popularMovie}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
-          onPlayTrailer={playTrailer}
+          openTrailer={openTrailer}
         />
-        <SectionRow
+        <Carousel
           title="최고 평점 영화"
-          content={topRatedWithGenre}
+          content={topRatedMovie}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
-          onPlayTrailer={playTrailer}
+          openTrailer={openTrailer}
         />
-        <SectionRow
+        <Carousel
           title="액션 ∙ 모험 인기 영화"
-          content={actionAdventureWithGenre}
+          content={actionAdventureMovie}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
-          onPlayTrailer={playTrailer}
+          openTrailer={openTrailer}
         />
-        <SectionRow
+        <Carousel
           title="코미디 TOP 콘텐츠"
-          content={comedyMoviesWithGenre}
+          content={comedyMovie}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
-          onPlayTrailer={playTrailer}
+          openTrailer={openTrailer}
         />
-        <SectionRow
+        <Carousel
           title="SF ∙ 판타지 추천"
-          content={sciFiFantasyWithGenre}
+          content={sciFiFantasyMovie}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
-          onPlayTrailer={playTrailer}
+          openTrailer={openTrailer}
         />
       </div>
 
       {showDetail && selectedContent && (
         <ContentDetailModal
           content={selectedContent}
-          onClose={closeDetail}
+          closeDetail={closeDetail}
           toggleFavorite={toggleFavorite}
-          onPlayTrailer={playTrailer}
+          openTrailer={openTrailer}
         />
       )}
     </div>

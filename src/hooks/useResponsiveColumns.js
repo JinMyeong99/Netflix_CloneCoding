@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
 const getColumnsFromWidth = (width) => {
-  if (width >= 1280) return 6; 
-  if (width >= 1024) return 5; 
-  if (width >= 768) return 4; 
-  return 3; 
+  if (width >= 1280) return 6;
+  if (width >= 1024) return 5;
+  if (width >= 640) return 4;
+  return 3;
 };
 
 export default function useResponsiveColumns() {
@@ -14,7 +14,7 @@ export default function useResponsiveColumns() {
   });
 
   useEffect(() => {
-    if (typeof window === "undefined") return undefined;
+    if (typeof window === "undefined") return;
 
     const handleResize = () => {
       setColumns(getColumnsFromWidth(window.innerWidth));

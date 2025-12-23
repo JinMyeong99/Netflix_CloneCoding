@@ -1,10 +1,13 @@
 import { useMemo } from "react";
-import useGenreStore from "../store/useGenreStore";
+import useGenresQuery from "./queries/useGenresQuery";
 
 export default function useGenreName(contents, mode = "auto") {
-  const { movieGenres, seriesGenres } = useGenreStore();
+  const { data } = useGenresQuery();
 
   return useMemo(() => {
+    const movieGenres = data?.movieGenres ?? [];
+    const seriesGenres = data?.seriesGenres ?? [];
+
     if (!Array.isArray(contents) || contents.length === 0) return contents;
 
     const movieMap = new Map();
@@ -56,5 +59,5 @@ export default function useGenreName(contents, mode = "auto") {
       const names = content.genre_ids.map((id) => mapToUse.get(id));
       return { ...content, genre_names: names };
     });
-  }, [contents, movieGenres, seriesGenres, mode]);
+  }, [contents, data, mode]);
 }

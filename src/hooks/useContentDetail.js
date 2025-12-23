@@ -18,7 +18,7 @@ export default function useContentDetail() {
 
   const toggleFavorite = useFavoriteStore((state) => state.toggleFavorite);
 
-  const playTrailer = useCallback((content) => {
+  const openTrailer = useCallback((content) => {
     if (!content?.trailerUrl) {
       toast("영상이 없는 콘텐츠입니다.", {
         id: "no-trailer",
@@ -47,6 +47,6 @@ export default function useContentDetail() {
     openDetail,
     closeDetail,
     toggleFavorite,
-    playTrailer,
+    openTrailer,
   };
 }
