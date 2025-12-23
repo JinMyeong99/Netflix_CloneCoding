@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import useTrendingStore from "../store/useTrendingStore";
+import useTrendingQuery from "../hooks/queries/useTrendingQuery";
 import Carousel from "../components/Carousel";
 import useContentDetail from "../hooks/useContentDetail";
 import useGenreName from "../hooks/useGenreName";
@@ -7,12 +6,7 @@ import ContentDetailModal from "../components/ContentDetailModal";
 import HeroBanner from "../components/HeroBanner";
 
 export default function Trending() {
-  const { today, week, rising, hot, loading, error, fetchTrendingData } =
-    useTrendingStore();
-
-  useEffect(() => {
-    fetchTrendingData();
-  }, [fetchTrendingData]);
+  const { data, isLoading, error } = useTrendingQuery();
 
   const {
     selectedContent,
@@ -23,14 +17,14 @@ export default function Trending() {
     openTrailer,
   } = useContentDetail();
 
-  const todayWithGenre = useGenreName(today, "auto");
-  const weekWithGenre = useGenreName(week, "auto");
-  const risingWithGenre = useGenreName(rising, "auto");
-  const hotWithGenre = useGenreName(hot, "auto");
+  const todayWithGenre = useGenreName(data?.today ?? [], "auto");
+  const weekWithGenre = useGenreName(data?.week ?? [], "auto");
+  const risingWithGenre = useGenreName(data?.rising ?? [], "auto");
+  const hotWithGenre = useGenreName(data?.hot ?? [], "auto");
 
   const heroContent = weekWithGenre[0];
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         트렌드 데이터 로딩 중...
@@ -41,7 +35,7 @@ export default function Trending() {
   if (error) {
     return (
       <div className="pt-16 min-h-screen flex items-center justify-center text-red-400">
-        에러: {error}
+        에러: {error.message}
       </div>
     );
   }
