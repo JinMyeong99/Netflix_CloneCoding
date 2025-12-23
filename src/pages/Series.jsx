@@ -1,50 +1,46 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import useSeriesStore from "../store/useSeriesStore";
-import useGenreStore from "../store/useGenreStore";
+import { useCallback, useMemo, useState } from "react";
 import GenreSelector from "../components/GenreSelector";
 import useContentDetail from "../hooks/useContentDetail";
 import useFavorite from "../hooks/useFavorite";
 import ContentDetailModal from "../components/ContentDetailModal";
 import useGenreName from "../hooks/useGenreName";
 import HeroBanner from "../components/HeroBanner";
-import useSingleFetch from "../hooks/useSingleFetch";
 import ContentGrid from "../components/ContentGrid";
+import useDiscoverInfinite from "../hooks/queries/useDiscoverInfinite";
+import useGenresQuery from "../hooks/queries/useGenresQuery";
 
 export default function Series() {
-  const { list, loading, hasMore, page, error, resetSeries, fetchSeriesPage } =
-    useSeriesStore();
-  const { seriesGenres } = useGenreStore();
-
-  const runOnce = useSingleFetch(loading);
-
-  const isInitialLoading = page === 0 && list.length === 0;
-
-  useEffect(() => {
-    resetSeries();
-    fetchSeriesPage();
-
-    return () => {
-      resetSeries();
-    };
-  }, [fetchSeriesPage, resetSeries]);
-
-  const loadMore = useCallback(() => {
-    if (!hasMore) return;
-    runOnce(() => fetchSeriesPage());
-  }, [fetchSeriesPage, hasMore, runOnce]);
+  const { data: genreData } = useGenresQuery();
+  const seriesGenres = genreData?.seriesGenres ?? [];
 
   const [selectedGenreId, setSelectedGenreId] = useState("");
 
-  const filteredSeries = useMemo(() => {
-    if (!selectedGenreId) return list;
-    const genreId = Number(selectedGenreId);
-    return list.filter(
-      (series) =>
-        Array.isArray(series.genre_ids) && series.genre_ids.includes(genreId)
-    );
-  }, [list, selectedGenreId]);
+  const {
+    data,
+    isLoading,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+    error,
+  } = useDiscoverInfinite({
+    type: "tv",
+    genreId: selectedGenreId || undefined,
+  });
 
-  const seriesWithGenre = useGenreName(filteredSeries, "series");
+  const series = useMemo(
+    () => data?.pages?.flatMap((page) => page.contents) ?? [],
+    [data]
+  );
+
+  const isInitialLoading = isLoading && series.length === 0;
+  const loading = isLoading || isFetchingNextPage;
+
+  const loadMore = useCallback(() => {
+    if (!hasNextPage) return;
+    fetchNextPage();
+  }, [fetchNextPage, hasNextPage]);
+
+  const seriesWithGenre = useGenreName(series, "series");
 
   const {
     selectedContent,
@@ -58,6 +54,7 @@ export default function Series() {
   const { favoriteId } = useFavorite();
 
   const heroContent = seriesWithGenre[0];
+  const errorMessage = error?.message;
 
   if (isInitialLoading && loading) {
     return (
@@ -85,7 +82,9 @@ export default function Series() {
           />
         </div>
 
-        {error && <div className="text-red-500 mb-2">{error}</div>}
+        {errorMessage && (
+          <div className="text-red-500 mb-2">{errorMessage}</div>
+        )}
 
         <ContentGrid
           contents={seriesWithGenre}
@@ -94,7 +93,7 @@ export default function Series() {
           toggleFavorite={toggleFavorite}
           openTrailer={openTrailer}
           loading={loading}
-          hasMore={hasMore}
+          hasMore={hasNextPage}
           onLoadMore={loadMore}
         />
 
@@ -103,7 +102,9 @@ export default function Series() {
             불러오는 중...
           </div>
         )}
-        {!hasMore && list.length > 0 && <div>더 이상 시리즈가 없습니다.</div>}
+        {!hasNextPage && series.length > 0 && (
+          <div>더 이상 시리즈가 없습니다.</div>
+        )}
 
         {showDetail && selectedContent && (
           <ContentDetailModal
