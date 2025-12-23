@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import useHomeStore from "../store/useHomeStore";
+import useHomeDataQuery from "../hooks/queries/useHomeDataQuery";
 import Carousel from "../components/Carousel";
 import ContentDetailModal from "../components/ContentDetailModal";
 import useContentDetail from "../hooks/useContentDetail";
@@ -7,26 +6,16 @@ import useGenreName from "../hooks/useGenreName";
 import HeroBanner from "../components/HeroBanner";
 
 export default function Home() {
-  const {
-    popular,
-    topRated,
-    actionAdventure,
-    comedyMovies,
-    sciFiFantasy,
-    loading,
-    error,
-    fetchHomeData,
-  } = useHomeStore();
+  const { data, isLoading, error } = useHomeDataQuery();
 
-  useEffect(() => {
-    fetchHomeData();
-  }, [fetchHomeData]);
-
-  const popularMovie = useGenreName(popular, "movie");
-  const topRatedMovie = useGenreName(topRated, "movie");
-  const actionAdventureMovie = useGenreName(actionAdventure, "movie");
-  const comedyMovie = useGenreName(comedyMovies, "movie");
-  const sciFiFantasyMovie = useGenreName(sciFiFantasy, "movie");
+  const popularMovie = useGenreName(data?.popular ?? [], "movie");
+  const topRatedMovie = useGenreName(data?.topRated ?? [], "movie");
+  const actionAdventureMovie = useGenreName(
+    data?.actionAdventure ?? [],
+    "movie"
+  );
+  const comedyMovie = useGenreName(data?.comedy ?? [], "movie");
+  const sciFiFantasyMovie = useGenreName(data?.sciFiFantasy ?? [], "movie");
 
   const heroContent = popularMovie[0];
 
@@ -39,7 +28,7 @@ export default function Home() {
     openTrailer,
   } = useContentDetail();
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         홈 데이터 로딩 중...
@@ -50,7 +39,7 @@ export default function Home() {
   if (error) {
     return (
       <div className="pt-16 min-h-screen flex items-center justify-center text-red-400">
-        에러: {error}
+        에러: {error.message}
       </div>
     );
   }
