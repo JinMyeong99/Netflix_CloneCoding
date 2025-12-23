@@ -1,14 +1,40 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useReducer, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import useSearchStore from "../store/useSearchStore";
+
+const createInitialSearchState = (location) => {
+  const isSearchRoute = location.pathname.startsWith("/search");
+  const params = new URLSearchParams(location.search);
+  const initialValue = isSearchRoute ? params.get("q") || "" : "";
+  return { open: isSearchRoute, value: initialValue };
+};
+
+function searchReducer(state, action) {
+  switch (action.type) {
+    case "open":
+      return state.open ? state : { ...state, open: true };
+    case "close":
+      return state.open ? { ...state, open: false } : state;
+    case "setValue":
+      if (state.value === action.value) return state;
+      return { ...state, value: action.value };
+    case "syncFromLocation":
+      if (state.open && state.value === action.value) return state;
+      return { ...state, open: true, value: action.value };
+    default:
+      return state;
+  }
+}
 
 export default function SearchBar() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { resetSearch, setQuery, fetchSearchPage } = useSearchStore();
 
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("");
+  const [state, dispatch] = useReducer(
+    searchReducer,
+    location,
+    createInitialSearchState
+  );
+  const { open, value } = state;
   const originPathRef = useRef(null);
 
   const barRef = useRef(null);
@@ -25,7 +51,7 @@ export default function SearchBar() {
       ) {
         originPathRef.current = "/";
       }
-      setOpen(true);
+      dispatch({ type: "open" });
     }
   };
 
@@ -35,8 +61,15 @@ export default function SearchBar() {
     }
   }, [open]);
 
+  useEffect(() => {
+    if (!location.pathname.startsWith("/search")) return;
+    const params = new URLSearchParams(location.search);
+    const q = params.get("q") || "";
+    dispatch({ type: "syncFromLocation", value: q });
+  }, [location.pathname, location.search]);
+
   const handleChange = (e) => {
-    setValue(e.target.value);
+    dispatch({ type: "setValue", value: e.target.value });
   };
 
   useEffect(() => {
@@ -46,7 +79,7 @@ export default function SearchBar() {
       if (!barRef.current) return;
       if (barRef.current.contains(e.target)) return;
       if (value.trim()) return;
-      setOpen(false);
+      dispatch({ type: "close" });
     }
 
     document.addEventListener("mousedown", handleClickOutside);
@@ -61,14 +94,14 @@ export default function SearchBar() {
     const searchValue = value.trim();
     const id = setTimeout(() => {
       if (!searchValue) {
-        resetSearch();
-
         if (
           location.pathname.startsWith("/search") &&
           originPathRef.current
         ) {
           navigate(originPathRef.current);
           originPathRef.current = null;
+        } else if (location.pathname.startsWith("/search")) {
+          navigate("/");
         }
         return;
       }
@@ -76,14 +109,15 @@ export default function SearchBar() {
         if (!originPathRef.current) {
           originPathRef.current = location.pathname;
         }
-        navigate("/search");
+        navigate(`/search?q=${encodeURIComponent(searchValue)}`);
+      } else {
+        navigate(`/search?q=${encodeURIComponent(searchValue)}`, {
+          replace: true,
+        });
       }
-      resetSearch();
-      setQuery(searchValue);
-      fetchSearchPage();
     }, 500);
     return () => clearTimeout(id);
-  }, [value, open, location.pathname, navigate, resetSearch, setQuery, fetchSearchPage]);
+  }, [value, open, location.pathname, location.search, navigate]);
 
   return (
     <div ref={barRef} className="flex items-center">

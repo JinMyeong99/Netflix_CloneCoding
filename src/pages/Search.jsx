@@ -1,24 +1,45 @@
-import { useCallback } from "react";
-import { shallow } from "zustand/shallow";
+import { useCallback, useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
 import useContentDetail from "../hooks/useContentDetail";
 import useGenreName from "../hooks/useGenreName";
 import useFavorite from "../hooks/useFavorite";
 import ContentDetailModal from "../components/ContentDetailModal";
-import useSingleFetch from "../hooks/useSingleFetch";
 import ContentGrid from "../components/ContentGrid";
-import useSearchStore from "../store/useSearchStore";
+import useSearchInfinite from "../hooks/queries/useSearchInfinite";
 
 export default function Search() {
-  const state = useSearchStore((state) => state, shallow);
-  const { query, results, loading, hasMore, error, fetchSearchPage } = state;
+  const [searchParams] = useSearchParams();
+  const query = (searchParams.get("q") || "").trim();
 
-  const runOnce = useSingleFetch(loading);
+  const {
+    data,
+    isLoading,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+    error,
+  } = useSearchInfinite(query);
+
+  const results = useMemo(() => {
+    if (!data?.pages) return [];
+    const seenKeys = new Set();
+
+    return data.pages
+      .flatMap((page) => page.contents)
+      .filter((content) => {
+        const key = `${content.media_type || "auto"}-${content.id}`;
+        if (seenKeys.has(key)) return false;
+        seenKeys.add(key);
+        return true;
+      });
+  }, [data]);
+
+  const loading = isLoading || isFetchingNextPage;
 
   const loadMore = useCallback(() => {
-    if (!hasMore) return;
-    if (!query.trim()) return;
-    runOnce(() => fetchSearchPage());
-  }, [hasMore, query, runOnce, fetchSearchPage]);
+    if (!hasNextPage) return;
+    fetchNextPage();
+  }, [fetchNextPage, hasNextPage]);
 
   const resultsWithGenre = useGenreName(results, "auto");
 
@@ -38,8 +59,8 @@ export default function Search() {
       <h2 className="text-2xl md:text-3xl font-bold my-5">
         검색 결과: {query && <span>"{query}"</span>}
       </h2>
-      {error && <div>{error}</div>}
-      {!loading && results.length === 0 && query.trim() && !error && (
+      {error && <div>{error.message}</div>}
+      {!loading && results.length === 0 && query && !error && (
         <div>검색 결과가 없습니다.</div>
       )}
       <ContentGrid
@@ -49,8 +70,8 @@ export default function Search() {
         toggleFavorite={toggleFavorite}
         openTrailer={openTrailer}
         loading={loading}
-        hasMore={hasMore}
-        onLoadMore={loadMore} 
+        hasMore={hasNextPage}
+        onLoadMore={loadMore}
         keyExtractor={(content) => `${content.media_type}-${content.id}`}
       />
       {loading && (
