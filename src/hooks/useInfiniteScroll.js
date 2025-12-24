@@ -23,7 +23,7 @@ export default function useInfiniteScroll({
       },
       {
         root: root && "current" in root ? root.current : root,
-        rootMargin: "200px",
+        rootMargin: "400px",
         threshold: 0,
       }
     );
