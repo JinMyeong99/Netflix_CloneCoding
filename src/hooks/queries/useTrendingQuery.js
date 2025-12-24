@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { attachTrailer } from "../../api/attachTrailer";
 import { ApiKey, BaseUrl } from "../../api/tmdb";
 
 async function fetchTrendingData() {
@@ -35,14 +34,12 @@ async function fetchTrendingData() {
     const risingResults = risingRes.data?.results ?? [];
     const hotResults = hotRes.data?.results ?? [];
 
-    const [today, week, rising, hot] = await Promise.all([
-      attachTrailer(todayResults, "auto"),
-      attachTrailer(weekResults, "auto"),
-      attachTrailer(risingResults, "auto"),
-      attachTrailer(hotResults, "auto"),
-    ]);
-
-    return { today, week, rising, hot };
+    return {
+      today: todayResults,
+      week: weekResults,
+      rising: risingResults,
+      hot: hotResults,
+    };
   } catch (error) {
     const message =
       error?.response?.statusText ||

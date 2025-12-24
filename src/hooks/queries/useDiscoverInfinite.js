@@ -1,6 +1,5 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { attachTrailer } from "../../api/attachTrailer";
 import { ApiKey, BaseUrl } from "../../api/tmdb";
 
 async function fetchDiscoverPage({ type, pageParam, genreId }) {
@@ -21,15 +20,11 @@ async function fetchDiscoverPage({ type, pageParam, genreId }) {
   try {
     const { data } = await axios.get(url);
     const results = data?.results ?? [];
-    const contents = await attachTrailer(
-      results,
-      type === "movie" ? "movie" : "tv"
-    );
 
     const totalPages = data?.total_pages ?? 0;
 
     return {
-      contents,
+      contents: results,
       totalPages,
       nextPage: pageParam + 1,
     };

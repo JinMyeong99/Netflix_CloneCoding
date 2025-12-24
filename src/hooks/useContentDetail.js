@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import useFavoriteStore from "../store/useFavoriteStore";
 import toast from "react-hot-toast";
+import { getTrailerUrl } from "../api/attachTrailer";
 
 export default function useContentDetail() {
   const [selectedContent, setSelectedContent] = useState(null);
@@ -18,17 +19,41 @@ export default function useContentDetail() {
 
   const toggleFavorite = useFavoriteStore((state) => state.toggleFavorite);
 
-  const openTrailer = useCallback((content) => {
-    if (!content?.trailerUrl) {
-      toast("영상이 없는 콘텐츠입니다.", {
-        id: "no-trailer",
-        icon: "⚠️",
-        duration: 2200,
-      });
+  const openTrailer = useCallback(async (content, mode = "auto") => {
+    if (!content) return;
+
+    if (content.trailerUrl) {
+      window.open(content.trailerUrl, "_blank", "noopener,noreferrer");
       return;
     }
 
-    window.open(content.trailerUrl, "_blank", "noopener,noreferrer");
+    const toastId = toast.loading("예고편 확인 중...", {
+      id: "trailer-loading",
+      duration: 8000,
+    });
+
+    try {
+      const trailerUrl = await getTrailerUrl(content, mode);
+      toast.dismiss(toastId);
+
+      if (!trailerUrl) {
+        toast("영상이 없는 콘텐츠입니다.", {
+          id: "no-trailer",
+          icon: "⚠️",
+          duration: 2200,
+        });
+        return;
+      }
+
+      window.open(trailerUrl, "_blank", "noopener,noreferrer");
+    } catch {
+      toast.dismiss(toastId);
+      toast("영상 로딩에 실패했습니다.", {
+        id: "trailer-error",
+        icon: "⚠️",
+        duration: 2200,
+      });
+    }
   }, []);
 
   useEffect(() => {

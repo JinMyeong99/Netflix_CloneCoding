@@ -15,9 +15,6 @@ function setMediaType(content, mode) {
     if (content.media_type === "tv") return "tv";
     return null;
   }
-
-  if (mode === "movie" || mode === "series") return mode;
-  return null;
 }
 
 async function fetchTrailerUrl(contentId, mediaType) {
@@ -38,32 +35,34 @@ async function fetchTrailerUrl(contentId, mediaType) {
   }
 }
 
+export async function getTrailerUrl(content, mode = "auto") {
+  const mediaType = setMediaType(content, mode);
+
+  if (!mediaType || !content?.id) {
+    return null;
+  }
+
+  const cacheKey = `${mediaType}-${content.id}`;
+
+  if (trailerCache.has(cacheKey)) {
+    return trailerCache.get(cacheKey);
+  }
+
+  const trailerPromise = fetchTrailerUrl(content.id, mediaType);
+  trailerCache.set(cacheKey, trailerPromise);
+
+  const trailerUrl = await trailerPromise;
+  trailerCache.set(cacheKey, trailerUrl);
+
+  return trailerUrl;
+}
+
 export async function attachTrailer(contents, mode) {
   if (!Array.isArray(contents) || contents.length === 0) return [];
 
   return Promise.all(
     contents.map(async (content) => {
-      const mediaType = setMediaType(content, mode);
-
-      if (!mediaType || !content?.id) {
-        return { ...content, trailerUrl: null };
-      }
-
-      if (content.trailerUrl) {
-        return content;
-      }
-
-      const cacheKey = `${mediaType}-${content.id}`;
-      if (trailerCache.has(cacheKey)) {
-        const cachedTrailer = await trailerCache.get(cacheKey);
-        return { ...content, trailerUrl: cachedTrailer };
-      }
-
-      const trailerPromise = fetchTrailerUrl(content.id, mediaType);
-      trailerCache.set(cacheKey, trailerPromise);
-      const trailerUrl = await trailerPromise;
-      trailerCache.set(cacheKey, trailerUrl);
-
+      const trailerUrl = await getTrailerUrl(content, mode);
       return { ...content, trailerUrl };
     })
   );
