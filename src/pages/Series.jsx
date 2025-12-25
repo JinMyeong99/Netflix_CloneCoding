@@ -6,7 +6,7 @@ import ContentDetailModal from "../components/ContentDetailModal";
 import useGenreName from "../hooks/useGenreName";
 import HeroBanner from "../components/HeroBanner";
 import ContentGrid from "../components/ContentGrid";
-import useDiscoverInfinite from "../hooks/queries/useDiscoverInfinite";
+import useDiscoverInfiniteQuery from "../hooks/queries/useDiscoverInfiniteQuery";
 import useGenresQuery from "../hooks/queries/useGenresQuery";
 
 export default function Series() {
@@ -22,7 +22,7 @@ export default function Series() {
     fetchNextPage,
     hasNextPage,
     error,
-  } = useDiscoverInfinite({
+  } = useDiscoverInfiniteQuery({
     type: "tv",
     genreId: selectedGenreId || undefined,
   });

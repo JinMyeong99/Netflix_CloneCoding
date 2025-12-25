@@ -1,5 +1,5 @@
-import axios from "axios";
 import { ApiKey, BaseUrl } from "./tmdb";
+import { fetchJson } from "./fetchJson";
 
 const paramsVideo = new URLSearchParams({
   api_key: ApiKey,
@@ -26,7 +26,7 @@ function setMediaType(content, mode) {
 async function fetchTrailerUrl(contentId, mediaType) {
   try {
     const url = `${BaseUrl}/${mediaType}/${contentId}?${paramsVideo}`;
-    const { data } = await axios.get(url);
+    const data = await fetchJson(url, "트레일러 로딩 실패");
 
     const trailer =
       data.videos?.results?.find(
