@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { fetchJson } from "../../api/fetchJson";
 import { ApiKey, BaseUrl } from "../../api/tmdb";
 
 async function fetchTrendingData() {
@@ -22,17 +22,17 @@ async function fetchTrendingData() {
   const hotUrl = `${BaseUrl}/trending/all/day?${common}`;
 
   try {
-    const [todayRes, weekRes, risingRes, hotRes] = await Promise.all([
-      axios.get(todayUrl),
-      axios.get(weekUrl),
-      axios.get(risingUrl),
-      axios.get(hotUrl),
+    const [todayData, weekData, risingData, hotData] = await Promise.all([
+      fetchJson(todayUrl, "트렌드 데이터 로딩 실패"),
+      fetchJson(weekUrl, "트렌드 데이터 로딩 실패"),
+      fetchJson(risingUrl, "트렌드 데이터 로딩 실패"),
+      fetchJson(hotUrl, "트렌드 데이터 로딩 실패"),
     ]);
 
-    const todayResults = todayRes.data?.results ?? [];
-    const weekResults = weekRes.data?.results ?? [];
-    const risingResults = risingRes.data?.results ?? [];
-    const hotResults = hotRes.data?.results ?? [];
+    const todayResults = todayData?.results ?? [];
+    const weekResults = weekData?.results ?? [];
+    const risingResults = risingData?.results ?? [];
+    const hotResults = hotData?.results ?? [];
 
     return {
       today: todayResults,
@@ -42,8 +42,7 @@ async function fetchTrendingData() {
     };
   } catch (error) {
     const message =
-      error?.response?.statusText ||
-      error?.message ||
+      (error instanceof Error && error.message) ||
       "트렌드 데이터 로딩 실패";
     throw new Error(message);
   }

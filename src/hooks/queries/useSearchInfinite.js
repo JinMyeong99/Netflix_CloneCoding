@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { fetchJson } from "../../api/fetchJson";
 import { ApiKey, BaseUrl } from "../../api/tmdb";
 
 async function fetchSearchPage({ query, pageParam }) {
@@ -8,7 +8,7 @@ async function fetchSearchPage({ query, pageParam }) {
   const searchUrl = `${BaseUrl}/search/multi?api_key=${ApiKey}&language=ko-KR&include_adult=false&query=${encodeURIComponent(searchValue)}&page=${pageParam}`;
 
   try {
-    const { data } = await axios.get(searchUrl);
+    const data = await fetchJson(searchUrl, "검색 결과 로딩 실패");
 
     const contents = (data?.results ?? []).filter(
       (content) =>
@@ -22,9 +22,7 @@ async function fetchSearchPage({ query, pageParam }) {
     };
   } catch (error) {
     const message =
-      error?.response?.statusText ||
-      error?.message ||
-      "검색 결과 로딩 실패";
+      (error instanceof Error && error.message) || "검색 결과 로딩 실패";
     throw new Error(message);
   }
 }

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { fetchJson } from "../../api/fetchJson";
 import { ApiKey, BaseUrl } from "../../api/tmdb";
 
 async function fetchHeroContent() {
@@ -13,7 +13,7 @@ async function fetchHeroContent() {
   }).toString();
 
   const url = `${BaseUrl}/discover/movie?${params}`;
-  const { data } = await axios.get(url);
+  const data = await fetchJson(url, "히어로 콘텐츠 로딩 실패");
   const [first] = data?.results ?? [];
   return first || null;
 }

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { fetchJson } from "../../api/fetchJson";
 import { ApiKey, BaseUrl } from "../../api/tmdb";
 
 async function fetchHomeData() {
@@ -18,29 +18,29 @@ async function fetchHomeData() {
 
   try {
     const [
-      popularRes,
-      topRatedRes,
-      actionAdventureRes,
-      comedyRes,
-      sciFiFantasyRes,
+      popularData,
+      topRatedData,
+      actionAdventureData,
+      comedyData,
+      sciFiFantasyData,
     ] = await Promise.all([
-      axios.get(popularUrl),
-      axios.get(topRatedUrl),
-      axios.get(actionAdventureUrl),
-      axios.get(comedyUrl),
-      axios.get(sciFiFantasyUrl),
+      fetchJson(popularUrl, "홈 데이터 로딩 실패"),
+      fetchJson(topRatedUrl, "홈 데이터 로딩 실패"),
+      fetchJson(actionAdventureUrl, "홈 데이터 로딩 실패"),
+      fetchJson(comedyUrl, "홈 데이터 로딩 실패"),
+      fetchJson(sciFiFantasyUrl, "홈 데이터 로딩 실패"),
     ]);
 
     return {
-      popular: popularRes.data?.results ?? [],
-      topRated: topRatedRes.data?.results ?? [],
-      actionAdventure: actionAdventureRes.data?.results ?? [],
-      comedy: comedyRes.data?.results ?? [],
-      sciFiFantasy: sciFiFantasyRes.data?.results ?? [],
+      popular: popularData?.results ?? [],
+      topRated: topRatedData?.results ?? [],
+      actionAdventure: actionAdventureData?.results ?? [],
+      comedy: comedyData?.results ?? [],
+      sciFiFantasy: sciFiFantasyData?.results ?? [],
     };
   } catch (error) {
     const message =
-      error?.response?.statusText || error?.message || "홈 데이터 로딩 실패";
+      (error instanceof Error && error.message) || "홈 데이터 로딩 실패";
     throw new Error(message);
   }
 }

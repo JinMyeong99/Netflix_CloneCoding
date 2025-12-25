@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { fetchJson } from "../../api/fetchJson";
 import { ApiKey, BaseUrl } from "../../api/tmdb";
 
 async function fetchDiscoverPage({ type, pageParam, genreId }) {
@@ -18,7 +18,7 @@ async function fetchDiscoverPage({ type, pageParam, genreId }) {
   const url = `${BaseUrl}/discover/${type}?${params.toString()}`;
 
   try {
-    const { data } = await axios.get(url);
+    const data = await fetchJson(url, "콘텐츠 로딩 실패");
     const results = data?.results ?? [];
 
     const totalPages = data?.total_pages ?? 0;
@@ -30,7 +30,7 @@ async function fetchDiscoverPage({ type, pageParam, genreId }) {
     };
   } catch (error) {
     const message =
-      error?.response?.statusText || error?.message || "콘텐츠 로딩 실패";
+      (error instanceof Error && error.message) || "콘텐츠 로딩 실패";
     throw new Error(message);
   }
 }
