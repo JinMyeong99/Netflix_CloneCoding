@@ -1,6 +1,5 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { attachTrailer } from "../../api/attachTrailer";
 import { ApiKey, BaseUrl } from "../../api/tmdb";
 
 async function fetchSearchPage({ query, pageParam }) {
@@ -11,12 +10,10 @@ async function fetchSearchPage({ query, pageParam }) {
   try {
     const { data } = await axios.get(searchUrl);
 
-    const filtered = (data?.results ?? []).filter(
+    const contents = (data?.results ?? []).filter(
       (content) =>
         content.media_type === "movie" || content.media_type === "tv"
     );
-
-    const contents = await attachTrailer(filtered, "auto");
 
     return {
       contents,

@@ -1,6 +1,7 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import useFavoriteStore from "../store/useFavoriteStore";
 import { backdropSrcSet, ImageUrl, posterSrcSet } from "../api/tmdb";
+import { getTrailerUrl } from "../api/attachTrailer";
 
 export default function ContentDetailModal({
   content,
@@ -8,12 +9,29 @@ export default function ContentDetailModal({
   toggleFavorite,
   openTrailer,
 }) {
+  const [trailerUrl, setTrailerUrl] = useState(content?.trailerUrl || null);
   const favoriteList = useFavoriteStore((state) => state.list);
   const contentId = content?.id;
   const isFavorite = useMemo(() => {
     if (!contentId) return false;
     return favoriteList.some((favContent) => favContent.id === contentId);
   }, [favoriteList, contentId]);
+
+  useEffect(() => {
+    let isMounted = true;
+    setTrailerUrl(content?.trailerUrl || null);
+
+    if (content && !content.trailerUrl) {
+      getTrailerUrl(content, "auto").then((url) => {
+        if (!isMounted) return;
+        if (url) setTrailerUrl(url);
+      });
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, [content]);
 
   const detail = useMemo(() => {
     if (!content) return null;
@@ -40,8 +58,9 @@ export default function ContentDetailModal({
           ? content.genre_names
           : [];
 
-    const trailerKey = content.trailerUrl
-      ? content.trailerUrl.split("v=")[1]?.split("&")[0]
+    const trailerSource = trailerUrl || content.trailerUrl || null;
+    const trailerKey = trailerSource
+      ? trailerSource.split("v=")[1]?.split("&")[0]
       : null;
 
     return {
@@ -54,7 +73,7 @@ export default function ContentDetailModal({
       genre,
       trailerKey,
     };
-  }, [content]);
+  }, [content, trailerUrl]);
 
   const handleFavorite = useCallback(() => {
     if (content && toggleFavorite) {

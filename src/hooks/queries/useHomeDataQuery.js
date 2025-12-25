@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { attachTrailer } from "../../api/attachTrailer";
 import { ApiKey, BaseUrl } from "../../api/tmdb";
 
 async function fetchHomeData() {
@@ -32,21 +31,12 @@ async function fetchHomeData() {
       axios.get(sciFiFantasyUrl),
     ]);
 
-    const [popular, topRated, actionAdventure, comedy, sciFiFantasy] =
-      await Promise.all([
-        attachTrailer(popularRes.data?.results ?? [], "movie"),
-        attachTrailer(topRatedRes.data?.results ?? [], "movie"),
-        attachTrailer(actionAdventureRes.data?.results ?? [], "movie"),
-        attachTrailer(comedyRes.data?.results ?? [], "movie"),
-        attachTrailer(sciFiFantasyRes.data?.results ?? [], "movie"),
-      ]);
-
     return {
-      popular,
-      topRated,
-      actionAdventure,
-      comedy,
-      sciFiFantasy,
+      popular: popularRes.data?.results ?? [],
+      topRated: topRatedRes.data?.results ?? [],
+      actionAdventure: actionAdventureRes.data?.results ?? [],
+      comedy: comedyRes.data?.results ?? [],
+      sciFiFantasy: sciFiFantasyRes.data?.results ?? [],
     };
   } catch (error) {
     const message =
