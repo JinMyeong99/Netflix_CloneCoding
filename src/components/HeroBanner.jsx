@@ -54,7 +54,7 @@ function HeroBanner({ content, openDetail, openTrailer }) {
   }, [backdropSrc, backdropPath, heroSizes]);
 
   return (
-    <section className="relative w-full aspect-video min-h-[320px] max-h-[85vh] overflow-hidden bg-neutral-900">
+    <section className="relative w-full aspect-video min-h-80 max-h-[85vh] overflow-hidden bg-neutral-900">
       {backdropSrc ? (
         <img
           src={backdropSrc}
