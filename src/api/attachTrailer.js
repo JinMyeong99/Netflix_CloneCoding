@@ -13,8 +13,14 @@ function setMediaType(content, mode) {
   if (mode === "auto") {
     if (content.media_type === "movie") return "movie";
     if (content.media_type === "tv") return "tv";
+    if (content.first_air_date) return "tv";
+    if (content.release_date) return "movie";
     return null;
   }
+
+  if (mode === "movie") return "movie";
+  if (mode === "series") return "tv";
+  return null;
 }
 
 async function fetchTrailerUrl(contentId, mediaType) {
