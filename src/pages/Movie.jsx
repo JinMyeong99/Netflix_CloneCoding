@@ -6,7 +6,7 @@ import useFavorite from "../hooks/useFavorite";
 import ContentDetailModal from "../components/ContentDetailModal";
 import HeroBanner from "../components/HeroBanner";
 import ContentGrid from "../components/ContentGrid";
-import useDiscoverInfinite from "../hooks/queries/useDiscoverInfinite";
+import useDiscoverInfiniteQuery from "../hooks/queries/useDiscoverInfiniteQuery";
 import useGenresQuery from "../hooks/queries/useGenresQuery";
 
 export default function Movie() {
@@ -22,7 +22,7 @@ export default function Movie() {
     fetchNextPage,
     hasNextPage,
     error,
-  } = useDiscoverInfinite({
+  } = useDiscoverInfiniteQuery({
     type: "movie",
     genreId: selectedGenreId || undefined,
   });

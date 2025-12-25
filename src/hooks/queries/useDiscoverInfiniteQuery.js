@@ -1,10 +1,11 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { fetchSearchData } from "../../api/tmdb/fetchSearchData";
+import { fetchDiscoverData } from "../../api/tmdb/fetchDiscoverData";
 
-export default function useSearchInfinite(query) {
+export default function useDiscoverInfiniteQuery({ type, genreId }) {
   return useInfiniteQuery({
-    queryKey: ["search", query],
-    queryFn: ({ pageParam = 1 }) => fetchSearchData({ query, pageParam }),
+    queryKey: ["discover", type, genreId || "all"],
+    queryFn: ({ pageParam = 1 }) =>
+      fetchDiscoverData({ type, pageParam, genreId }),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       if (!lastPage || !lastPage.totalPages) return undefined;
@@ -12,7 +13,6 @@ export default function useSearchInfinite(query) {
         ? lastPage.nextPage
         : undefined;
     },
-    enabled: Boolean(query?.trim()),
-    staleTime: 1000 * 60 * 2,
+    staleTime: 1000 * 60 * 3,
   });
 }
