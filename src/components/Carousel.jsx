@@ -20,8 +20,8 @@ const BREAKPOINTS = {
 
 const SWIPER_VIRTUAL = {
   enabled: true,
-  addSlidesBefore: 6,
-  addSlidesAfter: 6,
+  addSlidesBefore: 0,
+  addSlidesAfter: 0,
 };
 
 export default function Carousel({
