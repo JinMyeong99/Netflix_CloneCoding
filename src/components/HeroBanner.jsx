@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo } from "react";
+import { memo, useCallback, useEffect, useMemo } from "react";
 import { backdropSrcSet, ImageUrl } from "../api/tmdb";
 
 function HeroBanner({ content, openDetail, openTrailer }) {
@@ -12,6 +12,7 @@ function HeroBanner({ content, openDetail, openTrailer }) {
   const backdropSrc = useMemo(() => {
     return backdropPath ? ImageUrl(backdropPath, "w1280") : "";
   }, [backdropPath]);
+  const heroSizes = "(max-width: 1024px) 100vw, 1280px";
 
   const handleOpenTrailer = useCallback(() => {
     if (!content) return;
@@ -23,6 +24,34 @@ function HeroBanner({ content, openDetail, openTrailer }) {
     if (openDetail) openDetail(content);
   }, [openDetail, content]);
 
+  useEffect(() => {
+    if (!backdropSrc) return;
+
+    const preloadLink = document.querySelector(
+      'link[rel="preload"][data-hero-preload="true"]'
+    );
+    if (preloadLink && preloadLink.href === backdropSrc) return;
+    if (preloadLink) preloadLink.remove();
+
+    const link = document.createElement("link");
+    link.rel = "preload";
+    link.as = "image";
+    link.href = backdropSrc;
+    link.setAttribute("data-hero-preload", "true");
+
+    const srcSet = backdropSrcSet(backdropPath);
+    if (srcSet) {
+      link.setAttribute("imagesrcset", srcSet);
+      link.setAttribute("imagesizes", heroSizes);
+    }
+
+    document.head.appendChild(link);
+
+    return () => {
+      link.remove();
+    };
+  }, [backdropSrc, backdropPath, heroSizes]);
+
   if (!content) return null;
 
   return (
@@ -31,7 +60,7 @@ function HeroBanner({ content, openDetail, openTrailer }) {
         <img
           src={backdropSrc}
           srcSet={backdropSrcSet(backdropPath)}
-          sizes="100vw"
+          sizes={heroSizes}
           alt={title}
           width={1280}
           height={720}
