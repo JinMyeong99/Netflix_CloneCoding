@@ -27,9 +27,10 @@ export default function useContentDetail() {
       return;
     }
 
-    const toastId = toast.loading("예고편 확인 중...", {
+    const toastId = toast.loading("", {
       id: "trailer-loading",
       duration: 8000,
+      style: { display: "none" },
     });
 
     try {
