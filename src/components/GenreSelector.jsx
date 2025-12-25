@@ -54,7 +54,7 @@ export default function GenreSelector({ genres, selectedId, selectedGenre }) {
 
       <ul
         className={`
-          absolute left-0 mt-2 w-30 bg-black/90 
+          absolute left-0 mt-2 w-32 bg-black/90 
           border border-gray-700 rounded text-sm z-20 
           transition-all duration-300
           overflow-y-auto overflow-x-hidden
