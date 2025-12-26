@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import NetflixLogoSmall from "../assets/Netflix_logo_small.png";
 import SearchBar from "./Searchbar";
 import NavProfile from "./NavProfile";
 
-export default function Navbar() {
+function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -127,3 +127,5 @@ export default function Navbar() {
     </header>
   );
 }
+
+export default memo(Navbar);
