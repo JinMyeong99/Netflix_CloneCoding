@@ -1,10 +1,9 @@
-import { memo, useCallback, useMemo } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { backdropSrcSet, ImageUrl, posterSrcSet } from "../api/tmdb";
 
 function ContentCard({
   content,
   isFavorite = false,
-  openHover,
   openDetail,
   toggleFavorite,
   openTrailer,
@@ -51,6 +50,32 @@ function ContentCard({
     if (openDetail) openDetail(content);
   }, [openDetail, content]);
 
+  const [openHover, setOpenHover] = useState(false);
+  const hoverTimerRef = useRef(null);
+
+  const clearHoverTimer = useCallback(() => {
+    if (hoverTimerRef.current) {
+      clearTimeout(hoverTimerRef.current);
+      hoverTimerRef.current = null;
+    }
+  }, []);
+
+  const handleMouseEnter = useCallback(() => {
+    clearHoverTimer();
+    hoverTimerRef.current = setTimeout(() => setOpenHover(true), 400);
+  }, [clearHoverTimer]);
+
+  const handleMouseLeave = useCallback(() => {
+    clearHoverTimer();
+    setOpenHover(false);
+  }, [clearHoverTimer]);
+
+  useEffect(() => {
+    return () => {
+      clearHoverTimer();
+    };
+  }, [clearHoverTimer]);
+
   const hoverPosition = useMemo(() => {
     switch (hoverAlign) {
       case "left":
@@ -71,7 +96,11 @@ function ContentCard({
   );
 
   return (
-    <article className="relative group/card w-full max-w-65">
+    <article
+      className="relative group/card w-full max-w-65"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <div className="w-full aspect-2/3 overflow-hidden rounded-md bg-neutral-800">
         {poster ? (
           <img
