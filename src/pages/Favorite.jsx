@@ -1,5 +1,4 @@
 import useContentDetail from "../hooks/useContentDetail";
-import ContentDetailModal from "../components/ContentDetailModal";
 import useGenreName from "../hooks/useGenreName";
 import ContentGrid from "../components/ContentGrid";
 import useFavorite from "../hooks/useFavorite";
@@ -8,10 +7,7 @@ export default function Favorite() {
   const { favoriteList: favorite, favoriteId } = useFavorite();
 
   const {
-    selectedContent,
-    showDetail,
     openDetail,
-    closeDetail,
     toggleFavorite,
     openTrailer,
   } = useContentDetail();
@@ -38,15 +34,6 @@ export default function Favorite() {
           openTrailer={openTrailer}
         />
       </div>
-
-      {showDetail && selectedContent && (
-        <ContentDetailModal
-          content={selectedContent}
-          closeDetail={closeDetail}
-          toggleFavorite={toggleFavorite}
-          openTrailer={openTrailer}
-        />
-      )}
     </div>
   );
 }

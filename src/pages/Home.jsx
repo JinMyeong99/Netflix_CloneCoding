@@ -1,6 +1,5 @@
 import useHomeDataQuery from "../hooks/queries/useHomeDataQuery";
 import Carousel from "../components/Carousel";
-import ContentDetailModal from "../components/ContentDetailModal";
 import useContentDetail from "../hooks/useContentDetail";
 import useGenreName from "../hooks/useGenreName";
 import HeroBanner from "../components/HeroBanner";
@@ -23,10 +22,7 @@ export default function Home() {
   const heroContent = heroWithGenre || popularMovie[0];
 
   const {
-    selectedContent,
-    showDetail,
     openDetail,
-    closeDetail,
     toggleFavorite,
     openTrailer,
   } = useContentDetail();
@@ -87,14 +83,6 @@ export default function Home() {
         />
       </div>
 
-      {showDetail && selectedContent && (
-        <ContentDetailModal
-          content={selectedContent}
-          closeDetail={closeDetail}
-          toggleFavorite={toggleFavorite}
-          openTrailer={openTrailer}
-        />
-      )}
     </div>
   );
 }

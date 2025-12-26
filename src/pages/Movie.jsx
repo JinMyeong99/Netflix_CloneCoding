@@ -3,7 +3,6 @@ import GenreSelector from "../components/GenreSelector";
 import useGenreName from "../hooks/useGenreName";
 import useContentDetail from "../hooks/useContentDetail";
 import useFavorite from "../hooks/useFavorite";
-import ContentDetailModal from "../components/ContentDetailModal";
 import HeroBanner from "../components/HeroBanner";
 import ContentGrid from "../components/ContentGrid";
 import useDiscoverInfiniteQuery from "../hooks/queries/useDiscoverInfiniteQuery";
@@ -45,10 +44,7 @@ export default function Movie() {
   const { favoriteId } = useFavorite();
 
   const {
-    selectedContent,
-    showDetail,
     openDetail,
-    closeDetail,
     toggleFavorite,
     openTrailer,
   } = useContentDetail();
@@ -103,15 +99,6 @@ export default function Movie() {
         )}
         {!hasNextPage && movies.length > 0 && (
           <div>더 이상 영화가 없습니다.</div>
-        )}
-
-        {showDetail && selectedContent && (
-          <ContentDetailModal
-            content={selectedContent}
-            closeDetail={closeDetail}
-            toggleFavorite={toggleFavorite}
-            openTrailer={openTrailer}
-          />
         )}
       </div>
     </div>

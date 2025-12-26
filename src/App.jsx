@@ -4,6 +4,7 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import AuthManager from "./components/AuthManager";
 import { Toaster } from "react-hot-toast";
+import ContentDetailLayer from "./components/ContentDetailLayer";
 
 const Home = lazy(() => import("./pages/Home"));
 const Movie = lazy(() => import("./pages/Movie"));
@@ -53,6 +54,7 @@ function App() {
           </Routes>
         </Suspense>
       </main>
+      <ContentDetailLayer />
     </div>
   );
 }

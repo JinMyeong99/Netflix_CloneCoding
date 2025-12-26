@@ -3,7 +3,6 @@ import { useSearchParams } from "react-router-dom";
 import useContentDetail from "../hooks/useContentDetail";
 import useGenreName from "../hooks/useGenreName";
 import useFavorite from "../hooks/useFavorite";
-import ContentDetailModal from "../components/ContentDetailModal";
 import ContentGrid from "../components/ContentGrid";
 import useSearchInfinite from "../hooks/queries/useSearchInfinite";
 
@@ -44,10 +43,7 @@ export default function Search() {
   const resultsWithGenre = useGenreName(results, "auto");
 
   const {
-    selectedContent,
-    showDetail,
     openDetail,
-    closeDetail,
     toggleFavorite,
     openTrailer,
   } = useContentDetail();
@@ -80,14 +76,6 @@ export default function Search() {
         </div>
       )}
 
-      {showDetail && selectedContent && (
-        <ContentDetailModal
-          content={selectedContent}
-          closeDetail={closeDetail}
-          toggleFavorite={toggleFavorite}
-          openTrailer={openTrailer}
-        />
-      )}
     </div>
   );
 }
