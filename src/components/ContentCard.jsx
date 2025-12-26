@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { backdropSrcSet, ImageUrl, posterSrcSet } from "../api/tmdb";
 import useFavoriteStore from "../store/useFavoriteStore";
 
@@ -29,6 +29,7 @@ function ContentCard({
   );
   const title = contentTitle || name || "";
   const contentId = content?.id ?? null;
+  const [loadBackdrop, setloadBackdrop] = useState(false);
 
   const mainGenre = useMemo(() => {
     const genres =
@@ -77,8 +78,15 @@ function ContentCard({
     []
   );
 
+  const handleHoverEnter = useCallback(() => {
+    if (!loadBackdrop) setloadBackdrop(true);
+  }, [loadBackdrop]);
+
   return (
-    <article className="relative group/card w-full max-w-65">
+    <article
+      className="relative group/card w-full max-w-65"
+      onMouseEnter={handleHoverEnter}
+    >
       <div className="w-full aspect-2/3 overflow-hidden rounded-md bg-neutral-800">
         {poster ? (
           <img
@@ -108,7 +116,7 @@ function ContentCard({
         style={hoverCardStyle}
       >
         <div className="relative w-full aspect-video bg-black">
-          {backdrop ? (
+          {backdrop && loadBackdrop ? (
             <img
               src={backdrop}
               srcSet={backdropSrcSet(backdrop_path)}
