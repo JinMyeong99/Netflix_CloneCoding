@@ -20,7 +20,7 @@ function ContentCard({
   } = content;
 
   const poster = useMemo(
-    () => ImageUrl(poster_path, "w185") || "",
+    () => ImageUrl(poster_path, "w154") || "",
     [poster_path]
   );
   const backdrop = useMemo(
@@ -92,7 +92,7 @@ function ContentCard({
           <img
             src={poster}
             srcSet={posterSrcSet(poster_path)}
-            sizes="(min-width: 1280px) 220px, (min-width: 768px) 180px, 33vw"
+            sizes="(max-width: 640px) 40vw, (max-width: 1024px) 170px, 220px"
             alt={title}
             width={342}
             height={513}
