@@ -9,6 +9,8 @@ export const ImageUrl = (path, size) =>
 export const posterSrcSet = (path) => {
   if (!path) return "";
   return [
+    `${ImageUrl(path, "w92")} 92w`,
+    `${ImageUrl(path, "w154")} 154w`,
     `${ImageUrl(path, "w185")} 185w`,
     `${ImageUrl(path, "w342")} 342w`,
   ].join(", ");
