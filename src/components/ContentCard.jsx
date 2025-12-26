@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useMemo } from "react";
 import { backdropSrcSet, ImageUrl, posterSrcSet } from "../api/tmdb";
 
 function ContentCard({
@@ -50,32 +50,6 @@ function ContentCard({
     if (openDetail) openDetail(content);
   }, [openDetail, content]);
 
-  const [openHover, setOpenHover] = useState(false);
-  const hoverTimerRef = useRef(null);
-
-  const clearHoverTimer = useCallback(() => {
-    if (hoverTimerRef.current) {
-      clearTimeout(hoverTimerRef.current);
-      hoverTimerRef.current = null;
-    }
-  }, []);
-
-  const handleMouseEnter = useCallback(() => {
-    clearHoverTimer();
-    hoverTimerRef.current = setTimeout(() => setOpenHover(true), 400);
-  }, [clearHoverTimer]);
-
-  const handleMouseLeave = useCallback(() => {
-    clearHoverTimer();
-    setOpenHover(false);
-  }, [clearHoverTimer]);
-
-  useEffect(() => {
-    return () => {
-      clearHoverTimer();
-    };
-  }, [clearHoverTimer]);
-
   const hoverPosition = useMemo(() => {
     switch (hoverAlign) {
       case "left":
@@ -96,11 +70,7 @@ function ContentCard({
   );
 
   return (
-    <article
-      className="relative group/card w-full max-w-65"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
+    <article className="relative group/card w-full max-w-65">
       <div className="w-full aspect-2/3 overflow-hidden rounded-md bg-neutral-800">
         {poster ? (
           <img
@@ -122,15 +92,11 @@ function ContentCard({
       </div>
 
       <div
-        className={`absolute bottom-3
-        rounded-xl overflow-hidden bg-neutral-900 shadow-xl shadow-black/70
-        transition-all duration-200 
-        ${hoverPosition}
-        ${
-          openHover
-            ? "opacity-100 scale-100 z-30 pointer-events-auto"
-            : "opacity-0 scale-0 z-0 pointer-events-none"
-        }`}
+        className={`absolute bottom-3 rounded-xl overflow-hidden bg-neutral-900 shadow-xl shadow-black/70
+        transition-all duration-200 delay-[0ms] group-hover/card:delay-400 will-change-[transform,opacity]
+        opacity-0 scale-95 pointer-events-none z-0
+        group-hover/card:opacity-100 group-hover/card:scale-100 group-hover/card:pointer-events-auto group-hover/card:z-30
+        ${hoverPosition}`}
         style={hoverCardStyle}
       >
         <div className="relative w-full aspect-video bg-black">
