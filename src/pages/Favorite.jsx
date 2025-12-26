@@ -4,7 +4,7 @@ import ContentGrid from "../components/ContentGrid";
 import useFavorite from "../hooks/useFavorite";
 
 export default function Favorite() {
-  const { favoriteList: favorite, favoriteId } = useFavorite();
+  const { favoriteList: favorite } = useFavorite();
 
   const {
     openDetail,
@@ -28,7 +28,6 @@ export default function Favorite() {
         <h1 className="text-2xl md:text-3xl my-5">내가 찜한 콘텐츠</h1>
         <ContentGrid
           contents={favoritesWithGenre}
-          favoriteSet={favoriteId}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
           openTrailer={openTrailer}

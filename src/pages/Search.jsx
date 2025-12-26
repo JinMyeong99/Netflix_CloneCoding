@@ -2,7 +2,6 @@ import { useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import useContentDetail from "../hooks/useContentDetail";
 import useGenreName from "../hooks/useGenreName";
-import useFavorite from "../hooks/useFavorite";
 import ContentGrid from "../components/ContentGrid";
 import useSearchInfinite from "../hooks/queries/useSearchInfinite";
 
@@ -48,8 +47,6 @@ export default function Search() {
     openTrailer,
   } = useContentDetail();
 
-  const { favoriteId } = useFavorite();
-
   return (
     <div className="mx-auto max-w-[90%] pb-25 pt-16">
       <h2 className="text-2xl md:text-3xl font-bold my-5">
@@ -61,7 +58,6 @@ export default function Search() {
       )}
       <ContentGrid
         contents={resultsWithGenre}
-        favoriteSet={favoriteId}
         openDetail={openDetail}
         toggleFavorite={toggleFavorite}
         openTrailer={openTrailer}

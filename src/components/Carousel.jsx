@@ -5,7 +5,6 @@ import "swiper/css";
 
 import ContentCard from "./ContentCard";
 import SlideButton from "./SlideButton";
-import useFavorite from "../hooks/useFavorite";
 import useSwiperRange from "../hooks/useSwiperRange";
 
 const VIRTUAL_MODULES = [Virtual];
@@ -30,7 +29,6 @@ export default function Carousel({
   openTrailer,
   toggleFavorite,
 }) {
-  const { favoriteId } = useFavorite();
   const { swiperRef, visibleRange, updateVisibleRange, handleSwiperInit } =
     useSwiperRange({ start: 0, end: 5 });
 
@@ -96,7 +94,6 @@ export default function Carousel({
                 >
                   <ContentCard
                     content={content}
-                    isFavorite={favoriteId.has(contentId)}
                     openDetail={openDetail}
                     openTrailer={openTrailer}
                     toggleFavorite={toggleFavorite}

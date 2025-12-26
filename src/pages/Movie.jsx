@@ -2,7 +2,6 @@ import { useCallback, useMemo, useState } from "react";
 import GenreSelector from "../components/GenreSelector";
 import useGenreName from "../hooks/useGenreName";
 import useContentDetail from "../hooks/useContentDetail";
-import useFavorite from "../hooks/useFavorite";
 import HeroBanner from "../components/HeroBanner";
 import ContentGrid from "../components/ContentGrid";
 import useDiscoverInfiniteQuery from "../hooks/queries/useDiscoverInfiniteQuery";
@@ -40,8 +39,6 @@ export default function Movie() {
   }, [fetchNextPage, hasNextPage]);
 
   const moviesWithGenres = useGenreName(movies, "movie");
-
-  const { favoriteId } = useFavorite();
 
   const {
     openDetail,
@@ -83,7 +80,6 @@ export default function Movie() {
 
         <ContentGrid
           contents={moviesWithGenres}
-          favoriteSet={favoriteId}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
           openTrailer={openTrailer}

@@ -1,9 +1,10 @@
 import { memo, useCallback, useMemo } from "react";
 import { backdropSrcSet, ImageUrl, posterSrcSet } from "../api/tmdb";
+import useFavoriteStore from "../store/useFavoriteStore";
 
 function ContentCard({
   content,
-  isFavorite = false,
+  isFavorite: isFavoriteProp,
   openDetail,
   toggleFavorite,
   openTrailer,
@@ -27,6 +28,7 @@ function ContentCard({
     [backdrop_path]
   );
   const title = contentTitle || name || "";
+  const contentId = content?.id ?? null;
 
   const mainGenre = useMemo(() => {
     const genres =
@@ -49,6 +51,12 @@ function ContentCard({
   const handleOpenDetail = useCallback(() => {
     if (openDetail) openDetail(content);
   }, [openDetail, content]);
+
+  const isFavoriteFromStore = useFavoriteStore((state) => {
+    if (!contentId) return false;
+    return state.list.some((favContent) => favContent.id === contentId);
+  });
+  const isFavorite = isFavoriteProp ?? isFavoriteFromStore;
 
   const hoverPosition = useMemo(() => {
     switch (hoverAlign) {

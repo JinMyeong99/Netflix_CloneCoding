@@ -1,7 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
 import GenreSelector from "../components/GenreSelector";
 import useContentDetail from "../hooks/useContentDetail";
-import useFavorite from "../hooks/useFavorite";
 import useGenreName from "../hooks/useGenreName";
 import HeroBanner from "../components/HeroBanner";
 import ContentGrid from "../components/ContentGrid";
@@ -47,8 +46,6 @@ export default function Series() {
     openTrailer,
   } = useContentDetail();
 
-  const { favoriteId } = useFavorite();
-
   const heroContent = seriesWithGenre[0];
   const errorMessage = error?.message;
 
@@ -84,7 +81,6 @@ export default function Series() {
 
         <ContentGrid
           contents={seriesWithGenre}
-          favoriteSet={favoriteId}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
           openTrailer={openTrailer}
