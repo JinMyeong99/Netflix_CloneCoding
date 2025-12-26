@@ -1,8 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
 import GenreSelector from "../components/GenreSelector";
 import useContentDetail from "../hooks/useContentDetail";
-import useFavorite from "../hooks/useFavorite";
-import ContentDetailModal from "../components/ContentDetailModal";
 import useGenreName from "../hooks/useGenreName";
 import HeroBanner from "../components/HeroBanner";
 import ContentGrid from "../components/ContentGrid";
@@ -43,15 +41,10 @@ export default function Series() {
   const seriesWithGenre = useGenreName(series, "series");
 
   const {
-    selectedContent,
-    showDetail,
     openDetail,
-    closeDetail,
     toggleFavorite,
     openTrailer,
   } = useContentDetail();
-
-  const { favoriteId } = useFavorite();
 
   const heroContent = seriesWithGenre[0];
   const errorMessage = error?.message;
@@ -88,7 +81,6 @@ export default function Series() {
 
         <ContentGrid
           contents={seriesWithGenre}
-          favoriteSet={favoriteId}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
           openTrailer={openTrailer}
@@ -104,15 +96,6 @@ export default function Series() {
         )}
         {!hasNextPage && series.length > 0 && (
           <div>더 이상 시리즈가 없습니다.</div>
-        )}
-
-        {showDetail && selectedContent && (
-          <ContentDetailModal
-            content={selectedContent}
-            closeDetail={closeDetail}
-            toggleFavorite={toggleFavorite}
-            openTrailer={openTrailer}
-          />
         )}
       </div>
     </div>

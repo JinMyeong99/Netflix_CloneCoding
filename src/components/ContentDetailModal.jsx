@@ -92,7 +92,7 @@ export default function ContentDetailModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
+      className="fixed inset-0 z-50 flex items-center justify-center text-white bg-black/80"
       onClick={closeDetail}
     >
       <div
@@ -103,10 +103,12 @@ export default function ContentDetailModal({
           {trailerKey ? (
             <iframe
               className="w-full h-full"
-              src={`https://www.youtube.com/embed/${trailerKey}?controls=1&rel=0&playsinline=1`}
+              src={`https://www.youtube-nocookie.com/embed/${trailerKey}?controls=1&rel=0&playsinline=1`}
               title={title}
-              allow="encrypted-media; fullscreen"
+              allow="encrypted-media"
               allowFullScreen
+              sandbox="allow-same-origin allow-scripts allow-presentation"
+              referrerPolicy="origin-when-cross-origin"
             />
           ) : backdrop ? (
             <img

@@ -1,10 +1,10 @@
-import { memo, useCallback, useMemo } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { backdropSrcSet, ImageUrl, posterSrcSet } from "../api/tmdb";
+import useFavoriteStore from "../store/useFavoriteStore";
 
 function ContentCard({
   content,
-  isFavorite = false,
-  openHover,
+  isFavorite: isFavoriteProp,
   openDetail,
   toggleFavorite,
   openTrailer,
@@ -28,6 +28,8 @@ function ContentCard({
     [backdrop_path]
   );
   const title = contentTitle || name || "";
+  const contentId = content?.id ?? null;
+  const [loadBackdrop, setloadBackdrop] = useState(false);
 
   const mainGenre = useMemo(() => {
     const genres =
@@ -51,6 +53,12 @@ function ContentCard({
     if (openDetail) openDetail(content);
   }, [openDetail, content]);
 
+  const isFavoriteFromStore = useFavoriteStore((state) => {
+    if (!contentId) return false;
+    return state.list.some((favContent) => favContent.id === contentId);
+  });
+  const isFavorite = isFavoriteProp ?? isFavoriteFromStore;
+
   const hoverPosition = useMemo(() => {
     switch (hoverAlign) {
       case "left":
@@ -70,8 +78,15 @@ function ContentCard({
     []
   );
 
+  const handleHoverEnter = useCallback(() => {
+    if (!loadBackdrop) setloadBackdrop(true);
+  }, [loadBackdrop]);
+
   return (
-    <article className="relative group/card w-full max-w-65">
+    <article
+      className="relative group/card w-full max-w-65"
+      onMouseEnter={handleHoverEnter}
+    >
       <div className="w-full aspect-2/3 overflow-hidden rounded-md bg-neutral-800">
         {poster ? (
           <img
@@ -93,19 +108,15 @@ function ContentCard({
       </div>
 
       <div
-        className={`absolute bottom-3
-        rounded-xl overflow-hidden bg-neutral-900 shadow-xl shadow-black/70
-        transition-all duration-200 
-        ${hoverPosition}
-        ${
-          openHover
-            ? "opacity-100 scale-100 z-30 pointer-events-auto"
-            : "opacity-0 scale-0 z-0 pointer-events-none"
-        }`}
+        className={`absolute bottom-3 rounded-xl overflow-hidden bg-neutral-900 shadow-xl shadow-black/70
+        transition-all duration-200 delay-[0ms] group-hover/card:delay-400 will-change-[transform,opacity]
+        opacity-0 scale-95 pointer-events-none z-0
+        group-hover/card:opacity-100 group-hover/card:scale-100 group-hover/card:pointer-events-auto group-hover/card:z-30
+        ${hoverPosition}`}
         style={hoverCardStyle}
       >
         <div className="relative w-full aspect-video bg-black">
-          {backdrop ? (
+          {backdrop && loadBackdrop ? (
             <img
               src={backdrop}
               srcSet={backdropSrcSet(backdrop_path)}

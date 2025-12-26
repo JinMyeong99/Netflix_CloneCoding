@@ -1,17 +1,13 @@
 import useContentDetail from "../hooks/useContentDetail";
-import ContentDetailModal from "../components/ContentDetailModal";
 import useGenreName from "../hooks/useGenreName";
 import ContentGrid from "../components/ContentGrid";
 import useFavorite from "../hooks/useFavorite";
 
 export default function Favorite() {
-  const { favoriteList: favorite, favoriteId } = useFavorite();
+  const { favoriteList: favorite } = useFavorite();
 
   const {
-    selectedContent,
-    showDetail,
     openDetail,
-    closeDetail,
     toggleFavorite,
     openTrailer,
   } = useContentDetail();
@@ -32,21 +28,11 @@ export default function Favorite() {
         <h1 className="text-2xl md:text-3xl my-5">내가 찜한 콘텐츠</h1>
         <ContentGrid
           contents={favoritesWithGenre}
-          favoriteSet={favoriteId}
           openDetail={openDetail}
           toggleFavorite={toggleFavorite}
           openTrailer={openTrailer}
         />
       </div>
-
-      {showDetail && selectedContent && (
-        <ContentDetailModal
-          content={selectedContent}
-          closeDetail={closeDetail}
-          toggleFavorite={toggleFavorite}
-          openTrailer={openTrailer}
-        />
-      )}
     </div>
   );
 }

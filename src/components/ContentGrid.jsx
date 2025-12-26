@@ -1,12 +1,63 @@
-import { useMemo } from "react";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
 import ContentCard from "./ContentCard";
-import useHoverActive from "../hooks/useHoverActive";
 import useGridHoverAlign from "../hooks/useGridHoverAlign";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 
-export default function ContentGrid({
+function VirtualCard({
+  content,
+  hoverAlign,
+  openDetail,
+  toggleFavorite,
+  openTrailer,
+}) {
+  const containerRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const node = containerRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry?.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { root: null, rootMargin: "300px 0px" }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={containerRef}
+      className="w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 flex justify-center px-1"
+    >
+      {isVisible ? (
+        <ContentCard
+          content={content}
+          openDetail={openDetail}
+          toggleFavorite={toggleFavorite}
+          openTrailer={openTrailer}
+          hoverAlign={hoverAlign}
+        />
+      ) : (
+        <div className="w-full max-w-65">
+          <div className="w-full aspect-2/3 rounded-md bg-neutral-800 animate-pulse" />
+        </div>
+      )}
+    </div>
+  );
+}
+
+const MemoVirtualCard = memo(VirtualCard);
+
+function ContentGrid({
   contents,
-  favoriteSet,
   openDetail,
   toggleFavorite,
   openTrailer,
@@ -16,8 +67,6 @@ export default function ContentGrid({
   onLoadMore,
 }) {
   const contentCount = Array.isArray(contents) ? contents.length : 0;
-  const { hoverContentId, handleMouseEnter, handleMouseLeave } =
-    useHoverActive();
   const getHoverAlign = useGridHoverAlign(contentCount);
 
   const cardSlots = useMemo(() => {
@@ -31,26 +80,14 @@ export default function ContentGrid({
       });
 
     return contents.map((content, index) => {
-      const contentId = content.id;
       const contentKey = getKey(content);
       return {
         contentKey,
-        contentId,
         content,
         hoverAlign: getHoverAlign(index),
-        isFavorite: favoriteSet ? favoriteSet.has(contentId) : false,
-        onMouseEnter: () => handleMouseEnter(contentId),
-        onMouseLeave: () => handleMouseLeave(contentId),
       };
     });
-  }, [
-    contents,
-    favoriteSet,
-    getHoverAlign,
-    handleMouseEnter,
-    handleMouseLeave,
-    keyExtractor,
-  ]);
+  }, [contents, getHoverAlign, keyExtractor]);
 
   const loaderRef = useInfiniteScroll({
     loading,
@@ -62,37 +99,21 @@ export default function ContentGrid({
 
   return (
     <div className="flex flex-wrap gap-y-20">
-      {cardSlots.map(
-        ({
-          contentKey,
-          contentId,
-          content,
-          hoverAlign,
-          isFavorite,
-          onMouseEnter,
-          onMouseLeave,
-        }) => (
-          <div
-            key={contentKey}
-            className="w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 flex justify-center px-1"
-            onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-          >
-            <ContentCard
-              content={content}
-              isFavorite={isFavorite}
-              openHover={hoverContentId === contentId}
-              openDetail={openDetail}
-              toggleFavorite={toggleFavorite}
-              openTrailer={openTrailer}
-              hoverAlign={hoverAlign}
-            />
-          </div>
-        )
-      )}
+      {cardSlots.map(({ contentKey, content, hoverAlign }) => (
+        <MemoVirtualCard
+          key={contentKey}
+          content={content}
+          hoverAlign={hoverAlign}
+          openDetail={openDetail}
+          toggleFavorite={toggleFavorite}
+          openTrailer={openTrailer}
+        />
+      ))}
       {hasMore ? (
         <div ref={loaderRef} style={{ height: 1, width: "100%" }} />
       ) : null}
     </div>
   );
 }
+
+export default memo(ContentGrid);

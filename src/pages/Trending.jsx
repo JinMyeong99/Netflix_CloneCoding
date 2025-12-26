@@ -2,20 +2,12 @@ import useTrendingQuery from "../hooks/queries/useTrendingQuery";
 import Carousel from "../components/Carousel";
 import useContentDetail from "../hooks/useContentDetail";
 import useGenreName from "../hooks/useGenreName";
-import ContentDetailModal from "../components/ContentDetailModal";
 import HeroBanner from "../components/HeroBanner";
 
 export default function Trending() {
   const { data, isLoading, error } = useTrendingQuery();
 
-  const {
-    selectedContent,
-    showDetail,
-    openDetail,
-    closeDetail,
-    toggleFavorite,
-    openTrailer,
-  } = useContentDetail();
+  const { openDetail, toggleFavorite, openTrailer } = useContentDetail();
 
   const todayWithGenre = useGenreName(data?.today ?? [], "auto");
   const weekWithGenre = useGenreName(data?.week ?? [], "auto");
@@ -77,14 +69,6 @@ export default function Trending() {
           openTrailer={openTrailer}
         />
       </div>
-      {showDetail && selectedContent && (
-        <ContentDetailModal
-          content={selectedContent}
-          closeDetail={closeDetail}
-          toggleFavorite={toggleFavorite}
-          openTrailer={openTrailer}
-        />
-      )}
     </div>
   );
 }
