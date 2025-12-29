@@ -39,6 +39,7 @@ function HeroBanner({ content, openDetail, openTrailer }) {
     link.as = "image";
     link.href = backdropSrc;
     link.setAttribute("data-hero-preload", "true");
+    link.setAttribute("fetchpriority", "high");
 
     const srcSet = backdropSrcSet(backdropPath);
     if (srcSet) {
