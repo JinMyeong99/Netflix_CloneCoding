@@ -125,8 +125,6 @@ function ContentCard({
               width={780}
               height={439}
               className="w-full h-full object-cover object-center"
-              loading="lazy"
-              decoding="async"
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-neutral-300">
