@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Navbar";
@@ -20,6 +20,10 @@ function App() {
   const location = useLocation();
   const hideNavbar =
     location.pathname === "/login" || location.pathname === "/signup";
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [location.pathname]);
 
   return (
     <div className="bg-neutral-900 min-h-screen text-white">
