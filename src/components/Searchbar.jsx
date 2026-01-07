@@ -14,6 +14,9 @@ function searchReducer(state, action) {
       return state.open ? state : { ...state, open: true };
     case "close":
       return state.open ? { ...state, open: false } : state;
+    case "reset":
+      if (!state.open && !state.value) return state;
+      return { open: false, value: "" };
     case "setValue":
       if (state.value === action.value) return state;
       return { ...state, value: action.value };
@@ -36,6 +39,7 @@ export default function SearchBar() {
   );
   const { open, value } = state;
   const originPathRef = useRef(null);
+  const prevPathRef = useRef(location.pathname);
 
   const barRef = useRef(null);
   const inputRef = useRef(null);
@@ -67,6 +71,15 @@ export default function SearchBar() {
     const q = params.get("q") || "";
     dispatch({ type: "syncFromLocation", value: q });
   }, [location.pathname, location.search]);
+
+  useEffect(() => {
+    if (location.pathname === prevPathRef.current) return;
+    prevPathRef.current = location.pathname;
+
+    if (location.pathname.startsWith("/search")) return;
+    originPathRef.current = null;
+    if (open || value) dispatch({ type: "reset" });
+  }, [location.pathname, open, value]);
 
   const handleChange = (e) => {
     dispatch({ type: "setValue", value: e.target.value });
