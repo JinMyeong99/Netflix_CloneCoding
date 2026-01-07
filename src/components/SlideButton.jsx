@@ -2,17 +2,19 @@ import { memo } from "react";
 
 const SlideButton = ({ direction, onClick }) => {
   const isLeft = direction === "left";
+  const sideStyle = { width: "var(--carousel-edge, 5vw)", minWidth: "1rem" };
   return (
     <div
-      className={`absolute inset-y-0 ${isLeft ? "left-0" : "right-0"} w-8 md:w-10 lg:w-12 xl:w-22`}
+      className={`absolute inset-y-0 ${isLeft ? "left-0" : "right-0"}`}
+      style={sideStyle}
     >
       <div
         className={`
           pointer-events-none
           absolute inset-y-0 ${isLeft ? "left-0" : "right-0"} 
-          w-8 md:w-12 lg:w-15 xl:w-23
           bg-neutral-900/60 z-10
         `}
+        style={sideStyle}
       />
       <button
         type="button"
@@ -21,13 +23,13 @@ const SlideButton = ({ direction, onClick }) => {
           group/button
           flex items-center justify-center
           absolute inset-y-0 ${isLeft ? "left-0" : "right-0"} 
-          w-8 md:w-12 lg:w-15 xl:w-23
           opacity-0 group-hover:opacity-100
           hover:bg-black/50
           transition-opacity duration-200
           rounded-md cursor-pointer
           z-20
         `}
+        style={sideStyle}
       >
         <svg
           viewBox="0 0 48 48"

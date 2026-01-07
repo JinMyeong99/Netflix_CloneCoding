@@ -65,7 +65,10 @@ export default function Carousel({
     <section className="relative py-6">
       <h2 className="text-2xl mb-3 md:text-3xl">{title}</h2>
 
-      <div className="relative left-1/2 -translate-x-1/2 w-screen mt-2 group">
+      <div
+        className="relative left-1/2 -translate-x-1/2 w-screen mt-2 group"
+        style={{ "--carousel-edge": "clamp(1rem, 5vw, 20rem)" }}
+      >
         <SlideButton direction="left" onClick={scrollLeft} />
         <SlideButton direction="right" onClick={scrollRight} />
 
@@ -88,10 +91,7 @@ export default function Carousel({
             {validContents.map((content, index) => {
               const contentId = content.id;
               return (
-                <SwiperSlide
-                  key={contentId}
-                  virtualIndex={index}
-                >
+                <SwiperSlide key={contentId} virtualIndex={index}>
                   <ContentCard
                     content={content}
                     openDetail={openDetail}
