@@ -25,7 +25,7 @@ function VirtualCard({
           observer.disconnect();
         }
       },
-      { root: null, rootMargin: "300px 0px" }
+      { root: null, rootMargin: "400px 0px" }
     );
 
     observer.observe(node);
