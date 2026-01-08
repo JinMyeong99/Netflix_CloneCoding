@@ -8,13 +8,13 @@ export async function fetchDiscoverData({ type, pageParam, genreId }) {
     include_adult: "false",
     with_origin_country: "KR|US|JP|GB",
     page: String(pageParam),
-  });
+  }).toString();
 
   if (genreId) {
     params.set("with_genres", String(genreId));
   }
 
-  const url = `${BaseUrl}/discover/${type}?${params.toString()}`;
+  const url = `${BaseUrl}/discover/${type}?${params}`;
 
   try {
     const data = await fetchJson(url, "콘텐츠 로딩 실패");
