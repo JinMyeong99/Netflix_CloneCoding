@@ -130,7 +130,7 @@ export default function Signup() {
                 type="password"
                 value={password}
                 onChange={(e) => {
-                  setPassword(e.targe.value);
+                  setPassword(e.target.value);
                   if (error) setError("");
                 }}
                 className="
