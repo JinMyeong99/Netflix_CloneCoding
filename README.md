@@ -98,11 +98,3 @@ docs/           # 성능 최적화 및 UX 개선 문서
 4. <a href="https://velog.io/@cjm1999/Netflix-Clone-%EC%84%B1%EB%8A%A5-%EC%B5%9C%EC%A0%81%ED%99%94-4-%EB%8C%80%EB%9F%89-DOM-%EB%88%84%EC%A0%81-%EC%A0%9C%EC%96%B4-Swiper-Virtual-IntersectionObserver" target="_blank" rel="noopener noreferrer">DOM 누적 제어 (Swiper Virtual + IntersectionObserver)</a>
 5. <a href="https://velog.io/@cjm1999/Netflix-Clone-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0-5-Swiper-%EB%84%A4%EB%B9%84-%EB%B2%84%ED%8A%BC%EC%9D%B4-%EC%95%88-%EB%88%8C%EB%A6%AC%EB%8D%98-%EC%9D%B4%EC%9C%A0-hover-scale%EC%9D%B4-%EB%B2%84%ED%8A%BC%EC%9D%84-%EA%B0%80%EB%A6%BC-hoverAlign%EB%A1%9C-%ED%99%95%EC%9E%A5-%EB%B0%A9%ED%96%A5-%EC%A0%9C%EC%96%B4" target="_blank" rel="noopener noreferrer">캐러셀 양 끝 hover 버튼 클릭 이슈 개선 (hoverAlign)</a>
 
-### Local Docs
-
-- [성능 최적화 종합 리포트](docs/netflix-clone-performance-optimization-report.md)
-- [fan-out 제거](docs/netflix-clone-performance-optimization-fanout.md)
-- [이미지/LCP 개선](docs/netflix-clone-performance-optimization-image-lcp.md)
-- [hover 리렌더 전파 차단](docs/netflix-clone-performance-optimization-hover-rerender.md)
-- [DOM 누적 제어](docs/netflix-clone-performance-optimization-dom-control.md)
-- [캐러셀 hoverAlign 개선](docs/netflix-clone-ui-improvement-carousel-hoveralign.md)
