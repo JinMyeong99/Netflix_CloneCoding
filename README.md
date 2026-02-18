@@ -2,9 +2,8 @@
 
 Netflix의 콘텐츠 탐색 UX(캐러셀, hover 프리뷰, 상세 모달)를 재현하고, 병목을 측정 기반으로 개선한 개인 프로젝트입니다.
 
-- 배포: [https://netflix-clone-coding-six.vercel.app/](https://netflix-clone-coding-six.vercel.app/)
-- 레포: [https://github.com/JinMyeong99/Netflix_CloneCoding](https://github.com/JinMyeong99/Netflix_CloneCoding)
-- Case Study(요약): [Netflix 클론 코딩 성능 최적화](https://velog.io/@cjm1999/Netflix-%ED%81%B4%EB%A1%A0-%EC%BD%94%EB%94%A9-%EC%84%B1%EB%8A%A5-%EC%B5%9C%EC%A0%81%ED%99%94)
+- 배포: <a href="https://netflix-clone-coding-six.vercel.app/" target="_blank" rel="noopener noreferrer">https://netflix-clone-coding-six.vercel.app/</a>
+- Case Study(성능 최적화 요약): <a href="https://velog.io/@cjm1999/Netflix-%ED%81%B4%EB%A1%A0-%EC%BD%94%EB%94%A9-%EC%84%B1%EB%8A%A5-%EC%B5%9C%EC%A0%81%ED%99%94" target="_blank" rel="noopener noreferrer">Netflix 클론 코딩 성능 최적화</a>
 
 ## 핵심 기능
 
@@ -93,11 +92,11 @@ docs/           # 성능 최적화 및 UX 개선 문서
 
 ### Velog
 
-1. [fan-out 제거 (on-demand + Promise 캐시)](https://velog.io/@cjm1999/1-fan-out-%EC%9A%94%EC%B2%AD-%ED%8F%AD%EC%A6%9D-%EC%A0%9C%EA%B1%B0-%ED%8A%B8%EB%A0%88%EC%9D%BC%EB%9F%AC-on-demand-%EC%BA%90%EC%8B%9C)
-2. [이미지/LCP 개선 (srcset/sizes + preload)](https://velog.io/@cjm1999/Netflix-Clone-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0-3-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EC%A0%84%EC%86%A1%EB%9F%89-%EC%A4%84%EC%9D%B4%EA%B3%A0-LCP-%EA%B0%9C%EC%84%A0%ED%95%98%EA%B8%B0-srcsetsizespreload)
-3. [hover 리렌더 전파 차단 (CSS-only)](https://velog.io/@cjm1999/Netflix-Clone-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0-2-hover-%EB%A6%AC%EB%A0%8C%EB%8D%94-%EC%A0%84%ED%8C%8C-%EB%81%8A%EA%B8%B0-%EB%B6%80%EB%AA%A8-state-%EC%A0%9C%EA%B1%B0-CSS-only)
-4. [DOM 누적 제어 (Swiper Virtual + IntersectionObserver)](https://velog.io/@cjm1999/Netflix-Clone-%EC%84%B1%EB%8A%A5-%EC%B5%9C%EC%A0%81%ED%99%94-4-%EB%8C%80%EB%9F%89-DOM-%EB%88%84%EC%A0%81-%EC%A0%9C%EC%96%B4-Swiper-Virtual-IntersectionObserver)
-5. [캐러셀 양 끝 hover 버튼 클릭 이슈 개선 (hoverAlign)](https://velog.io/@cjm1999/Netflix-Clone-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0-5-Swiper-%EB%84%A4%EB%B9%84-%EB%B2%84%ED%8A%BC%EC%9D%B4-%EC%95%88-%EB%88%8C%EB%A6%AC%EB%8D%98-%EC%9D%B4%EC%9C%A0-hover-scale%EC%9D%B4-%EB%B2%84%ED%8A%BC%EC%9D%84-%EA%B0%80%EB%A6%BC-hoverAlign%EB%A1%9C-%ED%99%95%EC%9E%A5-%EB%B0%A9%ED%96%A5-%EC%A0%9C%EC%96%B4)
+1. <a href="https://velog.io/@cjm1999/1-fan-out-%EC%9A%94%EC%B2%AD-%ED%8F%AD%EC%A6%9D-%EC%A0%9C%EA%B1%B0-%ED%8A%B8%EB%A0%88%EC%9D%BC%EB%9F%AC-on-demand-%EC%BA%90%EC%8B%9C" target="_blank" rel="noopener noreferrer">fan-out 제거 (on-demand + Promise 캐시)</a>
+2. <a href="https://velog.io/@cjm1999/Netflix-Clone-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0-3-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EC%A0%84%EC%86%A1%EB%9F%89-%EC%A4%84%EC%9D%B4%EA%B3%A0-LCP-%EA%B0%9C%EC%84%A0%ED%95%98%EA%B8%B0-srcsetsizespreload" target="_blank" rel="noopener noreferrer">이미지/LCP 개선 (srcset/sizes + preload)</a>
+3. <a href="https://velog.io/@cjm1999/Netflix-Clone-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0-2-hover-%EB%A6%AC%EB%A0%8C%EB%8D%94-%EC%A0%84%ED%8C%8C-%EB%81%8A%EA%B8%B0-%EB%B6%80%EB%AA%A8-state-%EC%A0%9C%EA%B1%B0-CSS-only" target="_blank" rel="noopener noreferrer">hover 리렌더 전파 차단 (CSS-only)</a>
+4. <a href="https://velog.io/@cjm1999/Netflix-Clone-%EC%84%B1%EB%8A%A5-%EC%B5%9C%EC%A0%81%ED%99%94-4-%EB%8C%80%EB%9F%89-DOM-%EB%88%84%EC%A0%81-%EC%A0%9C%EC%96%B4-Swiper-Virtual-IntersectionObserver" target="_blank" rel="noopener noreferrer">DOM 누적 제어 (Swiper Virtual + IntersectionObserver)</a>
+5. <a href="https://velog.io/@cjm1999/Netflix-Clone-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0-5-Swiper-%EB%84%A4%EB%B9%84-%EB%B2%84%ED%8A%BC%EC%9D%B4-%EC%95%88-%EB%88%8C%EB%A6%AC%EB%8D%98-%EC%9D%B4%EC%9C%A0-hover-scale%EC%9D%B4-%EB%B2%84%ED%8A%BC%EC%9D%84-%EA%B0%80%EB%A6%BC-hoverAlign%EB%A1%9C-%ED%99%95%EC%9E%A5-%EB%B0%A9%ED%96%A5-%EC%A0%9C%EC%96%B4" target="_blank" rel="noopener noreferrer">캐러셀 양 끝 hover 버튼 클릭 이슈 개선 (hoverAlign)</a>
 
 ### Local Docs
 
