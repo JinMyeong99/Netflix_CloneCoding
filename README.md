@@ -1,100 +1,92 @@
-# Netflix Clone
+# Netflix: 측정 기반 성능 최적화
 
-Netflix의 콘텐츠 탐색 UX(캐러셀, hover 프리뷰, 상세 모달)를 재현하고, 병목을 측정 기반으로 개선한 개인 프로젝트입니다.
+병목을 측정·개선하고 수치로 검증하는 데 집중한 넷플릭스형 콘텐츠 탐색 개인 프로젝트입니다.
 
-- 배포: <a href="https://netflix-clone-coding-six.vercel.app/" target="_blank" rel="noopener noreferrer">https://netflix-clone-coding-six.vercel.app/</a>
-- Case Study(성능 최적화 요약): <a href="https://velog.io/@cjm1999/Netflix-%ED%81%B4%EB%A1%A0-%EC%BD%94%EB%94%A9-%EC%84%B1%EB%8A%A5-%EC%B5%9C%EC%A0%81%ED%99%94" target="_blank" rel="noopener noreferrer">Netflix 클론 코딩 성능 최적화</a>
+초기 API 요청 수 128→6, LCP 6.2s→3.5s, 이미지 전송량 9.8MB→1.2MB를 달성했습니다.
 
-## 핵심 기능
+**배포**: https://netflix-clone-coding-six.vercel.app/
 
-- 홈/영화/시리즈/트렌딩/검색 페이지 구성
-- 캐러셀 기반 콘텐츠 탐색 + hover 프리뷰 + 상세 모달
-- 트레일러 재생(YouTube 연동), 찜(Favorite) 관리
-- Supabase Auth 기반 로그인/회원가입/세션 유지
-- React Query `useInfiniteQuery` 기반 무한 스크롤 및 캐싱
+---
 
-## 성능 개선 하이라이트
+## 성능 개선 결과
 
-측정 도구: Lighthouse, Chrome DevTools Network, React Profiler
+| 항목 | Before | After | 개선 | 원인 |
+|---|---|---|---|---|
+| 초기 API 요청 수 | 128 | 6 | ↓95.3% | 목록 단계에서 트레일러 사전 로딩 |
+| Home LCP | 6.2s | 3.5s | ↓43.5% | Hero 이미지 preload/우선순위 미설정 |
+| 이미지 요청 수 | 222 | 38 | ↓82.9% | 화면 밖 카드 DOM 조기 마운트 |
+| 이미지 전송량 | 9.8MB | 1.2MB | ↓87.7% | 화면 크기 무관 고정 이미지 사용 |
+| Movie CLS | 0.793 | 0 | ↓100% | 이미지 크기 미지정으로 레이아웃 밀림 |
 
-| 항목 | Before | After | 개선 |
-| --- | --- | --- | --- |
-| Home LCP | 6.2s | 3.5s | -43.5% |
-| Home 초기 Fetch/XHR 요청 | 128 | 6 | -95.3% |
-| Home 이미지 요청 | 222 | 38 | -82.9% |
-| Movie CLS | 0.793 | 0 | -100% |
+---
 
-적용한 주요 최적화:
+## 최적화 기법
 
-1. `/videos` fan-out 제거: 트레일러 on-demand + in-flight Promise 캐시
-2. 이미지 전송 최적화: `srcSet/sizes` + Hero `preload/fetchPriority`
-3. hover 리렌더 전파 차단: 부모 hover state 제거 + CSS-only(`group-hover`)
-4. DOM 누적 제어: Swiper Virtual + IntersectionObserver
-5. 캐러셀 UX 버그 개선: `hoverAlign`으로 양 끝 카드 버튼 클릭 안정화
+### 1. 트레일러 요청을 모달 오픈 시점으로 분리
+
+목록 단계에서 콘텐츠 카드 수만큼 트레일러 API를 미리 호출하던 구조를 제거했습니다. Promise 캐시로 연속 클릭 시 중복 요청도 방지했습니다.
+
+→ [블로그: 초기 진입 요청 수를 128→6으로 줄인 과정](https://velog.io/@cjm1999/performance-optimization-fanout)
+
+### 2. 이미지 로딩 우선순위 조정
+
+Hero 이미지에 preload/fetchPriority를 적용하고, 포스터 이미지에 srcSet/sizes를 적용해 화면 크기에 맞는 리소스만 받도록 바꿨습니다. 이미지 크기 지정으로 레이아웃 밀림(CLS)도 제거했습니다.
+
+→ [블로그: LCP 6.2s→3.5s, 이미지 전송량과 로딩 우선순위 개선](https://velog.io/@cjm1999/performance-optimization-image-lcp)
+
+### 3. hover 리렌더 전파 차단
+
+React Profiler로 카드 hover마다 부모 캐러셀까지 리렌더가 전파되는 구조를 발견했습니다. hover UI를 CSS group-hover로 전환해 부모 setState를 제거했습니다.
+
+→ [블로그: hover 시 부모 리렌더 전파를 끊은 기록](https://velog.io/@cjm1999/performance-optimization-hover-rerender)
+
+### 4. DOM 누적 제어
+
+Swiper Virtual로 화면 밖 슬라이드 DOM을 제한하고, IntersectionObserver로 무한 스크롤 카드를 화면 근처에 왔을 때만 마운트했습니다.
+
+→ [블로그: 대량 DOM 누적 제어 (Swiper Virtual + IntersectionObserver)](https://velog.io/@cjm1999/performance-optimization-dom-control)
+
+### 5. 캐러셀 양 끝 카드 hover 버그 수정
+
+hover 미리보기 레이어가 center 기준으로 확장되면서 네비게이션 버튼 영역을 가리는 문제를 발견했습니다. 현재 보이는 범위를 기준으로 확장 방향을 계산해 양 끝 카드는 안쪽으로만 확장되도록 수정했습니다.
+
+→ [블로그: 캐러셀 양 끝 콘텐츠 카드 hover 시 버튼 클릭 불가 해결](https://velog.io/@cjm1999/ui-improvement-carousel-hoveralign)
+
+---
 
 ## 기술 스택
 
-- Frontend: React 19, React Router, Vite, Tailwind CSS
-- Data Fetching: TanStack Query
-- State: Zustand
-- Backend/Auth: Supabase Auth
-- API: TMDB API
-- UI/Interaction: Swiper, React Hot Toast
+| 분류 | 기술 |
+|---|---|
+| Frontend | React 19, Vite, Tailwind CSS |
+| 상태관리 | TanStack Query, Zustand |
+| 인증/DB | Supabase |
+| API | TMDB API |
+| UI | Swiper, React Hot Toast |
+| 측정 도구 | Lighthouse, Chrome DevTools, React Profiler |
 
-현재 코드베이스는 React + JavaScript(JSX) 기반입니다.
+---
 
-## 실행 방법
+## 주요 기능
 
-### 1) 설치
+- 홈/영화/시리즈/트렌딩/검색 페이지
+- 캐러셀 기반 콘텐츠 탐색 + hover 미리보기 + 상세 모달
+- YouTube 트레일러 재생
+- 찜 기능 (LocalStorage 저장, 재방문 시 복원)
+- Supabase 기반 로그인/회원가입
+- useInfiniteQuery 기반 무한 스크롤
+- 검색어 URL 쿼리 동기화 (새로고침·뒤로가기 유지)
 
-```bash
-npm install
-```
-
-### 2) 환경 변수 설정
-
-프로젝트 루트에 `.env` 파일을 만들고 아래 값을 입력합니다.
-
-```bash
-VITE_TMDB_API_KEY=YOUR_TMDB_API_KEY
-VITE_SUPABASE_URL=YOUR_SUPABASE_URL
-VITE_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
-```
-
-### 3) 개발 서버 실행
-
-```bash
-npm run dev
-```
-
-기본 접속 주소: `http://localhost:5173`
-
-## 스크립트
-
-- `npm run dev`: 개발 서버 실행
-- `npm run build`: 프로덕션 빌드
-- `npm run preview`: 빌드 결과 로컬 미리보기
-- `npm run lint`: ESLint 실행
+---
 
 ## 프로젝트 구조
 
-```text
-src/
-  api/          # TMDB/Supabase 연동, fetch 유틸
-  components/   # UI 컴포넌트(카드, 캐러셀, 모달 등)
-  hooks/        # 쿼리/인터랙션/스크롤 관련 커스텀 훅
-  pages/        # 라우트 페이지(Home/Movie/Series/Search...)
-  store/        # Zustand 전역 상태(Auth/Favorite/Detail)
-docs/           # 성능 최적화 및 UX 개선 문서
 ```
-
-## 케이스 스터디
-
-### Velog
-
-1. <a href="https://velog.io/@cjm1999/1-fan-out-%EC%9A%94%EC%B2%AD-%ED%8F%AD%EC%A6%9D-%EC%A0%9C%EA%B1%B0-%ED%8A%B8%EB%A0%88%EC%9D%BC%EB%9F%AC-on-demand-%EC%BA%90%EC%8B%9C" target="_blank" rel="noopener noreferrer">fan-out 제거 (on-demand + Promise 캐시)</a>
-2. <a href="https://velog.io/@cjm1999/Netflix-Clone-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0-3-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EC%A0%84%EC%86%A1%EB%9F%89-%EC%A4%84%EC%9D%B4%EA%B3%A0-LCP-%EA%B0%9C%EC%84%A0%ED%95%98%EA%B8%B0-srcsetsizespreload" target="_blank" rel="noopener noreferrer">이미지/LCP 개선 (srcset/sizes + preload)</a>
-3. <a href="https://velog.io/@cjm1999/Netflix-Clone-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0-2-hover-%EB%A6%AC%EB%A0%8C%EB%8D%94-%EC%A0%84%ED%8C%8C-%EB%81%8A%EA%B8%B0-%EB%B6%80%EB%AA%A8-state-%EC%A0%9C%EA%B1%B0-CSS-only" target="_blank" rel="noopener noreferrer">hover 리렌더 전파 차단 (CSS-only)</a>
-4. <a href="https://velog.io/@cjm1999/Netflix-Clone-%EC%84%B1%EB%8A%A5-%EC%B5%9C%EC%A0%81%ED%99%94-4-%EB%8C%80%EB%9F%89-DOM-%EB%88%84%EC%A0%81-%EC%A0%9C%EC%96%B4-Swiper-Virtual-IntersectionObserver" target="_blank" rel="noopener noreferrer">DOM 누적 제어 (Swiper Virtual + IntersectionObserver)</a>
-5. <a href="https://velog.io/@cjm1999/Netflix-Clone-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0-5-Swiper-%EB%84%A4%EB%B9%84-%EB%B2%84%ED%8A%BC%EC%9D%B4-%EC%95%88-%EB%88%8C%EB%A6%AC%EB%8D%98-%EC%9D%B4%EC%9C%A0-hover-scale%EC%9D%B4-%EB%B2%84%ED%8A%BC%EC%9D%84-%EA%B0%80%EB%A6%BC-hoverAlign%EB%A1%9C-%ED%99%95%EC%9E%A5-%EB%B0%A9%ED%96%A5-%EC%A0%9C%EC%96%B4" target="_blank" rel="noopener noreferrer">캐러셀 양 끝 hover 버튼 클릭 이슈 개선 (hoverAlign)</a>
-
+src/
+├── api/          # TMDB API 요청, 트레일러 캐시
+├── components/   # 공통 컴포넌트 (캐러셀, 모달, 카드)
+├── hooks/        # 커스텀 훅 (Swiper 범위, IntersectionObserver)
+├── pages/        # Home, Movie, Series, Trending, Search
+├── store/        # Zustand 전역 상태 (인증, 찜 목록)
+└── docs/         # 성능 최적화 측정 기록
+```
